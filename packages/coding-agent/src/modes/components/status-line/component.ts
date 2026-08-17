@@ -43,6 +43,16 @@ import type {
 const JJ_REFRESH_TTL_MS = 5000;
 const WATCHER_FAILURE_POLL_TTL_MS = 5000;
 
+/**
+ * The slice of AuthStorage the status line depends on, kept structural so the
+ * status line stays decoupled from the concrete credential store.
+ */
+interface StatusAuthStorage {
+	getOAuthAccountIdentity?(provider: string, sessionId?: string): OAuthAccountIdentity | undefined;
+	getSessionCredentialId?(provider: string, sessionId?: string): number | undefined;
+	getSessionUsageCacheIdentity?(provider: string, sessionId?: string): Promise<string | undefined>;
+}
+
 function normalizeCodexIdentityValue(value: unknown): string | undefined {
 	return typeof value === "string" && value.trim() ? value.trim().toLowerCase() : undefined;
 }
@@ -1247,12 +1257,7 @@ export class StatusLineComponent implements Component {
 
 	#getUsageContextKey(session: AgentSession): string {
 		const activeProvider = session.state.model?.provider ?? session.model?.provider;
-		const authStorage = session.modelRegistry?.authStorage as
-			| {
-					getOAuthAccountIdentity?: (provider: string, sessionId?: string) => OAuthAccountIdentity | undefined;
-					getSessionCredentialId?: (provider: string, sessionId?: string) => number | undefined;
-			  }
-			| undefined;
+		const authStorage = session.modelRegistry?.authStorage as StatusAuthStorage | undefined;
 		const identity = activeProvider
 			? authStorage?.getOAuthAccountIdentity?.(activeProvider, session.sessionId)
 			: undefined;
@@ -1296,7 +1301,7 @@ export class StatusLineComponent implements Component {
 		let reportsPromise: Promise<unknown> | undefined;
 		try {
 			reportsPromise = fetcher.call(session, signal);
-			this.#applyUsageRefreshReports(
+			await this.#applyUsageRefreshReports(
 				session,
 				await this.#raceUsageRefreshWithSignal(reportsPromise, signal),
 				sequence,
@@ -1312,29 +1317,28 @@ export class StatusLineComponent implements Component {
 		}
 	}
 
-	#applyUsageRefreshReports(session: AgentSession, reports: unknown, sequence: number): void {
+	async #applyUsageRefreshReports(session: AgentSession, reports: unknown, sequence: number): Promise<void> {
 		if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
 			return;
 		}
 		this.#latestAppliedUsageRefreshSequence = sequence;
 		const activeProvider = session.state.model?.provider ?? session.model?.provider;
-		const authStorage = session.modelRegistry?.authStorage as
-			| {
-					getOAuthAccountIdentity?: (provider: string, sessionId?: string) => OAuthAccountIdentity | undefined;
-					getSessionCredentialId?: (provider: string, sessionId?: string) => number | undefined;
-			  }
-			| undefined;
+		const authStorage = session.modelRegistry?.authStorage as StatusAuthStorage | undefined;
 		const activeIdentity = activeProvider
 			? authStorage?.getOAuthAccountIdentity?.(activeProvider, session.sessionId)
 			: undefined;
 		const activeCredentialId = activeProvider
 			? authStorage?.getSessionCredentialId?.(activeProvider, session.sessionId)
 			: undefined;
+		const activeFingerprint = activeProvider
+			? await authStorage?.getSessionUsageCacheIdentity?.(activeProvider, session.sessionId)
+			: undefined;
 		const normalized = this.#normalizeUsageReports(
 			reports,
 			activeProvider,
 			activeIdentity,
 			activeCredentialId,
+			activeFingerprint,
 		);
 		const resetSnapshot =
 			activeProvider === "openai-codex" ? this.#normalizeCodexResetSnapshot(reports, activeIdentity) : null;
@@ -1355,8 +1359,8 @@ export class StatusLineComponent implements Component {
 
 	#observeLateUsageRefresh(session: AgentSession, reportsPromise: Promise<unknown>, sequence: number): void {
 		void reportsPromise
-			.then(reports => {
-				this.#applyUsageRefreshReports(session, reports, sequence);
+			.then(async reports => {
+				await this.#applyUsageRefreshReports(session, reports, sequence);
 			})
 			.catch(() => {
 				if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
@@ -1449,13 +1453,15 @@ export class StatusLineComponent implements Component {
 		activeProvider?: string,
 		activeIdentity?: OAuthAccountIdentity,
 		activeCredentialId?: number,
+		activeFingerprint?: string,
 	): readonly UsageStatusAccount[] | null {
 		if (!Array.isArray(reports)) return null;
 		const providerReports = reports.filter(
 			(report): report is UsageReport =>
-				!!report && typeof report === "object" &&
-					(!activeProvider || (report as { provider?: unknown }).provider === activeProvider) &&
-					Array.isArray((report as { limits?: unknown }).limits),
+				!!report &&
+				typeof report === "object" &&
+				(!activeProvider || (report as { provider?: unknown }).provider === activeProvider) &&
+				Array.isArray((report as { limits?: unknown }).limits),
 		);
 		if (providerReports.length === 0) return null;
 
@@ -1523,7 +1529,9 @@ export class StatusLineComponent implements Component {
 						monthly = {
 							percent: fraction * 100,
 							resetHours:
-								typeof resetsAt === "number" ? Math.max(0, Math.round((resetsAt - now) / 3_600_000)) : undefined,
+								typeof resetsAt === "number"
+									? Math.max(0, Math.round((resetsAt - now) / 3_600_000))
+									: undefined,
 						};
 						monthlyTier = tier || undefined;
 						monthlyPriority = priority;
@@ -1534,21 +1542,28 @@ export class StatusLineComponent implements Component {
 			if (!fiveHour && !sevenDay && !monthly) continue;
 			const metadataCredentialId = usageReport.metadata?.credentialId;
 			const reportCredentialId = typeof metadataCredentialId === "number" ? metadataCredentialId : undefined;
+			const metadataFingerprint = usageReport.metadata?.usageCacheIdentity;
+			const reportFingerprint = typeof metadataFingerprint === "string" ? metadataFingerprint : undefined;
 			const matchesActiveIdentity =
 				activeIdentity !== undefined &&
 				usageReport.limits.some(limit => limitMatchesActiveAccount(usageReport, limit, activeIdentity));
-			// Before the first model request there is no session-sticky id yet;
-			// use the first provider row as the provisional current account so the
-			// status line still shows one full circle instead of all backups.
+			// `credentialId` is authoritative when the annotation survived, but
+			// reports rewritten by the credential-ranking path share the cache
+			// slot without it — fall back to the usage-cache identity (a one-way
+			// secret fingerprint) stamped on every report. Before the first model
+			// request there is no session-sticky id yet; use the first provider
+			// row as the provisional current account so the status line still
+			// shows one full circle instead of all backups.
 			const active =
 				activeCredentialId !== undefined
-					? reportCredentialId === activeCredentialId
+					? reportCredentialId === activeCredentialId ||
+						(activeFingerprint !== undefined && reportFingerprint === activeFingerprint)
 					: matchesActiveIdentity || providerReports.length === 1 || accounts.length === 0;
 			const metadataTier = usageReport.metadata?.planType;
 			accounts.push({
 				provider: String(usageReport.provider),
 				active,
-				tier: typeof metadataTier === "string" ? metadataTier : fiveHourTier ?? sevenDayTier ?? monthlyTier,
+				tier: typeof metadataTier === "string" ? metadataTier : (fiveHourTier ?? sevenDayTier ?? monthlyTier),
 				fiveHour,
 				sevenDay,
 				monthly,
