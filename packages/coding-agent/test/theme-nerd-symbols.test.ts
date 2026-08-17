@@ -39,6 +39,7 @@ it("uses the Nerd Fonts v3 session and C# icons", async () => {
 	const theme = await getThemeByName(customThemeName);
 	expect(theme?.symbol("icon.session")).toBe("\u{f0051}");
 	expect(theme?.getLangIcon("csharp")).toBe("\u{e7b2}");
+	expect(theme?.sep.pipe).toBe(" │ ");
 });
 
 it("resolves subscription and advisor icons in Nerd Font mode", async () => {
