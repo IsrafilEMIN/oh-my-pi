@@ -48,6 +48,21 @@ export type EffectiveStatusLineSettings = Required<
 
 export type RGB = readonly [number, number, number];
 
+export interface UsageStatusWindow {
+	percent: number;
+	resetMinutes?: number;
+	resetHours?: number;
+}
+
+export interface UsageStatusAccount {
+	provider: string;
+	active: boolean;
+	tier?: string;
+	fiveHour?: UsageStatusWindow;
+	sevenDay?: UsageStatusWindow;
+	monthly?: UsageStatusWindow;
+}
+
 export interface SegmentContext {
 	session: AgentSession;
 	/** Focused subagent id while the view is proxied at its session, undefined otherwise. */
@@ -118,12 +133,7 @@ export interface SegmentContext {
 	 * the worktree/branch is already shown by the git segment.
 	 */
 	worktree: { projectName: string; worktreeName: string } | null;
-	usage: {
-		tier?: string;
-		fiveHour?: { percent: number; resetMinutes?: number };
-		sevenDay?: { percent: number; resetHours?: number };
-		monthly?: { percent: number; resetHours?: number };
-	} | null;
+	usage: readonly UsageStatusAccount[] | null;
 }
 
 export interface RenderedSegment {
