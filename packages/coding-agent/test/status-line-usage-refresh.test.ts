@@ -7,6 +7,12 @@ import { initTheme } from "@oh-my-pi/pi-coding-agent/modes/theme/theme";
 import type { AgentSession } from "@oh-my-pi/pi-coding-agent/session/agent-session";
 
 async function flushMicrotasks(): Promise<void> {
+	// Each `await` drains the pending microtask queue. The usage-refresh chain
+	// now includes the async session usage-identity resolution inside
+	// `applyUsageRefreshReports`, so drain several turns.
+	await Promise.resolve();
+	await Promise.resolve();
+	await Promise.resolve();
 	await Promise.resolve();
 	await Promise.resolve();
 }

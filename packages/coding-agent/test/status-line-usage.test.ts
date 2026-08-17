@@ -18,7 +18,12 @@ afterAll(() => {
 
 function makeComponent(
 	reports: unknown,
-	options: { provider?: string; activeIdentity?: { accountId?: string; email?: string; projectId?: string } } = {},
+	options: {
+		provider?: string;
+		activeIdentity?: { accountId?: string; email?: string; projectId?: string };
+		activeCredentialId?: number;
+		activeFingerprint?: string;
+	} = {},
 ): StatusLineComponent {
 	const component = new StatusLineComponent({
 		state: { messages: [], model: { contextWindow: 1000, provider: options.provider } },
@@ -42,6 +47,8 @@ function makeComponent(
 			authStorage: {
 				getOAuthAccountIdentity: (provider: string) =>
 					provider === options.provider ? options.activeIdentity : undefined,
+				getSessionCredentialId: () => options.activeCredentialId,
+				getSessionUsageCacheIdentity: async () => options.activeFingerprint,
 			},
 		},
 		getAsyncJobSnapshot: () => ({ running: [] }),
@@ -548,5 +555,58 @@ describe("usage status-line segment", () => {
 		expect(content).toContain("5h");
 		expect(content).toContain("24%");
 		expect(content).not.toContain("7d");
+	});
+
+	it("marks the fingerprint-matched account active when its credentialId annotation was lost", async () => {
+		// Session is sticky to credential 4, but the ranking path overwrote its
+		// shared cache entry without the credentialId tag — only the usage-cache
+		// identity fingerprint survives. The fingerprint must still identify the
+		// active account and put it first with the full circle.
+		const now = Date.now();
+		const component = makeComponent(
+			[
+				{
+					provider: "opencode-go",
+					metadata: { credentialId: 1, usageCacheIdentity: "api_key|secret:aaaa" },
+					limits: [
+						{ scope: { windowId: "5h" }, window: { resetsAt: now + 30 * 60_000 }, amount: { usedFraction: 0.5 } },
+						{ scope: { windowId: "7d" }, window: { resetsAt: now + 3_600_000 }, amount: { usedFraction: 0.9 } },
+						{
+							scope: { windowId: "monthly" },
+							window: { resetsAt: now + 3_600_000 },
+							amount: { usedFraction: 1.0 },
+						},
+					],
+				},
+				{
+					provider: "opencode-go",
+					metadata: { usageCacheIdentity: "api_key|secret:bbbb" },
+					limits: [
+						{
+							scope: { windowId: "5h" },
+							window: { resetsAt: now + 30 * 60_000 },
+							amount: { usedFraction: 0.25 },
+						},
+						{ scope: { windowId: "7d" }, window: { resetsAt: now + 3_600_000 }, amount: { usedFraction: 0.6 } },
+						{
+							scope: { windowId: "monthly" },
+							window: { resetsAt: now + 3_600_000 },
+							amount: { usedFraction: 0.35 },
+						},
+					],
+				},
+			],
+			{ provider: "opencode-go", activeCredentialId: 4, activeFingerprint: "api_key|secret:bbbb" },
+		);
+
+		component.refreshUsageInBackground();
+		await flushUsageRefresh();
+		const content = stripVTControlCharacters(component.getTopBorder(200).content);
+
+		// Active (fingerprint-matched) account renders first with the full circle:
+		// 5h 25% -> 75, 7d 60% -> 40, monthly 35% -> 65.
+		expect(content).toContain("● 75/40/65");
+		expect(content).toContain("○ 50/10/0");
+		expect(content.indexOf("●")).toBeLessThan(content.indexOf("○"));
 	});
 });
