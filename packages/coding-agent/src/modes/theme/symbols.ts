@@ -557,8 +557,10 @@ const NERD_SYMBOLS: SymbolMap = {
 	"sep.dot": " · ",
 	// pick:  | alt: / ∕ ⁄
 	"sep.slash": "\ue0bb",
-	// pick:  | alt: │ ┃ |
-	"sep.pipe": "\ue0b3",
+	// A pipe separator stays a literal vertical bar even under Nerd icons. The
+	// Powerline private-use glyph used here previously rendered as `<` in terminals
+	// whose Nerd Font mapped U+E0B3 to the thin right separator.
+	"sep.pipe": " │ ",
 	// Icons - Nerd Font specific
 	// pick:  | alt:   ◆
 	"icon.model": "\uec19",
