@@ -795,11 +795,11 @@ interface UsageCache {
 }
 
 type UsageRequestDescriptor = {
-  provider: Provider;
-  credential: UsageCredential;
-  baseUrl?: string;
-  /** Internal stored-row id used to identify the active pool account in UI. */
-  credentialId?: number;
+	provider: Provider;
+	credential: UsageCredential;
+	baseUrl?: string;
+	/** Internal stored-row id used to identify the active pool account in UI. */
+	credentialId?: number;
 };
 type ForcedUsageRefresh = {
 	all: boolean;
@@ -2904,6 +2904,32 @@ export class AuthStorage {
 		if (!selected) return undefined;
 		return this.#getStoredCredentials(provider)[selected.index]?.id;
 	}
+
+	/**
+	 * Usage-cache identity of the credential currently sticky for this session:
+	 * a stable account identifier when the credential carries one, otherwise a
+	 * one-way hash of the secret (never the secret itself). Lets status surfaces
+	 * match cached usage reports to the active account even when the report's
+	 * `credentialId` annotation is absent — reports rewritten by the
+	 * credential-ranking path share the cache slot without the row id.
+	 * Returns `undefined` when no credential is sticky for the session yet.
+	 */
+	async getSessionUsageCacheIdentity(provider: string, sessionId?: string): Promise<string | undefined> {
+		const selected = this.#getSessionCredential(provider, sessionId);
+		if (!selected) return undefined;
+		const row = this.#getStoredCredentials(provider)[selected.index];
+		if (!row) return undefined;
+		const credential = row.credential;
+		const usageCredential = this.#buildUsageCredential(credential);
+		if (credential.type === "api_key") {
+			// Stored keys may be references (env var name, "!command") — resolve to
+			// the same secret bytes the usage fetch fingerprints.
+			const apiKey = await this.#configValueResolver(credential.key);
+			if (!apiKey) return undefined;
+			usageCredential.apiKey = apiKey;
+		}
+		return this.#buildUsageCacheIdentity(usageCredential);
+	}
 	/**
 	 * Get all credentials.
 	 */
@@ -3124,14 +3150,14 @@ export class AuthStorage {
 		return `reports:${Bun.hash(snapshot).toString(16)}`;
 	}
 
-  #buildUsageRequest(
-    provider: Provider,
-    credential: UsageCredential,
-    baseUrl?: string,
-    credentialId?: number,
-  ): UsageRequestDescriptor {
-    return { provider, credential, baseUrl, credentialId };
-  }
+	#buildUsageRequest(
+		provider: Provider,
+		credential: UsageCredential,
+		baseUrl?: string,
+		credentialId?: number,
+	): UsageRequestDescriptor {
+		return { provider, credential, baseUrl, credentialId };
+	}
 
 	#buildUsageRequestForOauth(
 		provider: Provider,
@@ -3327,24 +3353,28 @@ export class AuthStorage {
 				logger: this.#usageLogger,
 			});
 			// Attribute each report to its stored credential so status surfaces can
-			// distinguish the session's active account from pool backups.
+			// distinguish the session's active account from pool backups. The cache
+			// identity (a one-way secret fingerprint when the account carries no
+			// stable id) is stamped unconditionally: `credentialId` is only known
+			// to paths that resolve the stored row, and reports written by the
+			// credential-ranking path would otherwise lose it when they overwrite
+			// the shared per-key cache entry.
 			if (report) {
 				const metadata = report.metadata ?? {};
+				const usageCacheIdentity = this.#buildUsageCacheIdentity(request.credential);
 				const sameOrg =
 					request.credential.orgId === undefined ||
 					metadata.orgId === undefined ||
 					metadata.orgId === request.credential.orgId;
 				const needsOrgId = request.credential.orgId !== undefined && metadata.orgId === undefined;
-				const needsOrgName =
-					sameOrg && request.credential.orgName !== undefined && metadata.orgName === undefined;
-				if (request.credentialId !== undefined || needsOrgId || needsOrgName) {
-					report.metadata = {
-						...metadata,
-						...(request.credentialId !== undefined ? { credentialId: request.credentialId } : {}),
-						...(needsOrgId ? { orgId: request.credential.orgId } : {}),
-						...(needsOrgName ? { orgName: request.credential.orgName } : {}),
-					};
-				}
+				const needsOrgName = sameOrg && request.credential.orgName !== undefined && metadata.orgName === undefined;
+				report.metadata = {
+					...metadata,
+					usageCacheIdentity,
+					...(request.credentialId !== undefined ? { credentialId: request.credentialId } : {}),
+					...(needsOrgId ? { orgId: request.credential.orgId } : {}),
+					...(needsOrgName ? { orgName: request.credential.orgName } : {}),
+				};
 			}
 			return report;
 		} catch (error) {
