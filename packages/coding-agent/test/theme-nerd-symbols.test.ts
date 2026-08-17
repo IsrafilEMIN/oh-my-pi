@@ -38,4 +38,5 @@ it("uses the Nerd Fonts v3 Material Design session icon", async () => {
 
 	const theme = await getThemeByName(customThemeName);
 	expect(theme?.symbol("icon.session")).toBe("\u{f0051}");
+	expect(theme?.sep.pipe).toBe(" │ ");
 });
