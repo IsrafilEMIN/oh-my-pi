@@ -37,6 +37,7 @@ import type {
 	StatusLineSegmentId,
 	StatusLineSegmentOptions,
 	StatusLineSettings,
+	UsageStatusAccount,
 } from "./types";
 
 const JJ_REFRESH_TTL_MS = 5000;
@@ -432,14 +433,8 @@ export class StatusLineComponent implements Component {
 	#defaultBranchCwd: string | undefined = undefined;
 	#lastTokensPerSecond: number | null = null;
 	#lastTokensPerSecondTimestamp: number | null = null;
-
-	// Provider usage caching (5-min TTL, OAuth/sub only)
-	#cachedUsage: {
-		tier?: string;
-		fiveHour?: { percent: number; resetMinutes?: number };
-		sevenDay?: { percent: number; resetHours?: number };
-		monthly?: { percent: number; resetHours?: number };
-	} | null = null;
+	// Provider usage caching (5-min TTL, one row per stored credential)
+	#cachedUsage: readonly UsageStatusAccount[] | null = null;
 	#cachedUsageContextKey: string | null = null;
 	#usageFetchedAt = 0;
 	#usageInFlight = false;
@@ -1232,13 +1227,17 @@ export class StatusLineComponent implements Component {
 		return this.#vibeWorkerTokenRate?.() ?? null;
 	}
 
-	#formatUsageContextKey(activeProvider: string | undefined, identity: OAuthAccountIdentity | undefined): string {
+	#formatUsageContextKey(
+		activeProvider: string | undefined,
+		identity: OAuthAccountIdentity | undefined,
+		credentialId?: number,
+	): string {
 		if (!activeProvider) return "";
-		// orgId is part of the key: rotating between two same-email Anthropic
-		// subscriptions must invalidate the cached usage immediately instead of
-		// showing the previous org's quota for the rest of the cache TTL.
+		// Include the session-sticky row id so API-key pool rotation invalidates
+		// the cached display just like OAuth account rotation does.
 		return [
 			activeProvider,
+			credentialId ?? "",
 			identity?.accountId ?? "",
 			identity?.email ?? "",
 			identity?.projectId ?? "",
@@ -1248,10 +1247,19 @@ export class StatusLineComponent implements Component {
 
 	#getUsageContextKey(session: AgentSession): string {
 		const activeProvider = session.state.model?.provider ?? session.model?.provider;
+		const authStorage = session.modelRegistry?.authStorage as
+			| {
+					getOAuthAccountIdentity?: (provider: string, sessionId?: string) => OAuthAccountIdentity | undefined;
+					getSessionCredentialId?: (provider: string, sessionId?: string) => number | undefined;
+			  }
+			| undefined;
 		const identity = activeProvider
-			? session.modelRegistry?.authStorage?.getOAuthAccountIdentity(activeProvider, session.sessionId)
+			? authStorage?.getOAuthAccountIdentity?.(activeProvider, session.sessionId)
 			: undefined;
-		return this.#formatUsageContextKey(activeProvider, identity);
+		const credentialId = activeProvider
+			? authStorage?.getSessionCredentialId?.(activeProvider, session.sessionId)
+			: undefined;
+		return this.#formatUsageContextKey(activeProvider, identity, credentialId);
 	}
 
 	/**
@@ -1310,11 +1318,24 @@ export class StatusLineComponent implements Component {
 		}
 		this.#latestAppliedUsageRefreshSequence = sequence;
 		const activeProvider = session.state.model?.provider ?? session.model?.provider;
-		const activeIdentity =
-			activeProvider && session.modelRegistry?.authStorage
-				? session.modelRegistry.authStorage.getOAuthAccountIdentity(activeProvider, session.sessionId)
-				: undefined;
-		const normalized = this.#normalizeUsageReports(reports, activeProvider, activeIdentity);
+		const authStorage = session.modelRegistry?.authStorage as
+			| {
+					getOAuthAccountIdentity?: (provider: string, sessionId?: string) => OAuthAccountIdentity | undefined;
+					getSessionCredentialId?: (provider: string, sessionId?: string) => number | undefined;
+			  }
+			| undefined;
+		const activeIdentity = activeProvider
+			? authStorage?.getOAuthAccountIdentity?.(activeProvider, session.sessionId)
+			: undefined;
+		const activeCredentialId = activeProvider
+			? authStorage?.getSessionCredentialId?.(activeProvider, session.sessionId)
+			: undefined;
+		const normalized = this.#normalizeUsageReports(
+			reports,
+			activeProvider,
+			activeIdentity,
+			activeCredentialId,
+		);
 		const resetSnapshot =
 			activeProvider === "openai-codex" ? this.#normalizeCodexResetSnapshot(reports, activeIdentity) : null;
 		const usageChanged = this.#cachedUsage !== normalized;
@@ -1324,7 +1345,7 @@ export class StatusLineComponent implements Component {
 		// some unrelated event (git resolve, keystroke, …) rebuilds it.
 		if (usageChanged) this.#onBranchChange?.();
 		if (!resetSnapshot) return;
-		const contextKey = this.#formatUsageContextKey(activeProvider, activeIdentity);
+		const contextKey = this.#formatUsageContextKey(activeProvider, activeIdentity, activeCredentialId);
 		const previous = this.#codexResetSnapshots.get(contextKey);
 		this.#codexResetSnapshots.set(contextKey, resetSnapshot);
 		if (!previous || !settings.get("tui.codexResetFireworks")) return;
@@ -1427,67 +1448,52 @@ export class StatusLineComponent implements Component {
 		reports: unknown,
 		activeProvider?: string,
 		activeIdentity?: OAuthAccountIdentity,
-	): {
-		tier?: string;
-		fiveHour?: { percent: number; resetMinutes?: number };
-		sevenDay?: { percent: number; resetHours?: number };
-		monthly?: { percent: number; resetHours?: number };
-	} | null {
+		activeCredentialId?: number,
+	): readonly UsageStatusAccount[] | null {
 		if (!Array.isArray(reports)) return null;
-		let fiveHour: { percent: number; resetMinutes?: number } | undefined;
-		let sevenDay: { percent: number; resetHours?: number } | undefined;
-		let monthly: { percent: number; resetHours?: number } | undefined;
-		let fiveHourTier: string | undefined;
-		let sevenDayTier: string | undefined;
-		let monthlyTier: string | undefined;
-		let monthlyPriority = Number.POSITIVE_INFINITY;
+		const providerReports = reports.filter(
+			(report): report is UsageReport =>
+				!!report && typeof report === "object" &&
+					(!activeProvider || (report as { provider?: unknown }).provider === activeProvider) &&
+					Array.isArray((report as { limits?: unknown }).limits),
+		);
+		if (providerReports.length === 0) return null;
+
 		const now = Date.now();
 		const cursorMonthlyPriority = (limitId: unknown): number => {
-			// When /auth/usage and /api/usage-summary are merged, prefer the personal
-			// dashboard rails over legacy per-model request fractions.
 			if (limitId === "cursor:usd:individual-auto") return 0;
 			if (limitId === "cursor:usd:individual-plan" || limitId === "cursor:usd:individual-overall") return 1;
 			if (typeof limitId === "string" && limitId.startsWith("cursor:usd:individual-")) return 2;
 			return 3;
 		};
-		for (const report of reports) {
-			if (!report || typeof report !== "object") continue;
-			const provider = (report as { provider?: unknown }).provider;
-			if (activeProvider && provider !== activeProvider) continue;
-			const limits = (report as { limits?: unknown }).limits;
-			if (!Array.isArray(limits)) continue;
-			const usageReport = report as UsageReport;
-			for (const limit of limits) {
+
+		const accounts: UsageStatusAccount[] = [];
+		for (const usageReport of providerReports) {
+			let fiveHour: UsageStatusAccount["fiveHour"];
+			let sevenDay: UsageStatusAccount["sevenDay"];
+			let monthly: UsageStatusAccount["monthly"];
+			let fiveHourTier: string | undefined;
+			let sevenDayTier: string | undefined;
+			let monthlyTier: string | undefined;
+			let monthlyPriority = Number.POSITIVE_INFINITY;
+
+			for (const limit of usageReport.limits) {
 				if (!limit || typeof limit !== "object") continue;
-				if (activeIdentity && !limitMatchesActiveAccount(usageReport, limit as UsageLimit, activeIdentity)) {
-					continue;
-				}
-				const l = limit as {
-					id?: string;
-					scope?: { windowId?: string; tier?: string };
-					window?: { resetsAt?: number; durationMs?: number };
-					amount?: { usedFraction?: number };
-				};
-				const fraction = l.amount?.usedFraction;
-				if (typeof fraction !== "number") continue;
-				const windowId = l.scope?.windowId;
-				const tier = l.scope?.tier;
-				const resetsAt = l.window?.resetsAt;
-				// Canonical window ids win. Fall back to the reported span (same
-				// tolerance as the 5h priority-boost check) so providers that emit
-				// non-canonical ids, and cache rows written before a provider was
-				// canonicalized, still map onto the two subscription windows.
-				const durationMs = l.window?.durationMs;
+				const fraction = limit.amount?.usedFraction;
+				if (typeof fraction !== "number" || !Number.isFinite(fraction)) continue;
+				const windowId = limit.scope?.windowId;
+				const tier = limit.scope?.tier;
+				const resetsAt = limit.window?.resetsAt;
+				const durationMs = limit.window?.durationMs;
 				const windowClass =
-					windowId === "5h" || windowId === "7d"
+					windowId === "5h" || windowId === "7d" || windowId === "monthly"
 						? windowId
 						: durationMs !== undefined && Math.abs(durationMs - 5 * 3_600_000) <= 60_000
 							? "5h"
 							: durationMs !== undefined && Math.abs(durationMs - 7 * 86_400_000) <= 60_000
 								? "7d"
 								: undefined;
-				// Accept tiered limits, but prefer untiered (backward compat with Anthropic).
-				// An untiered limit always replaces a tiered one; among same-tieredness, first wins.
+
 				if (windowClass === "5h" && (!fiveHour || (fiveHourTier !== undefined && !tier))) {
 					fiveHour = {
 						percent: fraction * 100,
@@ -1504,16 +1510,11 @@ export class StatusLineComponent implements Component {
 					};
 					sevenDayTier = tier || undefined;
 				}
-				// Monthly rendering is gated to providers with a single monthly
-				// bucket (Cursor's priority selector picks its personal rail;
-				// OpenCode Go emits exactly one). Copilot also emits monthly
-				// windows, but its multi-bucket shape needs a dedicated selector
-				// before we surface `mo N%` for it.
 				if (
 					(activeProvider === "cursor" || activeProvider === "opencode-go") &&
-					(windowId === "monthly" || windowId === "30d")
+					(windowClass === "monthly" || windowId === "30d")
 				) {
-					const priority = cursorMonthlyPriority(l.id);
+					const priority = cursorMonthlyPriority(limit.id);
 					const shouldReplace =
 						!monthly ||
 						priority < monthlyPriority ||
@@ -1522,20 +1523,42 @@ export class StatusLineComponent implements Component {
 						monthly = {
 							percent: fraction * 100,
 							resetHours:
-								typeof resetsAt === "number"
-									? Math.max(0, Math.round((resetsAt - now) / 3_600_000))
-									: undefined,
+								typeof resetsAt === "number" ? Math.max(0, Math.round((resetsAt - now) / 3_600_000)) : undefined,
 						};
 						monthlyTier = tier || undefined;
 						monthlyPriority = priority;
 					}
 				}
 			}
+
+			if (!fiveHour && !sevenDay && !monthly) continue;
+			const metadataCredentialId = usageReport.metadata?.credentialId;
+			const reportCredentialId = typeof metadataCredentialId === "number" ? metadataCredentialId : undefined;
+			const matchesActiveIdentity =
+				activeIdentity !== undefined &&
+				usageReport.limits.some(limit => limitMatchesActiveAccount(usageReport, limit, activeIdentity));
+			// Before the first model request there is no session-sticky id yet;
+			// use the first provider row as the provisional current account so the
+			// status line still shows one full circle instead of all backups.
+			const active =
+				activeCredentialId !== undefined
+					? reportCredentialId === activeCredentialId
+					: matchesActiveIdentity || providerReports.length === 1 || accounts.length === 0;
+			const metadataTier = usageReport.metadata?.planType;
+			accounts.push({
+				provider: String(usageReport.provider),
+				active,
+				tier: typeof metadataTier === "string" ? metadataTier : fiveHourTier ?? sevenDayTier ?? monthlyTier,
+				fiveHour,
+				sevenDay,
+				monthly,
+			});
 		}
-		if (!fiveHour && !sevenDay && !monthly) return null;
-		// Single compact label; prefer the five-hour tier if displayed windows ever disagree.
-		const effectiveTier = fiveHourTier ?? sevenDayTier ?? monthlyTier;
-		return { tier: effectiveTier, fiveHour, sevenDay, monthly };
+
+		if (accounts.length === 0) return null;
+		if (!accounts.some(account => account.active)) accounts[0]!.active = true;
+		accounts.sort((a, b) => Number(b.active) - Number(a.active));
+		return accounts;
 	}
 
 	/**
