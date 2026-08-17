@@ -794,11 +794,12 @@ interface UsageCache {
 }
 
 type UsageRequestDescriptor = {
-	provider: Provider;
-	credential: UsageCredential;
-	baseUrl?: string;
+  provider: Provider;
+  credential: UsageCredential;
+  baseUrl?: string;
+  /** Internal stored-row id used to identify the active pool account in UI. */
+  credentialId?: number;
 };
-
 type ForcedUsageRefresh = {
 	all: boolean;
 	providers: Set<Provider>;
@@ -2873,6 +2874,12 @@ export class AuthStorage {
 		return identity;
 	}
 
+	/** Return the stored credential row currently sticky for this session. */
+	getSessionCredentialId(provider: string, sessionId?: string): number | undefined {
+		const selected = this.#getSessionCredential(provider, sessionId);
+		if (!selected) return undefined;
+		return this.#getStoredCredentials(provider)[selected.index]?.id;
+	}
 	/**
 	 * Get all credentials.
 	 */
@@ -3091,16 +3098,22 @@ export class AuthStorage {
 		return `reports:${Bun.hash(snapshot).toString(16)}`;
 	}
 
-	#buildUsageRequest(provider: Provider, credential: UsageCredential, baseUrl?: string): UsageRequestDescriptor {
-		return { provider, credential, baseUrl };
-	}
+  #buildUsageRequest(
+    provider: Provider,
+    credential: UsageCredential,
+    baseUrl?: string,
+    credentialId?: number,
+  ): UsageRequestDescriptor {
+    return { provider, credential, baseUrl, credentialId };
+  }
 
 	#buildUsageRequestForOauth(
 		provider: Provider,
 		credential: OAuthCredential,
 		baseUrl?: string,
+		credentialId?: number,
 	): UsageRequestDescriptor {
-		return this.#buildUsageRequest(provider, this.#buildUsageCredential(credential), baseUrl);
+		return this.#buildUsageRequest(provider, this.#buildUsageCredential(credential), baseUrl, credentialId);
 	}
 
 	#buildRefreshableOauthCredential(credential: UsageCredential): OAuthCredential | null {
@@ -3290,21 +3303,23 @@ export class AuthStorage {
 				fetch: this.#usageFetch,
 				logger: this.#usageLogger,
 			});
-			// Attribute the report to the credential's organization. The orgId and
-			// orgName fallbacks apply independently: Claude's usage endpoint stamps
-			// orgId from the `anthropic-organization-id` response header but never
-			// carries a display name, so the stored name must still be attached.
-			// Never attach the stored name over a DIFFERENT org's report.
-			if (report && params.credential.orgId !== undefined) {
+			// Attribute each report to its stored credential so status surfaces can
+			// distinguish the session's active account from pool backups.
+			if (report) {
 				const metadata = report.metadata ?? {};
-				const sameOrg = metadata.orgId === undefined || metadata.orgId === params.credential.orgId;
-				const needsOrgId = metadata.orgId === undefined;
-				const needsOrgName = sameOrg && params.credential.orgName !== undefined && metadata.orgName === undefined;
-				if (needsOrgId || needsOrgName) {
+				const sameOrg =
+					request.credential.orgId === undefined ||
+					metadata.orgId === undefined ||
+					metadata.orgId === request.credential.orgId;
+				const needsOrgId = request.credential.orgId !== undefined && metadata.orgId === undefined;
+				const needsOrgName =
+					sameOrg && request.credential.orgName !== undefined && metadata.orgName === undefined;
+				if (request.credentialId !== undefined || needsOrgId || needsOrgName) {
 					report.metadata = {
 						...metadata,
-						...(needsOrgId ? { orgId: params.credential.orgId } : {}),
-						...(needsOrgName ? { orgName: params.credential.orgName } : {}),
+						...(request.credentialId !== undefined ? { credentialId: request.credentialId } : {}),
+						...(needsOrgId ? { orgId: request.credential.orgId } : {}),
+						...(needsOrgName ? { orgName: request.credential.orgName } : {}),
 					};
 				}
 			}
@@ -3621,15 +3636,12 @@ export class AuthStorage {
 				let request: UsageRequestDescriptor;
 				if (credential.type === "api_key") {
 					// Stored keys may be references (env var name, "!command") —
-					// resolve to the actual secret before it reaches a provider
-					// fetcher's Authorization header. Unresolvable references are
-					// skipped: probing with the literal reference string would
-					// 401 and flag a working credential as bad.
+					// resolve to the actual secret before it reaches a provider fetcher.
 					const apiKey = await this.#configValueResolver(credential.key);
 					if (!apiKey) continue;
-					request = this.#buildUsageRequest(provider, { type: "api_key", apiKey }, baseUrl);
+					request = this.#buildUsageRequest(provider, { type: "api_key", apiKey }, baseUrl, entry.id);
 				} else {
-					request = this.#buildUsageRequestForOauth(provider, credential, baseUrl);
+					request = this.#buildUsageRequestForOauth(provider, credential, baseUrl, entry.id);
 				}
 				if (providerImpl.supports && !providerImpl.supports(request)) continue;
 				requests.push(request);
