@@ -15,7 +15,6 @@ import type {
 	StatusLineSegment,
 	StatusLineSegmentId,
 	UsageStatusAccount,
-	UsageStatusWindow,
 } from "./types";
 
 export type { SegmentContext } from "./types";
@@ -663,9 +662,9 @@ const collabSegment: StatusLineSegment = {
 	},
 };
 
-function remainingQuota(window: UsageStatusWindow | undefined): string {
-	if (!window || !Number.isFinite(window.percent)) return "?";
-	return String(Math.max(0, Math.min(100, Math.round(100 - window.percent))));
+function remainingQuota(percent: number | undefined): string {
+	if (percent === undefined || !Number.isFinite(percent)) return "?";
+	return String(Math.max(0, Math.min(100, Math.round(100 - percent))));
 }
 
 function usageProviderLabel(provider: string): string {
@@ -678,7 +677,9 @@ function accountQuota(account: UsageStatusAccount): string {
 	const windows =
 		account.provider === "opencode-go"
 			? [account.fiveHour, account.sevenDay, account.monthly]
-			: [account.fiveHour, account.sevenDay];
+			: account.provider === "cursor"
+				? [account.monthly]
+				: [account.fiveHour, account.sevenDay];
 	return `${account.active ? "●" : "○"} ${windows.map(remainingQuota).join("/")}`;
 }
 const usageSegment: StatusLineSegment = {
