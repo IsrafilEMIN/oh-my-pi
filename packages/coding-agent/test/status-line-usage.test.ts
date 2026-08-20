@@ -232,7 +232,7 @@ describe("usage status-line segment", () => {
 		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("anthropic ● 76/?");
 	});
 
-	it("renders Cursor's selected personal monthly rail", async () => {
+	it("renders Cursor auto and other monthly rails", async () => {
 		const component = makeComponent(
 			[
 				{
@@ -247,7 +247,12 @@ describe("usage status-line segment", () => {
 						{
 							id: "cursor:usd:individual-auto",
 							scope: { windowId: "monthly" },
-							amount: { usedFraction: 0.0188 },
+							amount: { usedFraction: 0.06 },
+						},
+						{
+							id: "cursor:usd:individual-api",
+							scope: { windowId: "monthly" },
+							amount: { usedFraction: 0.05 },
 						},
 					],
 				},
@@ -258,7 +263,7 @@ describe("usage status-line segment", () => {
 		component.refreshUsageInBackground();
 		await flushUsageRefresh();
 
-		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("cursor ● 98");
+		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("cursor ● 94/95");
 	});
 
 	it("renders all OpenCode Go quota windows", async () => {

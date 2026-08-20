@@ -1465,6 +1465,7 @@ export class StatusLineComponent implements Component {
 			let fiveHour: number | undefined;
 			let sevenDay: number | undefined;
 			let monthly: number | undefined;
+			let monthlyOther: number | undefined;
 			let fiveHourTier: string | undefined;
 			let sevenDayTier: string | undefined;
 			let monthlyTier: string | undefined;
@@ -1498,6 +1499,10 @@ export class StatusLineComponent implements Component {
 					(activeProvider === "cursor" || activeProvider === "opencode-go") &&
 					(windowClass === "monthly" || windowId === "30d")
 				) {
+					if (limit.id === "cursor:usd:individual-api") {
+						monthlyOther = fraction * 100;
+						continue;
+					}
 					const priority = cursorMonthlyPriority(limit.id);
 					const shouldReplace =
 						monthly === undefined ||
@@ -1511,7 +1516,7 @@ export class StatusLineComponent implements Component {
 				}
 			}
 
-			if (fiveHour === undefined && sevenDay === undefined && monthly === undefined) continue;
+			if (fiveHour === undefined && sevenDay === undefined && monthly === undefined && monthlyOther === undefined) continue;
 			const metadataCredentialId = usageReport.metadata?.credentialId;
 			const reportCredentialId = typeof metadataCredentialId === "number" ? metadataCredentialId : undefined;
 			const matchesActiveIdentity =
@@ -1526,6 +1531,7 @@ export class StatusLineComponent implements Component {
 				fiveHour,
 				sevenDay,
 				monthly,
+				monthlyOther,
 			});
 		}
 

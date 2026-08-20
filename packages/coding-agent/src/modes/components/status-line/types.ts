@@ -63,6 +63,7 @@ export interface UsageStatusAccount {
 	fiveHour?: number;
 	sevenDay?: number;
 	monthly?: number;
+	monthlyOther?: number;
 }
 
 export interface SegmentContext {
