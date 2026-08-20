@@ -4,7 +4,7 @@ import { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
 import { TERMINAL } from "@oh-my-pi/pi-tui";
 import { formatDuration, formatNumber, getProjectDir, pathIsWithin, relativePathWithinRoot } from "@oh-my-pi/pi-utils";
 import { type ThemeColor, theme } from "../../../modes/theme/theme";
-import { shortenPath, TRUNCATE_LENGTHS, truncateToWidth } from "../../../tools/render-utils";
+import { shortenPath } from "../../../tools/render-utils";
 import { fileHyperlink } from "../../../tui/hyperlink";
 import { getSessionAccentAnsi, getSessionAccentHex } from "../../../utils/session-color";
 import { sanitizeStatusText } from "../../shared";
@@ -15,7 +15,6 @@ import type {
 	StatusLineSegment,
 	StatusLineSegmentId,
 	UsageStatusAccount,
-	UsageStatusWindow,
 } from "./types";
 
 export type { SegmentContext } from "./types";
@@ -634,9 +633,9 @@ const collabSegment: StatusLineSegment = {
 	},
 };
 
-function remainingQuota(window: UsageStatusWindow | undefined): string {
-	if (!window || !Number.isFinite(window.percent)) return "?";
-	return String(Math.max(0, Math.min(100, Math.round(100 - window.percent))));
+function remainingQuota(percent: number | undefined): string {
+	if (percent === undefined || !Number.isFinite(percent)) return "?";
+	return String(Math.max(0, Math.min(100, Math.round(100 - percent))));
 }
 
 function usageProviderLabel(provider: string): string {
@@ -649,7 +648,9 @@ function accountQuota(account: UsageStatusAccount): string {
 	const windows =
 		account.provider === "opencode-go"
 			? [account.fiveHour, account.sevenDay, account.monthly]
-			: [account.fiveHour, account.sevenDay];
+			: account.provider === "cursor"
+				? [account.monthly]
+				: [account.fiveHour, account.sevenDay];
 	return `${account.active ? "●" : "○"} ${windows.map(remainingQuota).join("/")}`;
 }
 const usageSegment: StatusLineSegment = {

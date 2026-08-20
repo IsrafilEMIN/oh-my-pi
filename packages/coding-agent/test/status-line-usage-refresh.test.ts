@@ -7,12 +7,6 @@ import { initTheme } from "@oh-my-pi/pi-coding-agent/modes/theme/theme";
 import type { AgentSession } from "@oh-my-pi/pi-coding-agent/session/agent-session";
 
 async function flushMicrotasks(): Promise<void> {
-	// Each `await` drains the pending microtask queue. The usage-refresh chain
-	// now includes the async session usage-identity resolution inside
-	// `applyUsageRefreshReports`, so drain several turns.
-	await Promise.resolve();
-	await Promise.resolve();
-	await Promise.resolve();
 	await Promise.resolve();
 	await Promise.resolve();
 }
@@ -240,7 +234,7 @@ describe("StatusLineComponent usage refresh", () => {
 		late.resolve(usageReport(42));
 		await flushMicrotasks();
 
-		expect(plain(component.getTopBorder(80).content)).toContain("5h 42%");
+		expect(plain(component.getTopBorder(80).content)).toContain("anthropic ● 58/?");
 	});
 
 	it("re-fetches usage immediately when the session rotates to another org under the same email", async () => {

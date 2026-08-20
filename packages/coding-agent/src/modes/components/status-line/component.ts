@@ -42,7 +42,6 @@ const WATCHER_FAILURE_POLL_TTL_MS = 5000;
 interface StatusAuthStorage {
 	getOAuthAccountIdentity?(provider: string, sessionId?: string): OAuthAccountIdentity | undefined;
 	getSessionCredentialId?(provider: string, sessionId?: string): number | undefined;
-	getSessionUsageCacheIdentity?(provider: string, sessionId?: string): Promise<string | undefined>;
 }
 
 function normalizeCodexIdentityValue(value: unknown): string | undefined {
@@ -1261,7 +1260,7 @@ export class StatusLineComponent implements Component {
 		let reportsPromise: Promise<unknown> | undefined;
 		try {
 			reportsPromise = fetcher.call(session, signal);
-			await this.#applyUsageRefreshReports(
+			this.#applyUsageRefreshReports(
 				session,
 				await this.#raceUsageRefreshWithSignal(reportsPromise, signal),
 				sequence,
@@ -1277,7 +1276,7 @@ export class StatusLineComponent implements Component {
 		}
 	}
 
-	async #applyUsageRefreshReports(session: AgentSession, reports: unknown, sequence: number): Promise<void> {
+	#applyUsageRefreshReports(session: AgentSession, reports: unknown, sequence: number): void {
 		if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
 			return;
 		}
@@ -1290,16 +1289,7 @@ export class StatusLineComponent implements Component {
 		const activeCredentialId = activeProvider
 			? authStorage?.getSessionCredentialId?.(activeProvider, session.sessionId)
 			: undefined;
-		const activeFingerprint = activeProvider
-			? await authStorage?.getSessionUsageCacheIdentity?.(activeProvider, session.sessionId)
-			: undefined;
-		const normalized = this.#normalizeUsageReports(
-			reports,
-			activeProvider,
-			activeIdentity,
-			activeCredentialId,
-			activeFingerprint,
-		);
+		const normalized = this.#normalizeUsageReports(reports, activeProvider, activeIdentity, activeCredentialId);
 		const resetSnapshot =
 			activeProvider === "openai-codex" ? this.#normalizeCodexResetSnapshot(reports, activeIdentity) : null;
 		const usageChanged = this.#cachedUsage !== normalized;
@@ -1319,8 +1309,8 @@ export class StatusLineComponent implements Component {
 
 	#observeLateUsageRefresh(session: AgentSession, reportsPromise: Promise<unknown>, sequence: number): void {
 		void reportsPromise
-			.then(async reports => {
-				await this.#applyUsageRefreshReports(session, reports, sequence);
+			.then(reports => {
+				this.#applyUsageRefreshReports(session, reports, sequence);
 			})
 			.catch(() => {
 				if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
@@ -1413,19 +1403,16 @@ export class StatusLineComponent implements Component {
 		activeProvider?: string,
 		activeIdentity?: OAuthAccountIdentity,
 		activeCredentialId?: number,
-		activeFingerprint?: string,
 	): readonly UsageStatusAccount[] | null {
 		if (!Array.isArray(reports)) return null;
-		const providerReports = reports.filter(
-			(report): report is UsageReport =>
-				!!report &&
-				typeof report === "object" &&
-				(!activeProvider || (report as { provider?: unknown }).provider === activeProvider) &&
-				Array.isArray((report as { limits?: unknown }).limits),
-		);
+		const providerReports = reports.filter((report): report is UsageReport => {
+			if (!report || typeof report !== "object") return false;
+			if (!("limits" in report) || !Array.isArray(report.limits)) return false;
+			if (!activeProvider) return true;
+			return "provider" in report && report.provider === activeProvider;
+		});
 		if (providerReports.length === 0) return null;
 
-		const now = Date.now();
 		const cursorMonthlyPriority = (limitId: unknown): number => {
 			if (limitId === "cursor:usd:individual-auto") return 0;
 			if (limitId === "cursor:usd:individual-plan" || limitId === "cursor:usd:individual-overall") return 1;
@@ -1435,9 +1422,9 @@ export class StatusLineComponent implements Component {
 
 		const accounts: UsageStatusAccount[] = [];
 		for (const usageReport of providerReports) {
-			let fiveHour: UsageStatusAccount["fiveHour"];
-			let sevenDay: UsageStatusAccount["sevenDay"];
-			let monthly: UsageStatusAccount["monthly"];
+			let fiveHour: number | undefined;
+			let sevenDay: number | undefined;
+			let monthly: number | undefined;
 			let fiveHourTier: string | undefined;
 			let sevenDayTier: string | undefined;
 			let monthlyTier: string | undefined;
@@ -1449,7 +1436,6 @@ export class StatusLineComponent implements Component {
 				if (typeof fraction !== "number" || !Number.isFinite(fraction)) continue;
 				const windowId = limit.scope?.windowId;
 				const tier = limit.scope?.tier;
-				const resetsAt = limit.window?.resetsAt;
 				const durationMs = limit.window?.durationMs;
 				const windowClass =
 					windowId === "5h" || windowId === "7d" || windowId === "monthly"
@@ -1460,20 +1446,12 @@ export class StatusLineComponent implements Component {
 								? "7d"
 								: undefined;
 
-				if (windowClass === "5h" && (!fiveHour || (fiveHourTier !== undefined && !tier))) {
-					fiveHour = {
-						percent: fraction * 100,
-						resetMinutes:
-							typeof resetsAt === "number" ? Math.max(0, Math.round((resetsAt - now) / 60_000)) : undefined,
-					};
+				if (windowClass === "5h" && (fiveHour === undefined || (fiveHourTier !== undefined && !tier))) {
+					fiveHour = fraction * 100;
 					fiveHourTier = tier || undefined;
 				}
-				if (windowClass === "7d" && (!sevenDay || (sevenDayTier !== undefined && !tier))) {
-					sevenDay = {
-						percent: fraction * 100,
-						resetHours:
-							typeof resetsAt === "number" ? Math.max(0, Math.round((resetsAt - now) / 3_600_000)) : undefined,
-					};
+				if (windowClass === "7d" && (sevenDay === undefined || (sevenDayTier !== undefined && !tier))) {
+					sevenDay = fraction * 100;
 					sevenDayTier = tier || undefined;
 				}
 				if (
@@ -1482,48 +1460,29 @@ export class StatusLineComponent implements Component {
 				) {
 					const priority = cursorMonthlyPriority(limit.id);
 					const shouldReplace =
-						!monthly ||
+						monthly === undefined ||
 						priority < monthlyPriority ||
 						(priority === monthlyPriority && monthlyTier !== undefined && !tier);
 					if (shouldReplace) {
-						monthly = {
-							percent: fraction * 100,
-							resetHours:
-								typeof resetsAt === "number"
-									? Math.max(0, Math.round((resetsAt - now) / 3_600_000))
-									: undefined,
-						};
+						monthly = fraction * 100;
 						monthlyTier = tier || undefined;
 						monthlyPriority = priority;
 					}
 				}
 			}
 
-			if (!fiveHour && !sevenDay && !monthly) continue;
+			if (fiveHour === undefined && sevenDay === undefined && monthly === undefined) continue;
 			const metadataCredentialId = usageReport.metadata?.credentialId;
 			const reportCredentialId = typeof metadataCredentialId === "number" ? metadataCredentialId : undefined;
-			const metadataFingerprint = usageReport.metadata?.usageCacheIdentity;
-			const reportFingerprint = typeof metadataFingerprint === "string" ? metadataFingerprint : undefined;
 			const matchesActiveIdentity =
+				activeCredentialId === undefined &&
 				activeIdentity !== undefined &&
 				usageReport.limits.some(limit => limitMatchesActiveAccount(usageReport, limit, activeIdentity));
-			// `credentialId` is authoritative when the annotation survived, but
-			// reports rewritten by the credential-ranking path share the cache
-			// slot without it — fall back to the usage-cache identity (a one-way
-			// secret fingerprint) stamped on every report. Before the first model
-			// request there is no session-sticky id yet; use the first provider
-			// row as the provisional current account so the status line still
-			// shows one full circle instead of all backups.
 			const active =
-				activeCredentialId !== undefined
-					? reportCredentialId === activeCredentialId ||
-						(activeFingerprint !== undefined && reportFingerprint === activeFingerprint)
-					: matchesActiveIdentity || providerReports.length === 1 || accounts.length === 0;
-			const metadataTier = usageReport.metadata?.planType;
+				activeCredentialId !== undefined ? reportCredentialId === activeCredentialId : matchesActiveIdentity;
 			accounts.push({
 				provider: String(usageReport.provider),
 				active,
-				tier: typeof metadataTier === "string" ? metadataTier : (fiveHourTier ?? sevenDayTier ?? monthlyTier),
 				fiveHour,
 				sevenDay,
 				monthly,
