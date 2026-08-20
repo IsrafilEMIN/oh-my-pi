@@ -57,19 +57,12 @@ export type EffectiveStatusLineSettings = Required<
 
 export type RGB = readonly [number, number, number];
 
-export interface UsageStatusWindow {
-	percent: number;
-	resetMinutes?: number;
-	resetHours?: number;
-}
-
 export interface UsageStatusAccount {
 	provider: string;
 	active: boolean;
-	tier?: string;
-	fiveHour?: UsageStatusWindow;
-	sevenDay?: UsageStatusWindow;
-	monthly?: UsageStatusWindow;
+	fiveHour?: number;
+	sevenDay?: number;
+	monthly?: number;
 }
 
 export interface SegmentContext {

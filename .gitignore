@@ -92,8 +92,7 @@ packages/coding-agent/bench/boot-baseline.json
 /bazel-oh-my-pi
 /.bazelrc.user
 
-# Runtime SQLite artifacts (defense-in-depth; omp data lives in ~/.omp, never
-# inside the repo).
-**/*.db
+# Runtime SQLite artifacts
+*.db
 *.db-wal
 *.db-shm

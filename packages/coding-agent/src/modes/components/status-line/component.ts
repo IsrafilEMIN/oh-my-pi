@@ -58,7 +58,6 @@ interface UsageWindowCandidate {
 	id?: string;
 	windowClass: "5h" | "7d" | "monthly";
 	fraction: number;
-	resetsAt?: number;
 }
 
 /** Limits sharing one model/tier scope, ranked as an indivisible display unit. */
@@ -1342,7 +1341,6 @@ export class StatusLineComponent implements Component {
 		if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
 			return;
 		}
-		this.#latestAppliedUsageRefreshSequence = sequence;
 		const activeProvider = session.state.model?.provider ?? session.model?.provider;
 		const activeModelId = session.state.model?.id ?? session.model?.id;
 		const authStorage = session.modelRegistry?.authStorage as StatusAuthStorage | undefined;
@@ -1352,9 +1350,14 @@ export class StatusLineComponent implements Component {
 		const activeCredentialId = activeProvider
 			? authStorage?.getSessionCredentialId?.(activeProvider, session.sessionId)
 			: undefined;
-		const activeFingerprint = activeProvider
-			? await authStorage?.getSessionUsageCacheIdentity?.(activeProvider, session.sessionId)
+		const fingerprintPromise = activeProvider
+			? authStorage?.getSessionUsageCacheIdentity?.(activeProvider, session.sessionId)
 			: undefined;
+		const activeFingerprint = fingerprintPromise ? await fingerprintPromise : undefined;
+		if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
+			return;
+		}
+		this.#latestAppliedUsageRefreshSequence = sequence;
 		const normalized = this.#normalizeUsageReports(reports, {
 			provider: activeProvider,
 			modelId: activeModelId,
@@ -1483,13 +1486,12 @@ export class StatusLineComponent implements Component {
 		if (!Array.isArray(reports)) return null;
 		const providerReports = reports.filter((report): report is UsageReport => {
 			if (!report || typeof report !== "object") return false;
-			const provider = "provider" in report ? report.provider : undefined;
-			const limits = "limits" in report ? report.limits : undefined;
-			return (!context.provider || provider === context.provider) && Array.isArray(limits);
+			if (!("limits" in report) || !Array.isArray(report.limits)) return false;
+			if (!context.provider) return true;
+			return "provider" in report && report.provider === context.provider;
 		});
 		if (providerReports.length === 0) return null;
 
-		const now = Date.now();
 		const activeModelId = normalizeUsageScopeValue(context.modelId);
 		const cursorMonthlyPriority = (limitId: unknown): number => {
 			if (limitId === "cursor:usd:individual-auto") return 0;
@@ -1535,10 +1537,6 @@ export class StatusLineComponent implements Component {
 					id: typeof limit.id === "string" ? limit.id : undefined,
 					windowClass,
 					fraction,
-					resetsAt:
-						typeof limit.window?.resetsAt === "number" && Number.isFinite(limit.window.resetsAt)
-							? limit.window.resetsAt
-							: undefined,
 				};
 				const group = scopeGroups.get(scopeKey);
 				if (group) {
@@ -1554,45 +1552,27 @@ export class StatusLineComponent implements Component {
 			}
 			if (!selectedGroup) continue;
 
-			let fiveHour: UsageStatusAccount["fiveHour"];
-			let sevenDay: UsageStatusAccount["sevenDay"];
-			let monthly: UsageStatusAccount["monthly"];
+			let fiveHour: number | undefined;
+			let sevenDay: number | undefined;
+			let monthly: number | undefined;
 			let monthlyPriority = Number.POSITIVE_INFINITY;
 			for (const candidate of selectedGroup.candidates) {
-				if (candidate.windowClass === "5h" && !fiveHour) {
-					fiveHour = {
-						percent: candidate.fraction * 100,
-						resetMinutes:
-							typeof candidate.resetsAt === "number"
-								? Math.max(0, Math.round((candidate.resetsAt - now) / 60_000))
-								: undefined,
-					};
+				if (candidate.windowClass === "5h" && fiveHour === undefined) {
+					fiveHour = candidate.fraction * 100;
 				}
-				if (candidate.windowClass === "7d" && !sevenDay) {
-					sevenDay = {
-						percent: candidate.fraction * 100,
-						resetHours:
-							typeof candidate.resetsAt === "number"
-								? Math.max(0, Math.round((candidate.resetsAt - now) / 3_600_000))
-								: undefined,
-					};
+				if (candidate.windowClass === "7d" && sevenDay === undefined) {
+					sevenDay = candidate.fraction * 100;
 				}
 				if (candidate.windowClass === "monthly") {
 					const priority = cursorMonthlyPriority(candidate.id);
 					if (priority < monthlyPriority) {
-						monthly = {
-							percent: candidate.fraction * 100,
-							resetHours:
-								typeof candidate.resetsAt === "number"
-									? Math.max(0, Math.round((candidate.resetsAt - now) / 3_600_000))
-									: undefined,
-						};
+						monthly = candidate.fraction * 100;
 						monthlyPriority = priority;
 					}
 				}
 			}
 
-			if (!fiveHour && !sevenDay && !monthly) continue;
+			if (fiveHour === undefined && sevenDay === undefined && monthly === undefined) continue;
 			const metadataCredentialId = usageReport.metadata?.credentialId;
 			const reportCredentialId = typeof metadataCredentialId === "number" ? metadataCredentialId : undefined;
 			const metadataFingerprint = usageReport.metadata?.usageCacheIdentity;
@@ -1600,25 +1580,16 @@ export class StatusLineComponent implements Component {
 			const matchesActiveIdentity =
 				context.identity !== undefined &&
 				usageReport.limits.some(limit => limitMatchesActiveAccount(usageReport, limit, context.identity));
-			// `credentialId` is authoritative when the annotation survived, but
-			// reports rewritten by the credential-ranking path share the cache
-			// slot without it — fall back to the usage-cache identity (a one-way
-			// secret fingerprint) stamped on every report. Before the first model
-			// request there is no session-sticky id yet; use the first provider
-			// row as the provisional current account so the status line still
-			// shows one full circle instead of all backups.
-			const active =
-				context.credentialId !== undefined
-					? reportCredentialId === context.credentialId ||
-						(context.fingerprint !== undefined && reportFingerprint === context.fingerprint)
-					: context.identity !== undefined
-						? matchesActiveIdentity
-						: providerReports.length === 1 || accounts.length === 0;
-			const metadataTier = usageReport.metadata?.planType;
+			const hasCredentialSelector = context.credentialId !== undefined || context.fingerprint !== undefined;
+			const active = hasCredentialSelector
+				? reportCredentialId === context.credentialId ||
+					(context.fingerprint !== undefined && reportFingerprint === context.fingerprint)
+				: context.identity !== undefined
+					? matchesActiveIdentity
+					: providerReports.length === 1 || accounts.length === 0;
 			accounts.push({
 				provider: String(usageReport.provider),
 				active,
-				tier: typeof metadataTier === "string" ? metadataTier : selectedGroup.tier,
 				fiveHour,
 				sevenDay,
 				monthly,
