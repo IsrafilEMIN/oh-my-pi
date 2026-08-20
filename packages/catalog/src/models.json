@@ -26,7 +26,8 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-ai/deepseek-v4-pro": {
 			"id": "deepseek-ai/deepseek-v4-pro",
@@ -54,11 +55,12 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"google/gemma-4-31b-it": {
 			"id": "google/gemma-4-31b-it",
-			"name": "Gemma 4 31B IT",
+			"name": "Gemma 4 31B",
 			"api": "openai-completions",
 			"provider": "aiand",
 			"baseUrl": "https://api.aiand.com/v1",
@@ -116,7 +118,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k3": {
 			"id": "moonshotai/kimi-k3",
@@ -150,7 +153,8 @@
 				},
 				"requiresEffort": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"motif-technologies/motif-3": {
 			"id": "motif-technologies/motif-3",
@@ -238,7 +242,8 @@
 					"high"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"zai-org/glm-5.2": {
 			"id": "zai-org/glm-5.2",
@@ -268,7 +273,8 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
 		}
 	},
 	"aimlapi": {
@@ -11706,6 +11712,35 @@
 				]
 			}
 		},
+		"xai.grok-4.6": {
+			"id": "xai.grok-4.6",
+			"name": "Grok 4.6",
+			"api": "bedrock-converse-stream",
+			"provider": "amazon-bedrock",
+			"baseUrl": "https://bedrock-runtime.us-east-1.amazonaws.com",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 2.2,
+				"output": 6.6,
+				"cacheRead": 0.55,
+				"cacheWrite": 0
+			},
+			"contextWindow": 500000,
+			"maxTokens": 500000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				]
+			}
+		},
 		"zai.glm-4.7": {
 			"id": "zai.glm-4.7",
 			"name": "GLM-4.7",
@@ -11812,7 +11847,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-5-sonnet-20241022": {
 			"id": "claude-3-5-sonnet-20241022",
@@ -11834,7 +11870,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-20250219": {
 			"id": "claude-3-7-sonnet-20250219",
@@ -11867,6 +11904,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3",
 			"compat": {
 				"officialEndpoint": true,
 				"signingEndpoint": true,
@@ -11902,7 +11940,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 4096,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-opus-20240229": {
 			"id": "claude-3-opus-20240229",
@@ -11925,6 +11964,7 @@
 			"maxTokens": 4096,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3",
 			"compat": {
 				"officialEndpoint": true,
 				"signingEndpoint": true,
@@ -11961,6 +12001,7 @@
 			"maxTokens": 4096,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3",
 			"compat": {
 				"officialEndpoint": true,
 				"signingEndpoint": true,
@@ -12098,7 +12139,8 @@
 				"supportsDisplay": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-opus-4-0": {
 			"id": "claude-opus-4-0",
@@ -12130,7 +12172,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-opus-4-1": {
 			"id": "claude-opus-4-1",
@@ -12162,7 +12205,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-opus-4-1-20250805": {
 			"id": "claude-opus-4-1-20250805",
@@ -12184,7 +12228,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 32000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-opus-4-20250514": {
 			"id": "claude-opus-4-20250514",
@@ -12206,7 +12251,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 32000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-opus-4-5": {
 			"id": "claude-opus-4-5",
@@ -12420,7 +12466,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-sonnet-4-20250514": {
 			"id": "claude-sonnet-4-20250514",
@@ -12442,7 +12489,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 64000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-sonnet-4-5": {
 			"id": "claude-sonnet-4-5",
@@ -13628,7 +13676,7 @@
 	"baseten": {
 		"deepseek-ai/DeepSeek-V4-Flash-0731": {
 			"id": "deepseek-ai/DeepSeek-V4-Flash-0731",
-			"name": "Deepseek V4 Flash 0731",
+			"name": "DeepSeek V4 Flash 0731",
 			"api": "openai-completions",
 			"provider": "baseten",
 			"baseUrl": "https://inference.baseten.co/v1",
@@ -13645,11 +13693,12 @@
 			"contextWindow": 1048576,
 			"maxTokens": 1048576,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-ai/DeepSeek-V4-Pro": {
 			"id": "deepseek-ai/DeepSeek-V4-Pro",
-			"name": "Deepseek V4 Pro",
+			"name": "DeepSeek V4 Pro",
 			"api": "openai-completions",
 			"provider": "baseten",
 			"baseUrl": "https://inference.baseten.co/v1",
@@ -13663,7 +13712,7 @@
 				"cacheRead": 0.145,
 				"cacheWrite": 0
 			},
-			"contextWindow": 262144,
+			"contextWindow": 1048576,
 			"maxTokens": 262144,
 			"thinking": {
 				"mode": "effort",
@@ -13674,7 +13723,29 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
+		},
+		"deepseek-ai/DeepSeek-V4-Pro-0813": {
+			"id": "deepseek-ai/DeepSeek-V4-Pro-0813",
+			"name": "DeepSeek V4 Pro 0813",
+			"api": "openai-completions",
+			"provider": "baseten",
+			"baseUrl": "https://inference.baseten.co/v1",
+			"reasoning": false,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.32,
+				"output": 3.9600000000000004,
+				"cacheRead": 0.13199999999999998,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1048576,
+			"maxTokens": 262144,
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUse": false
 		},
 		"moonshotai/Kimi-K2.6": {
 			"id": "moonshotai/Kimi-K2.6",
@@ -13706,7 +13777,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/Kimi-K2.7-Code": {
 			"id": "moonshotai/Kimi-K2.7-Code",
@@ -13738,7 +13810,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/Kimi-K3": {
 			"id": "moonshotai/Kimi-K3",
@@ -13773,7 +13846,8 @@
 					"max": "max"
 				},
 				"requiresEffort": true
-			}
+			},
+			"tokenizer": "kimi-k2"
 		},
 		"nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B": {
 			"id": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
@@ -13917,7 +13991,8 @@
 			"baseUrl": "https://inference.baseten.co/v1",
 			"reasoning": true,
 			"input": [
-				"text"
+				"text",
+				"image"
 			],
 			"cost": {
 				"input": 1.4,
@@ -13935,7 +14010,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"zai-org/GLM-5.2-Fast": {
 			"id": "zai-org/GLM-5.2-Fast",
@@ -13945,7 +14021,8 @@
 			"baseUrl": "https://inference.baseten.co/v1",
 			"reasoning": true,
 			"input": [
-				"text"
+				"text",
+				"image"
 			],
 			"cost": {
 				"input": 2.0999999999999996,
@@ -13963,7 +14040,8 @@
 					"high",
 					"max"
 				]
-			}
+			},
+			"tokenizer": "glm5"
 		}
 	},
 	"bedrock-mantle": {
@@ -14286,7 +14364,8 @@
 					"high",
 					"xhigh"
 				]
-			}
+			},
+			"supportsComputerUse": false
 		}
 	},
 	"cloudflare-ai-gateway": {
@@ -14443,6 +14522,36 @@
 		},
 		"anthropic/claude-haiku-4-5": {
 			"id": "anthropic/claude-haiku-4-5",
+			"name": "Claude Haiku 4.5",
+			"api": "anthropic-messages",
+			"provider": "cloudflare-ai-gateway",
+			"baseUrl": "https://gateway.ai.cloudflare.com/v1/<account>/<gateway>/anthropic",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 1,
+				"output": 5,
+				"cacheRead": 0.1,
+				"cacheWrite": 1.25
+			},
+			"contextWindow": 200000,
+			"maxTokens": 64000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			}
+		},
+		"anthropic/claude-haiku-4.5": {
+			"id": "anthropic/claude-haiku-4.5",
 			"name": "Claude Haiku 4.5",
 			"api": "anthropic-messages",
 			"provider": "cloudflare-ai-gateway",
@@ -14652,6 +14761,127 @@
 				"supportsDisplay": true
 			}
 		},
+		"anthropic/claude-opus-4.5": {
+			"id": "anthropic/claude-opus-4.5",
+			"name": "Claude Opus 4.5",
+			"api": "anthropic-messages",
+			"provider": "cloudflare-ai-gateway",
+			"baseUrl": "https://gateway.ai.cloudflare.com/v1/<account>/<gateway>/anthropic",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 5,
+				"output": 25,
+				"cacheRead": 0.5,
+				"cacheWrite": 6.25
+			},
+			"contextWindow": 200000,
+			"maxTokens": 64000,
+			"thinking": {
+				"mode": "anthropic-budget-effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			}
+		},
+		"anthropic/claude-opus-4.6": {
+			"id": "anthropic/claude-opus-4.6",
+			"name": "Claude Opus 4.6",
+			"api": "anthropic-messages",
+			"provider": "cloudflare-ai-gateway",
+			"baseUrl": "https://gateway.ai.cloudflare.com/v1/<account>/<gateway>/anthropic",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 5,
+				"output": 25,
+				"cacheRead": 0.5,
+				"cacheWrite": 6.25
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "anthropic-adaptive",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"max"
+				]
+			}
+		},
+		"anthropic/claude-opus-4.7": {
+			"id": "anthropic/claude-opus-4.7",
+			"name": "Claude Opus 4.7",
+			"api": "anthropic-messages",
+			"provider": "cloudflare-ai-gateway",
+			"baseUrl": "https://gateway.ai.cloudflare.com/v1/<account>/<gateway>/anthropic",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 5,
+				"output": 25,
+				"cacheRead": 0.5,
+				"cacheWrite": 6.25
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "anthropic-adaptive",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh",
+					"max"
+				],
+				"supportsDisplay": true
+			}
+		},
+		"anthropic/claude-opus-4.8": {
+			"id": "anthropic/claude-opus-4.8",
+			"name": "Claude Opus 4.8",
+			"api": "anthropic-messages",
+			"provider": "cloudflare-ai-gateway",
+			"baseUrl": "https://gateway.ai.cloudflare.com/v1/<account>/<gateway>/anthropic",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 5,
+				"output": 25,
+				"cacheRead": 0.5,
+				"cacheWrite": 6.25
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "anthropic-adaptive",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh",
+					"max"
+				],
+				"supportsDisplay": true
+			}
+		},
 		"anthropic/claude-opus-5": {
 			"id": "anthropic/claude-opus-5",
 			"name": "Claude Opus 5",
@@ -14745,6 +14975,64 @@
 		},
 		"anthropic/claude-sonnet-4-6": {
 			"id": "anthropic/claude-sonnet-4-6",
+			"name": "Claude Sonnet 4.6",
+			"api": "anthropic-messages",
+			"provider": "cloudflare-ai-gateway",
+			"baseUrl": "https://gateway.ai.cloudflare.com/v1/<account>/<gateway>/anthropic",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 3,
+				"output": 15,
+				"cacheRead": 0.3,
+				"cacheWrite": 3.75
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "anthropic-adaptive",
+				"efforts": [
+					"low",
+					"medium",
+					"high"
+				]
+			}
+		},
+		"anthropic/claude-sonnet-4.5": {
+			"id": "anthropic/claude-sonnet-4.5",
+			"name": "Claude Sonnet 4.5",
+			"api": "anthropic-messages",
+			"provider": "cloudflare-ai-gateway",
+			"baseUrl": "https://gateway.ai.cloudflare.com/v1/<account>/<gateway>/anthropic",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 3,
+				"output": 15,
+				"cacheRead": 0.3,
+				"cacheWrite": 3.75
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 64000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			}
+		},
+		"anthropic/claude-sonnet-4.6": {
+			"id": "anthropic/claude-sonnet-4.6",
 			"name": "Claude Sonnet 4.6",
 			"api": "anthropic-messages",
 			"provider": "cloudflare-ai-gateway",
@@ -14973,9 +15261,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 2.5,
-				"output": 10,
-				"cacheRead": 1.25,
+				"input": 1.25,
+				"output": 5,
+				"cacheRead": 0.625,
 				"cacheWrite": 0
 			},
 			"contextWindow": 128000,
@@ -14993,9 +15281,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.15,
-				"output": 0.6,
-				"cacheRead": 0.075,
+				"input": 0.075,
+				"output": 0.3,
+				"cacheRead": 0.0375,
 				"cacheWrite": 0
 			},
 			"contextWindow": 128000,
@@ -17031,6 +17319,35 @@
 				]
 			}
 		},
+		"Qwen/Qwen3.8-27B": {
+			"id": "Qwen/Qwen3.8-27B",
+			"name": "Qwen3.8 27B",
+			"api": "openai-completions",
+			"provider": "coreweave",
+			"baseUrl": "https://api.inference.wandb.ai/v1",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.4,
+				"output": 3,
+				"cacheRead": 0.15,
+				"cacheWrite": 0
+			},
+			"contextWindow": 262144,
+			"maxTokens": 262144,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				]
+			}
+		},
 		"zai-org/GLM-5-FP8": {
 			"id": "zai-org/GLM-5-FP8",
 			"name": "GLM 5",
@@ -17147,7 +17464,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-4.5-opus-high": {
 			"id": "claude-4.5-opus-high",
@@ -17186,7 +17504,8 @@
 			},
 			"supportsComputerUse": false,
 			"cursorMaxMode": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-4.5-sonnet": {
 			"id": "claude-4.5-sonnet",
@@ -17225,7 +17544,8 @@
 			},
 			"supportsComputerUse": false,
 			"cursorMaxMode": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-4.6-opus-high": {
 			"id": "claude-4.6-opus-high",
@@ -17263,7 +17583,8 @@
 			},
 			"supportsComputerUse": false,
 			"cursorMaxMode": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-4.6-opus-max": {
 			"id": "claude-4.6-opus-max",
@@ -17302,7 +17623,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-4.6-sonnet-medium": {
 			"id": "claude-4.6-sonnet-medium",
@@ -17340,7 +17662,8 @@
 			},
 			"supportsComputerUse": false,
 			"cursorMaxMode": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-fable-5-high": {
 			"id": "claude-fable-5-high",
@@ -17379,7 +17702,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-fable-5-low": {
 			"id": "claude-fable-5-low",
@@ -17418,7 +17742,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-fable-5-max": {
 			"id": "claude-fable-5-max",
@@ -17457,7 +17782,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-fable-5-medium": {
 			"id": "claude-fable-5-medium",
@@ -17496,7 +17822,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-fable-5-xhigh": {
 			"id": "claude-fable-5-xhigh",
@@ -17535,7 +17862,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-opus-4-7-high": {
 			"id": "claude-opus-4-7-high",
@@ -17574,7 +17902,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-high-fast": {
 			"id": "claude-opus-4-7-high-fast",
@@ -17613,7 +17942,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-low": {
 			"id": "claude-opus-4-7-low",
@@ -17652,7 +17982,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-low-fast": {
 			"id": "claude-opus-4-7-low-fast",
@@ -17691,7 +18022,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-max": {
 			"id": "claude-opus-4-7-max",
@@ -17730,7 +18062,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-max-fast": {
 			"id": "claude-opus-4-7-max-fast",
@@ -17769,7 +18102,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-medium": {
 			"id": "claude-opus-4-7-medium",
@@ -17808,7 +18142,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-medium-fast": {
 			"id": "claude-opus-4-7-medium-fast",
@@ -17847,7 +18182,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-xhigh": {
 			"id": "claude-opus-4-7-xhigh",
@@ -17886,7 +18222,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-7-xhigh-fast": {
 			"id": "claude-opus-4-7-xhigh-fast",
@@ -17925,7 +18262,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-high": {
 			"id": "claude-opus-4-8-high",
@@ -17964,7 +18302,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-high-fast": {
 			"id": "claude-opus-4-8-high-fast",
@@ -18003,7 +18342,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-low": {
 			"id": "claude-opus-4-8-low",
@@ -18042,7 +18382,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-low-fast": {
 			"id": "claude-opus-4-8-low-fast",
@@ -18081,7 +18422,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-max": {
 			"id": "claude-opus-4-8-max",
@@ -18120,7 +18462,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-max-fast": {
 			"id": "claude-opus-4-8-max-fast",
@@ -18159,7 +18502,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-medium": {
 			"id": "claude-opus-4-8-medium",
@@ -18198,7 +18542,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-medium-fast": {
 			"id": "claude-opus-4-8-medium-fast",
@@ -18237,7 +18582,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-xhigh": {
 			"id": "claude-opus-4-8-xhigh",
@@ -18276,7 +18622,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8-xhigh-fast": {
 			"id": "claude-opus-4-8-xhigh-fast",
@@ -18315,7 +18662,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-5-high": {
 			"id": "claude-opus-5-high",
@@ -18354,7 +18702,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-high-fast": {
 			"id": "claude-opus-5-high-fast",
@@ -18393,7 +18742,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-low": {
 			"id": "claude-opus-5-low",
@@ -18432,7 +18782,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-low-fast": {
 			"id": "claude-opus-5-low-fast",
@@ -18471,7 +18822,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-medium": {
 			"id": "claude-opus-5-medium",
@@ -18510,7 +18862,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-medium-fast": {
 			"id": "claude-opus-5-medium-fast",
@@ -18549,7 +18902,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-thinking-max": {
 			"id": "claude-opus-5-thinking-max",
@@ -18572,7 +18926,8 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-thinking-max-fast": {
 			"id": "claude-opus-5-thinking-max-fast",
@@ -18595,7 +18950,8 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-thinking-xhigh": {
 			"id": "claude-opus-5-thinking-xhigh",
@@ -18618,7 +18974,8 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-opus-5-thinking-xhigh-fast": {
 			"id": "claude-opus-5-thinking-xhigh-fast",
@@ -18641,7 +18998,8 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"claude-sonnet-5-high": {
 			"id": "claude-sonnet-5-high",
@@ -18680,7 +19038,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-sonnet-5-low": {
 			"id": "claude-sonnet-5-low",
@@ -18719,7 +19078,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-sonnet-5-max": {
 			"id": "claude-sonnet-5-max",
@@ -18758,7 +19118,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-sonnet-5-medium": {
 			"id": "claude-sonnet-5-medium",
@@ -18797,7 +19158,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"claude-sonnet-5-xhigh": {
 			"id": "claude-sonnet-5-xhigh",
@@ -18836,7 +19198,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"composer-1": {
 			"id": "composer-1",
@@ -18924,13 +19287,13 @@
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false
 		},
-		"cursor-grok-4.5-high": {
-			"id": "cursor-grok-4.5-high",
-			"name": "Cursor Grok 4.5",
+		"cursor-grok-4.5": {
+			"id": "cursor-grok-4.5",
+			"name": "Grok 4.5",
 			"api": "cursor-agent",
 			"provider": "cursor",
 			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
+			"reasoning": true,
 			"input": [
 				"text"
 			],
@@ -18944,15 +19307,30 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"medium",
+					"high"
+				],
+				"requiresEffort": true,
+				"effortRouting": {
+					"low": "cursor-grok-4.5-low",
+					"medium": "cursor-grok-4.5-medium",
+					"high": "cursor-grok-4.5-high"
+				}
+			},
+			"requestModelId": "cursor-grok-4.5-low"
 		},
-		"cursor-grok-4.5-high-fast": {
-			"id": "cursor-grok-4.5-high-fast",
-			"name": "Cursor Grok 4.5 Fast",
+		"cursor-grok-4.5-fast": {
+			"id": "cursor-grok-4.5-fast",
+			"name": "Grok 4.5 Fast",
 			"api": "cursor-agent",
 			"provider": "cursor",
 			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
+			"reasoning": true,
 			"input": [
 				"text"
 			],
@@ -18966,15 +19344,30 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"medium",
+					"high"
+				],
+				"requiresEffort": true,
+				"effortRouting": {
+					"low": "cursor-grok-4.5-low-fast",
+					"medium": "cursor-grok-4.5-medium-fast",
+					"high": "cursor-grok-4.5-high-fast"
+				}
+			},
+			"requestModelId": "cursor-grok-4.5-low-fast"
 		},
-		"cursor-grok-4.5-low": {
-			"id": "cursor-grok-4.5-low",
-			"name": "Cursor Grok 4.5 Low",
+		"cursor-grok-4.6": {
+			"id": "cursor-grok-4.6",
+			"name": "Grok 4.6",
 			"api": "cursor-agent",
 			"provider": "cursor",
 			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
+			"reasoning": true,
 			"input": [
 				"text"
 			],
@@ -18988,15 +19381,32 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				],
+				"requiresEffort": true,
+				"effortRouting": {
+					"low": "cursor-grok-4.6-low",
+					"medium": "cursor-grok-4.6-medium",
+					"high": "cursor-grok-4.6-high",
+					"xhigh": "cursor-grok-4.6-xhigh"
+				}
+			},
+			"requestModelId": "cursor-grok-4.6-low"
 		},
-		"cursor-grok-4.5-low-fast": {
-			"id": "cursor-grok-4.5-low-fast",
-			"name": "Cursor Grok 4.5 Low Fast",
+		"cursor-grok-4.6-fast": {
+			"id": "cursor-grok-4.6-fast",
+			"name": "Grok 4.6 Fast",
 			"api": "cursor-agent",
 			"provider": "cursor",
 			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
+			"reasoning": true,
 			"input": [
 				"text"
 			],
@@ -19010,227 +19420,24 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.5-medium": {
-			"id": "cursor-grok-4.5-medium",
-			"name": "Cursor Grok 4.5 Medium",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
+			"supportsComputerUseConfig": false,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				],
+				"requiresEffort": true,
+				"effortRouting": {
+					"low": "cursor-grok-4.6-low-fast",
+					"medium": "cursor-grok-4.6-medium-fast",
+					"high": "cursor-grok-4.6-high-fast",
+					"xhigh": "cursor-grok-4.6-xhigh-fast"
+				}
 			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.5-medium-fast": {
-			"id": "cursor-grok-4.5-medium-fast",
-			"name": "Cursor Grok 4.5 Medium Fast",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-high": {
-			"id": "cursor-grok-4.6-high",
-			"name": "Cursor Grok 4.6",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-high-fast": {
-			"id": "cursor-grok-4.6-high-fast",
-			"name": "Cursor Grok 4.6 Fast",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-low": {
-			"id": "cursor-grok-4.6-low",
-			"name": "Cursor Grok 4.6 Low",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-low-fast": {
-			"id": "cursor-grok-4.6-low-fast",
-			"name": "Cursor Grok 4.6 Low Fast",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-medium": {
-			"id": "cursor-grok-4.6-medium",
-			"name": "Cursor Grok 4.6 Medium",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-medium-fast": {
-			"id": "cursor-grok-4.6-medium-fast",
-			"name": "Cursor Grok 4.6 Medium Fast",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-xhigh": {
-			"id": "cursor-grok-4.6-xhigh",
-			"name": "Cursor Grok 4.6 Extra High",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"cursor-grok-4.6-xhigh-fast": {
-			"id": "cursor-grok-4.6-xhigh-fast",
-			"name": "Cursor Grok 4.6 Extra High Fast",
-			"api": "cursor-agent",
-			"provider": "cursor",
-			"baseUrl": "https://api2.cursor.sh",
-			"reasoning": false,
-			"input": [
-				"text"
-			],
-			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 200000,
-			"maxTokens": 64000,
-			"cursorMaxMode": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"requestModelId": "cursor-grok-4.6-low-fast"
 		},
 		"default": {
 			"id": "default",
@@ -19563,7 +19770,8 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"glm-5.2-max": {
 			"id": "glm-5.2-max",
@@ -19585,7 +19793,8 @@
 			"maxTokens": 64000,
 			"cursorMaxMode": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"gpt-5-mini": {
 			"id": "gpt-5-mini",
@@ -21886,7 +22095,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2.7-code": {
 			"id": "kimi-k2.7-code",
@@ -21918,7 +22128,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k3-high": {
 			"id": "kimi-k3-high",
@@ -21950,7 +22161,8 @@
 				],
 				"defaultLevel": "max",
 				"requiresEffort": true
-			}
+			},
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k3-low": {
 			"id": "kimi-k3-low",
@@ -21982,7 +22194,8 @@
 				],
 				"defaultLevel": "max",
 				"requiresEffort": true
-			}
+			},
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k3-max": {
 			"id": "kimi-k3-max",
@@ -22014,7 +22227,8 @@
 				],
 				"defaultLevel": "max",
 				"requiresEffort": true
-			}
+			},
+			"tokenizer": "kimi-k2"
 		}
 	},
 	"deepseek": {
@@ -22186,6 +22400,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"supportsToolChoice": false,
 				"requiresAssistantContentForToolCalls": true
@@ -22217,7 +22432,8 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-v4-pro": {
 			"id": "deepseek-v4-pro",
@@ -22246,6 +22462,7 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"supportsToolChoice": false,
 				"requiresAssistantContentForToolCalls": true
@@ -22262,9 +22479,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 1.73,
+				"input": 1.65,
 				"output": 4.95,
-				"cacheRead": 0.33,
+				"cacheRead": 0.165,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1048576,
@@ -22277,7 +22494,8 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"flux-1-schnell-fp8": {
 			"id": "flux-1-schnell-fp8",
@@ -22346,7 +22564,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"glm-5.1": {
 			"id": "glm-5.1",
@@ -22380,7 +22599,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"glm-5.1-fast": {
 			"id": "glm-5.1-fast",
@@ -22414,7 +22634,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"glm-5.2": {
 			"id": "glm-5.2",
@@ -22447,7 +22668,8 @@
 					"minimal": "none"
 				}
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
 		},
 		"glm-5.2-fast": {
 			"id": "glm-5.2-fast",
@@ -22481,7 +22703,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"gpt-oss-120b": {
 			"id": "gpt-oss-120b",
@@ -22600,7 +22823,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2.6": {
 			"id": "kimi-k2.6",
@@ -22634,7 +22858,8 @@
 					"minimal": "none"
 				}
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2.6-fast": {
 			"id": "kimi-k2.6-fast",
@@ -22669,7 +22894,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2.7-code": {
 			"id": "kimi-k2.7-code",
@@ -22703,7 +22929,8 @@
 					"minimal": "none"
 				}
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2.7-code-fast": {
 			"id": "kimi-k2.7-code-fast",
@@ -22738,7 +22965,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k3": {
 			"id": "kimi-k3",
@@ -22772,7 +23000,8 @@
 				},
 				"requiresEffort": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"minimax-m2.5": {
 			"id": "minimax-m2.5",
@@ -23074,6 +23303,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3",
 			"compat": {
 				"supportsDeveloperRole": false
 			}
@@ -23110,7 +23340,8 @@
 					"minimal": "none"
 				}
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.8-2.4t-a95b": {
 			"id": "qwen3.8-2.4t-a95b",
@@ -23144,7 +23375,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.8-max": {
 			"id": "qwen3.8-max",
@@ -23179,7 +23411,8 @@
 					"minimal": "none"
 				}
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		}
 	},
 	"github-copilot": {
@@ -24448,7 +24681,7 @@
 		"grok-4.6": {
 			"id": "grok-4.6",
 			"name": "Grok 4.6",
-			"api": "openai-completions",
+			"api": "openai-responses",
 			"provider": "github-copilot",
 			"baseUrl": "https://api.githubcopilot.com",
 			"reasoning": true,
@@ -24468,18 +24701,14 @@
 				"User-Agent": "opencode/1.3.15",
 				"X-GitHub-Api-Version": "2026-06-01"
 			},
-			"compat": {
-				"supportsStore": false,
-				"supportsDeveloperRole": false,
-				"supportsReasoningEffort": false
-			},
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
 					"minimal",
 					"low",
 					"medium",
-					"high"
+					"high",
+					"xhigh"
 				]
 			}
 		},
@@ -29394,6 +29623,56 @@
 			"contextWindow": 262144,
 			"maxTokens": 131072
 		},
+		"Qwen/Qwen3-VL-235B-A22B-Instruct": {
+			"id": "Qwen/Qwen3-VL-235B-A22B-Instruct",
+			"name": "Qwen3 VL 235B A22B Instruct",
+			"api": "openai-completions",
+			"provider": "huggingface",
+			"baseUrl": "https://router.huggingface.co/v1",
+			"reasoning": false,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.3,
+				"output": 1.5,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 131072,
+			"maxTokens": 32768
+		},
+		"Qwen/Qwen3-VL-235B-A22B-Thinking": {
+			"id": "Qwen/Qwen3-VL-235B-A22B-Thinking",
+			"name": "Qwen3 VL 235B A22B Thinking",
+			"api": "openai-completions",
+			"provider": "huggingface",
+			"baseUrl": "https://router.huggingface.co/v1",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.98,
+				"output": 3.95,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 131072,
+			"maxTokens": 32768,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				],
+				"requiresEffort": true
+			}
+		},
 		"Qwen/Qwen3.5-122B-A10B": {
 			"id": "Qwen/Qwen3.5-122B-A10B",
 			"name": "Qwen3.5 122B-A10B",
@@ -29971,6 +30250,36 @@
 				]
 			}
 		},
+		"zai-org/GLM-4.6V-Flash": {
+			"id": "zai-org/GLM-4.6V-Flash",
+			"name": "GLM-4.6V-Flash",
+			"api": "openai-completions",
+			"provider": "huggingface",
+			"baseUrl": "https://router.huggingface.co/v1",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.3,
+				"output": 0.9,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 131072,
+			"maxTokens": 32768,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			}
+		},
 		"zai-org/GLM-4.7": {
 			"id": "zai-org/GLM-4.7",
 			"name": "GLM-4.7",
@@ -30249,13 +30558,13 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.0603,
-				"output": 0.1206,
-				"cacheRead": 0.01206,
+				"input": 0.07,
+				"output": 0.14,
+				"cacheRead": 0.014,
 				"cacheWrite": 0
 			},
-			"contextWindow": 262144,
-			"maxTokens": 262144,
+			"contextWindow": 1048576,
+			"maxTokens": 1048576,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -30367,10 +30676,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -30445,6 +30754,35 @@
 				]
 			}
 		},
+		"~z-ai/glm-latest": {
+			"id": "~z-ai/glm-latest",
+			"name": "GLM Latest",
+			"api": "openai-completions",
+			"provider": "kilo",
+			"baseUrl": "https://api.kilo.ai/api/gateway",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1048576,
+			"maxTokens": 131072,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			}
+		},
 		"ai21/jamba-large-1.7": {
 			"id": "ai21/jamba-large-1.7",
 			"name": "Jamba Large 1.7",
@@ -30462,7 +30800,8 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 256000,
-			"maxTokens": 4096
+			"maxTokens": 4096,
+			"supportsComputerUse": false
 		},
 		"aion-labs/aion-1.0": {
 			"id": "aion-labs/aion-1.0",
@@ -30991,7 +31330,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.5-sonnet": {
 			"id": "anthropic/claude-3.5-sonnet",
@@ -31013,7 +31353,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.7-sonnet": {
 			"id": "anthropic/claude-3.7-sonnet",
@@ -31045,7 +31386,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.7-sonnet:thinking": {
 			"id": "anthropic/claude-3.7-sonnet:thinking",
@@ -31066,7 +31408,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 64000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-fable-5": {
 			"id": "anthropic/claude-fable-5",
@@ -31278,7 +31621,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.7": {
 			"id": "anthropic/claude-opus-4.7",
@@ -32378,7 +32722,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 163840,
-			"maxTokens": 65536
+			"maxTokens": 163840
 		},
 		"deepseek/deepseek-chat-v3.1": {
 			"id": "deepseek/deepseek-chat-v3.1",
@@ -32516,7 +32860,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 163840,
-			"maxTokens": 32768,
+			"maxTokens": 163840,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -32544,7 +32888,8 @@
 			"contextWindow": 163840,
 			"maxTokens": 32768,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2": {
 			"id": "deepseek/deepseek-v3.2",
@@ -32617,7 +32962,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-flash": {
 			"id": "deepseek/deepseek-v4-flash",
@@ -32719,7 +33065,8 @@
 			"contextWindow": 1048576,
 			"maxTokens": 384000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-pro": {
 			"id": "deepseek/deepseek-v4-pro",
@@ -32738,7 +33085,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 1048576,
-			"maxTokens": 384000,
+			"maxTokens": 393216,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -32761,10 +33108,10 @@
 			"cost": {
 				"input": 1.32,
 				"output": 3.96,
-				"cacheRead": 0.35,
+				"cacheRead": 0.132,
 				"cacheWrite": 0
 			},
-			"contextWindow": 1048576,
+			"contextWindow": 1048575,
 			"maxTokens": 384000,
 			"thinking": {
 				"mode": "effort",
@@ -33551,10 +33898,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.75,
-				"output": 3.75,
-				"cacheRead": 0.075,
-				"cacheWrite": 0.041667
+				"input": 1.5,
+				"output": 7.5,
+				"cacheRead": 0.15,
+				"cacheWrite": 0.083333
 			},
 			"contextWindow": 1048576,
 			"maxTokens": 65536,
@@ -33740,7 +34087,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 262144,
+			"maxTokens": 16384,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -34596,7 +34943,8 @@
 			},
 			"contextWindow": null,
 			"maxTokens": null,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false
 		},
 		"meituan/longcat-2.0": {
 			"id": "meituan/longcat-2.0",
@@ -34986,8 +35334,8 @@
 			],
 			"cost": {
 				"input": 0.3,
-				"output": 1.2,
-				"cacheRead": 0.04,
+				"output": 1.1,
+				"cacheRead": 0,
 				"cacheWrite": 0
 			},
 			"contextWindow": 131072,
@@ -35265,7 +35613,7 @@
 				"cacheRead": 0.03,
 				"cacheWrite": 0
 			},
-			"contextWindow": 196608,
+			"contextWindow": 65536,
 			"maxTokens": 196608,
 			"thinking": {
 				"mode": "effort",
@@ -36018,7 +36366,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 262144,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-thinking": {
 			"id": "moonshotai/kimi-k2-thinking",
@@ -36099,7 +36448,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.6": {
 			"id": "moonshotai/kimi-k2.6",
@@ -36150,7 +36500,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.7-code": {
 			"id": "moonshotai/kimi-k2.7-code",
@@ -36337,7 +36688,8 @@
 			"contextWindow": 131072,
 			"maxTokens": 163840,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"nex-agi/nex-n2-mini": {
 			"id": "nex-agi/nex-n2-mini",
@@ -38155,6 +38507,36 @@
 				"output": 30,
 				"cacheRead": 0.5,
 				"cacheWrite": 6.25
+			},
+			"contextWindow": 1050000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh",
+					"max"
+				]
+			}
+		},
+		"openai/gpt-5.6-sol-discounted": {
+			"id": "openai/gpt-5.6-sol-discounted",
+			"name": "GPT-5.6 Sol",
+			"api": "openai-completions",
+			"provider": "kilo",
+			"baseUrl": "https://api.kilo.ai/api/gateway",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -40084,7 +40466,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 262144
+			"maxTokens": 16384
 		},
 		"qwen/qwen3-next-80b-a3b-thinking": {
 			"id": "qwen/qwen3-next-80b-a3b-thinking",
@@ -40303,7 +40685,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 81920,
+			"maxTokens": 262144,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -40361,7 +40743,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 65536,
+			"maxTokens": 262144,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -40534,8 +40916,8 @@
 				"cacheRead": 0,
 				"cacheWrite": 0
 			},
-			"contextWindow": 131072,
-			"maxTokens": 131072,
+			"contextWindow": 262144,
+			"maxTokens": 65536,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -40680,7 +41062,8 @@
 			"contextWindow": 1000000,
 			"maxTokens": 32000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-plus:free": {
 			"id": "qwen/qwen3.6-plus:free",
@@ -40701,7 +41084,8 @@
 			"contextWindow": 1000000,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.7-flash": {
 			"id": "qwen/qwen3.7-flash",
@@ -40808,7 +41192,8 @@
 			"contextWindow": 1000000,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.8-2.4t-a95b": {
 			"id": "qwen/qwen3.8-2.4t-a95b",
@@ -40850,10 +41235,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.45,
-				"output": 3.2,
-				"cacheRead": 0.05,
-				"cacheWrite": 0
+				"input": 0.55,
+				"output": 3.3,
+				"cacheRead": 0.11,
+				"cacheWrite": 0.6875
 			},
 			"contextWindow": 262144,
 			"maxTokens": 131072,
@@ -41347,7 +41732,8 @@
 					"xhigh",
 					"max"
 				]
-			}
+			},
+			"supportsComputerUse": false
 		},
 		"stealth/qwen3.6-plus": {
 			"id": "stealth/qwen3.6-plus",
@@ -42655,12 +43041,12 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.55,
-				"output": 2.2,
-				"cacheRead": 0.11,
+				"input": 0.5,
+				"output": 2,
+				"cacheRead": 0.1,
 				"cacheWrite": 0
 			},
-			"contextWindow": 204800,
+			"contextWindow": 202752,
 			"maxTokens": 131072,
 			"thinking": {
 				"mode": "effort",
@@ -42886,7 +43272,7 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 1048576,
-			"maxTokens": 262144,
+			"maxTokens": 131072,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -42916,7 +43302,38 @@
 			},
 			"contextWindow": 1048576,
 			"maxTokens": 131072,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5",
+			"supportsComputerUseConfig": false
+		},
+		"z-ai/glm-5.3": {
+			"id": "z-ai/glm-5.3",
+			"name": "GLM-5.3",
+			"api": "openai-completions",
+			"provider": "kilo",
+			"baseUrl": "https://api.kilo.ai/api/gateway",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1048576,
+			"maxTokens": 131072,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"high",
+					"max"
+				],
+				"defaultLevel": "max",
+				"requiresEffort": true
+			}
 		},
 		"z-ai/glm-5v-turbo": {
 			"id": "z-ai/glm-5v-turbo",
@@ -43053,6 +43470,7 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -43088,6 +43506,7 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -43117,7 +43536,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 262144,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2-turbo-preview": {
 			"id": "kimi-k2-turbo-preview",
@@ -43142,7 +43562,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 32000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2.5": {
 			"id": "kimi-k2.5",
@@ -43177,7 +43598,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		}
 	},
 	"meta": {
@@ -43251,7 +43673,7 @@
 		},
 		"muse-spark-1.2-contributor": {
 			"id": "muse-spark-1.2-contributor",
-			"name": "Muse Spark 1.2 Contributor (Data Used for Training)",
+			"name": "Muse Spark 1.2 Contributor",
 			"api": "openai-responses",
 			"provider": "meta",
 			"baseUrl": "https://api.meta.ai/v1",
@@ -45757,7 +46179,8 @@
 			"contextWindow": 1000000,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"allenai/molmo-2-8b": {
 			"id": "allenai/molmo-2-8b",
@@ -47268,7 +47691,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-5-sonnet-20240620": {
 			"id": "claude-3-5-sonnet-20240620",
@@ -47290,7 +47714,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-5-sonnet-20241022": {
 			"id": "claude-3-5-sonnet-20241022",
@@ -47312,7 +47737,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-20250219": {
 			"id": "claude-3-7-sonnet-20250219",
@@ -47333,7 +47759,8 @@
 			"contextWindow": 4096,
 			"maxTokens": 4096,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-reasoner": {
 			"id": "claude-3-7-sonnet-reasoner",
@@ -47354,7 +47781,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-thinking": {
 			"id": "claude-3-7-sonnet-thinking",
@@ -47375,7 +47803,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-thinking:1024": {
 			"id": "claude-3-7-sonnet-thinking:1024",
@@ -47396,7 +47825,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-thinking:128000": {
 			"id": "claude-3-7-sonnet-thinking:128000",
@@ -47417,7 +47847,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-thinking:32768": {
 			"id": "claude-3-7-sonnet-thinking:32768",
@@ -47438,7 +47869,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-3-7-sonnet-thinking:8192": {
 			"id": "claude-3-7-sonnet-thinking:8192",
@@ -47459,7 +47891,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-haiku-4-5-20251001": {
 			"id": "claude-haiku-4-5-20251001",
@@ -48596,6 +49029,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"disableReasoningOnToolChoice": false,
 				"requiresReasoningContentForToolCalls": false,
@@ -48706,7 +49140,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-reasoner": {
 			"id": "deepseek-reasoner",
@@ -48727,7 +49162,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-reasoner-cheaper": {
 			"id": "deepseek-reasoner-cheaper",
@@ -48854,7 +49290,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2:thinking": {
 			"id": "deepseek/deepseek-v3.2:thinking",
@@ -48962,7 +49399,9 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUseConfig": false
 		},
 		"deepseek/deepseek-v4-flash-0731-cheaper:thinking": {
 			"id": "deepseek/deepseek-v4-flash-0731-cheaper:thinking",
@@ -48990,7 +49429,9 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUseConfig": false
 		},
 		"deepseek/deepseek-v4-flash-0731:thinking": {
 			"id": "deepseek/deepseek-v4-flash-0731:thinking",
@@ -49180,7 +49621,9 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUseConfig": false
 		},
 		"deepseek/deepseek-v4-pro-cheaper:thinking": {
 			"id": "deepseek/deepseek-v4-pro-cheaper:thinking",
@@ -49208,7 +49651,9 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUseConfig": false
 		},
 		"deepseek/deepseek-v4-pro:thinking": {
 			"id": "deepseek/deepseek-v4-pro:thinking",
@@ -49359,7 +49804,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false
 		},
 		"doubao-1-5-thinking-pro-250415": {
 			"id": "doubao-1-5-thinking-pro-250415",
@@ -56460,7 +56906,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 262144,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-thinking-turbo-original": {
 			"id": "moonshotai/kimi-k2-thinking-turbo-original",
@@ -56481,7 +56928,8 @@
 			"contextWindow": 262000,
 			"maxTokens": 64000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.5": {
 			"id": "moonshotai/kimi-k2.5",
@@ -56933,7 +57381,8 @@
 			"contextWindow": 131072,
 			"maxTokens": 163840,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"nex-agi/nex-n2-mini": {
 			"id": "nex-agi/nex-n2-mini",
@@ -58529,10 +58978,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -58559,10 +59008,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -58649,10 +59098,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -58679,10 +59128,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -60083,13 +60532,14 @@
 		},
 		"Qwen/Qwen3-VL-235B-A22B-Instruct": {
 			"id": "Qwen/Qwen3-VL-235B-A22B-Instruct",
-			"name": "Qwen/Qwen3-VL-235B-A22B-Instruct",
+			"name": "Qwen3 VL 235B A22B Instruct",
 			"api": "openai-completions",
 			"provider": "nanogpt",
 			"baseUrl": "https://nano-gpt.com/api/v1",
 			"reasoning": false,
 			"input": [
-				"text"
+				"text",
+				"image"
 			],
 			"cost": {
 				"input": 0,
@@ -60203,7 +60653,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/Qwen3.6-35B-A3B": {
 			"id": "qwen/Qwen3.6-35B-A3B",
@@ -60254,7 +60705,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/Qwen3.6-35B-A3B:thinking": {
 			"id": "qwen/Qwen3.6-35B-A3B:thinking",
@@ -60566,7 +61018,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Blossom-V6.4-Derestricted": {
 			"id": "Qwen3.5-27B-Blossom-V6.4-Derestricted",
@@ -60587,7 +61040,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Blossom-V6.4-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Blossom-V6.4-Derestricted-Lite",
@@ -60608,7 +61062,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-BlueStar-Derestricted": {
 			"id": "Qwen3.5-27B-BlueStar-Derestricted",
@@ -60629,7 +61084,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-BlueStar-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-BlueStar-Derestricted-Lite",
@@ -60650,7 +61106,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-BlueStar-v2-Derestricted": {
 			"id": "Qwen3.5-27B-BlueStar-v2-Derestricted",
@@ -60671,7 +61128,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-BlueStar-v2-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-BlueStar-v2-Derestricted-Lite",
@@ -60692,7 +61150,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-BlueStar-v3-Derestricted": {
 			"id": "Qwen3.5-27B-BlueStar-v3-Derestricted",
@@ -60742,7 +61201,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-Derestricted": {
 			"id": "Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-Derestricted",
@@ -60763,7 +61223,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-Derestricted-Lite",
@@ -60784,7 +61245,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"Qwen3.5-27B-Dark-Nexus-v3.0-Derestricted": {
 			"id": "Qwen3.5-27B-Dark-Nexus-v3.0-Derestricted",
@@ -60805,7 +61267,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Dark-Nexus-v3.0-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Dark-Nexus-v3.0-Derestricted-Lite",
@@ -60826,7 +61289,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Derestricted": {
 			"id": "Qwen3.5-27B-Derestricted",
@@ -60847,7 +61311,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Derestricted-Aconite-v0": {
 			"id": "Qwen3.5-27B-Derestricted-Aconite-v0",
@@ -60868,7 +61333,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-earica-Derestricted": {
 			"id": "Qwen3.5-27B-earica-Derestricted",
@@ -60889,7 +61355,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-earica-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-earica-Derestricted-Lite",
@@ -60910,7 +61377,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Enteles-v0-Derestricted": {
 			"id": "Qwen3.5-27B-Enteles-v0-Derestricted",
@@ -60931,7 +61399,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Enteles-v0-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Enteles-v0-Derestricted-Lite",
@@ -60952,7 +61421,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Infracelestial": {
 			"id": "Qwen3.5-27B-Infracelestial",
@@ -60973,7 +61443,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Marvin-DPO-V2-Derestricted": {
 			"id": "Qwen3.5-27B-Marvin-DPO-V2-Derestricted",
@@ -60994,7 +61465,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Marvin-DPO-V2-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Marvin-DPO-V2-Derestricted-Lite",
@@ -61015,7 +61487,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Marvin-V2-Derestricted": {
 			"id": "Qwen3.5-27B-Marvin-V2-Derestricted",
@@ -61036,7 +61509,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Marvin-V2-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Marvin-V2-Derestricted-Lite",
@@ -61057,7 +61531,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Melinoe-Derestricted": {
 			"id": "Qwen3.5-27B-Melinoe-Derestricted",
@@ -61078,7 +61553,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Melinoe-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Melinoe-Derestricted-Lite",
@@ -61099,7 +61575,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Musica-v1": {
 			"id": "Qwen3.5-27B-Musica-v1",
@@ -61120,7 +61597,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-NaNovel-Derestricted": {
 			"id": "Qwen3.5-27B-NaNovel-Derestricted",
@@ -61141,7 +61619,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-NaNovel-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-NaNovel-Derestricted-Lite",
@@ -61162,7 +61641,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Omega-Evolution-v2.0-Derestricted": {
 			"id": "Qwen3.5-27B-Omega-Evolution-v2.0-Derestricted",
@@ -61183,7 +61663,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Omega-Evolution-v2.0-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Omega-Evolution-v2.0-Derestricted-Lite",
@@ -61204,7 +61685,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Omega-Evolution-v2.2-Derestricted": {
 			"id": "Qwen3.5-27B-Omega-Evolution-v2.2-Derestricted",
@@ -61225,7 +61707,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Omega-Evolution-v2.2-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Omega-Evolution-v2.2-Derestricted-Lite",
@@ -61246,7 +61729,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Omnimerge-v2-Derestricted": {
 			"id": "Qwen3.5-27B-Omnimerge-v2-Derestricted",
@@ -61267,7 +61751,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Omnimerge-v2-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Omnimerge-v2-Derestricted-Lite",
@@ -61288,7 +61773,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Queen-Derestricted": {
 			"id": "Qwen3.5-27B-Queen-Derestricted",
@@ -61338,7 +61824,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-QuettaLLMs-Koreasoner-V3-Derestricted": {
 			"id": "Qwen3.5-27B-QuettaLLMs-Koreasoner-V3-Derestricted",
@@ -61359,7 +61846,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-QuettaLLMs-Koreasoner-V3-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-QuettaLLMs-Koreasoner-V3-Derestricted-Lite",
@@ -61380,7 +61868,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-RpRMax-v1": {
 			"id": "Qwen3.5-27B-RpRMax-v1",
@@ -61401,7 +61890,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Vivid-Durian": {
 			"id": "Qwen3.5-27B-Vivid-Durian",
@@ -61422,7 +61912,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Writer-Derestricted": {
 			"id": "Qwen3.5-27B-Writer-Derestricted",
@@ -61443,7 +61934,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Writer-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Writer-Derestricted-Lite",
@@ -61464,7 +61956,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Writer-V2-Derestricted": {
 			"id": "Qwen3.5-27B-Writer-V2-Derestricted",
@@ -61485,7 +61978,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"Qwen3.5-27B-Writer-V2-Derestricted-Lite": {
 			"id": "Qwen3.5-27B-Writer-V2-Derestricted-Lite",
@@ -61506,7 +62000,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.5-27b:thinking": {
 			"id": "qwen3.5-27b:thinking",
@@ -61672,7 +62167,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.5-omni-flash": {
 			"id": "qwen3.5-omni-flash",
@@ -61693,7 +62189,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.5-omni-plus": {
 			"id": "qwen3.5-omni-plus",
@@ -61714,7 +62211,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.6-max-preview": {
 			"id": "qwen3.6-max-preview",
@@ -61735,7 +62233,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.7-flash": {
 			"id": "qwen3.7-flash",
@@ -61921,9 +62420,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.4,
-				"output": 3,
-				"cacheRead": 0.2,
+				"input": 0.2,
+				"output": 1.4,
+				"cacheRead": 0.04,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
@@ -61950,9 +62449,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.4,
-				"output": 3,
-				"cacheRead": 0.2,
+				"input": 0.2,
+				"output": 1.4,
+				"cacheRead": 0.04,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
@@ -62015,7 +62514,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen3.8-max:thinking": {
 			"id": "qwen3.8-max:thinking",
@@ -62955,7 +63455,8 @@
 			"contextWindow": 163840,
 			"maxTokens": 32768,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"TEE/deepseek-v3.1": {
 			"id": "TEE/deepseek-v3.1",
@@ -62976,7 +63477,8 @@
 			"contextWindow": 163840,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"TEE/deepseek-v3.2": {
 			"id": "TEE/deepseek-v3.2",
@@ -62997,7 +63499,8 @@
 			"contextWindow": 160000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"TEE/deepseek-v4-flash": {
 			"id": "TEE/deepseek-v4-flash",
@@ -63053,7 +63556,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"TEE/deepseek-v4-pro-0813": {
 			"id": "TEE/deepseek-v4-pro-0813",
@@ -63080,7 +63584,9 @@
 					"high",
 					"max"
 				]
-			}
+			},
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUse": false
 		},
 		"TEE/deepseek-v4-pro-0813:thinking": {
 			"id": "TEE/deepseek-v4-pro-0813:thinking",
@@ -63107,7 +63613,9 @@
 					"high",
 					"max"
 				]
-			}
+			},
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUse": false
 		},
 		"TEE/deepseek-v4-pro:thinking": {
 			"id": "TEE/deepseek-v4-pro:thinking",
@@ -63136,7 +63644,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"TEE/gemma-3-27b-it": {
 			"id": "TEE/gemma-3-27b-it",
@@ -63340,7 +63849,8 @@
 			"contextWindow": 204800,
 			"maxTokens": 131072,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"TEE/glm-5-1": {
 			"id": "TEE/glm-5-1",
@@ -63379,7 +63889,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"TEE/glm-5.1": {
 			"id": "TEE/glm-5.1",
@@ -63537,7 +64048,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 262144,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"TEE/kimi-k2.5": {
 			"id": "TEE/kimi-k2.5",
@@ -63576,7 +64088,8 @@
 				}
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"TEE/kimi-k2.6": {
 			"id": "TEE/kimi-k2.6",
@@ -63915,7 +64428,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"TEE/qwen3.5-397b-a17b": {
 			"id": "TEE/qwen3.5-397b-a17b",
@@ -63936,7 +64450,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"TEE/qwen3.6-27b": {
 			"id": "TEE/qwen3.6-27b",
@@ -63957,7 +64472,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 262140,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"TEE/qwen3.6-35b-a3b": {
 			"id": "TEE/qwen3.6-35b-a3b",
@@ -63978,7 +64494,8 @@
 			"contextWindow": 256000,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"TEE/qwen3.6-35b-a3b-uncensored": {
 			"id": "TEE/qwen3.6-35b-a3b-uncensored",
@@ -66369,7 +66886,8 @@
 			"contextWindow": null,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"zai-org/glm-5-original": {
 			"id": "zai-org/glm-5-original",
@@ -66814,30 +67332,8 @@
 			"maxTokens": 16000,
 			"supportsTools": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
-		},
-		"deepseek/deepseek-ocr": {
-			"id": "deepseek/deepseek-ocr",
-			"name": "DeepSeek-OCR",
-			"api": "openai-completions",
-			"provider": "novita",
-			"baseUrl": "https://api.novita.ai/openai/v1",
-			"reasoning": false,
-			"input": [
-				"text",
-				"image"
-			],
-			"cost": {
-				"input": 0.03,
-				"output": 0.03,
-				"cacheRead": 0,
-				"cacheWrite": 0
-			},
-			"contextWindow": 8192,
-			"maxTokens": 8192,
-			"supportsTools": false,
-			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-ocr-2": {
 			"id": "deepseek/deepseek-ocr-2",
@@ -66889,7 +67385,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-r1-0528": {
 			"id": "deepseek/deepseek-r1-0528",
@@ -66918,7 +67415,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-r1-0528-qwen3-8b": {
 			"id": "deepseek/deepseek-r1-0528-qwen3-8b",
@@ -66940,7 +67438,8 @@
 			"maxTokens": 32000,
 			"supportsTools": false,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-r1-distill-llama-70b": {
 			"id": "deepseek/deepseek-r1-distill-llama-70b",
@@ -66998,7 +67497,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-r1/community": {
 			"id": "deepseek/deepseek-r1/community",
@@ -67049,7 +67549,8 @@
 			"maxTokens": 65536,
 			"supportsTools": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3-turbo": {
 			"id": "deepseek/deepseek-v3-turbo",
@@ -67071,7 +67572,8 @@
 			"maxTokens": 16000,
 			"supportsTools": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.1": {
 			"id": "deepseek/deepseek-v3.1",
@@ -67100,7 +67602,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.1-terminus": {
 			"id": "deepseek/deepseek-v3.1-terminus",
@@ -67129,7 +67632,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2": {
 			"id": "deepseek/deepseek-v3.2",
@@ -67158,7 +67662,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2-exp": {
 			"id": "deepseek/deepseek-v3.2-exp",
@@ -67187,7 +67692,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3/community": {
 			"id": "deepseek/deepseek-v3/community",
@@ -67239,7 +67745,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-flash-0731": {
 			"id": "deepseek/deepseek-v4-flash-0731",
@@ -67269,7 +67776,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-pro": {
 			"id": "deepseek/deepseek-v4-pro",
@@ -67299,7 +67807,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-pro-0813": {
 			"id": "deepseek/deepseek-v4-pro-0813",
@@ -67314,7 +67823,7 @@
 			"cost": {
 				"input": 1.32,
 				"output": 3.96,
-				"cacheRead": 0.35,
+				"cacheRead": 0.132,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1048576,
@@ -67329,7 +67838,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"dev/glm46": {
 			"id": "dev/glm46",
@@ -67434,7 +67944,7 @@
 		},
 		"google/gemma-4-31b-it": {
 			"id": "google/gemma-4-31b-it",
-			"name": "Gemma 4 31B IT",
+			"name": "Gemma 4 31B",
 			"api": "openai-completions",
 			"provider": "novita",
 			"baseUrl": "https://api.novita.ai/openai/v1",
@@ -67585,6 +68095,37 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false
+		},
+		"inclusionai/ling-3.0-flash-fast": {
+			"id": "inclusionai/ling-3.0-flash-fast",
+			"name": "Ling 3.0 Flash Fast",
+			"api": "openai-completions",
+			"provider": "novita",
+			"baseUrl": "https://api.novita.ai/openai/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 0.06,
+				"output": 0.18,
+				"cacheRead": 0.012,
+				"cacheWrite": 0
+			},
+			"contextWindow": 262144,
+			"maxTokens": 32768,
+			"supportsTools": true,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
 		},
 		"inclusionai/ring-2.6-1t": {
 			"id": "inclusionai/ring-2.6-1t",
@@ -68131,7 +68672,8 @@
 			"maxTokens": 100352,
 			"supportsTools": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-instruct": {
 			"id": "moonshotai/kimi-k2-instruct",
@@ -68153,7 +68695,8 @@
 			"maxTokens": 100352,
 			"supportsTools": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-thinking": {
 			"id": "moonshotai/kimi-k2-thinking",
@@ -68186,7 +68729,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.5": {
 			"id": "moonshotai/kimi-k2.5",
@@ -68219,7 +68763,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.6": {
 			"id": "moonshotai/kimi-k2.6",
@@ -68252,7 +68797,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.7-code": {
 			"id": "moonshotai/kimi-k2.7-code",
@@ -68285,7 +68831,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k3": {
 			"id": "moonshotai/kimi-k3",
@@ -68321,7 +68868,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"nousresearch/hermes-2-pro-llama-3-8b": {
 			"id": "nousresearch/hermes-2-pro-llama-3-8b",
@@ -68679,7 +69227,7 @@
 		},
 		"qwen/qwen3-next-80b-a3b-instruct": {
 			"id": "qwen/qwen3-next-80b-a3b-instruct",
-			"name": "Qwen3-Next 80B-A3B Instruct",
+			"name": "Qwen3-Next-80B-A3B-Instruct",
 			"api": "openai-completions",
 			"provider": "novita",
 			"baseUrl": "https://api.novita.ai/openai/v1",
@@ -68864,7 +69412,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-27b": {
 			"id": "qwen/qwen3.5-27b",
@@ -68896,7 +69445,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-35b-a3b": {
 			"id": "qwen/qwen3.5-35b-a3b",
@@ -68928,7 +69478,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-397b-a17b": {
 			"id": "qwen/qwen3.5-397b-a17b",
@@ -68960,7 +69511,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-plus": {
 			"id": "qwen/qwen3.5-plus",
@@ -68992,7 +69544,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-27b": {
 			"id": "qwen/qwen3.6-27b",
@@ -69024,7 +69577,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-35b-a3b": {
 			"id": "qwen/qwen3.6-35b-a3b",
@@ -69056,7 +69610,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-plus": {
 			"id": "qwen/qwen3.6-plus",
@@ -69088,7 +69643,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.7-max": {
 			"id": "qwen/qwen3.7-max",
@@ -69119,7 +69675,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.8-max": {
 			"id": "qwen/qwen3.8-max",
@@ -69151,7 +69708,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"sao10k/l3-70b-euryale-v2.1": {
 			"id": "sao10k/l3-70b-euryale-v2.1",
@@ -69678,7 +70236,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"zai-org/glm-5-turbo": {
 			"id": "zai-org/glm-5-turbo",
@@ -69710,7 +70269,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"zai-org/glm-5.1": {
 			"id": "zai-org/glm-5.1",
@@ -69742,7 +70302,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"zai-org/glm-5.2": {
 			"id": "zai-org/glm-5.2",
@@ -69774,7 +70335,40 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
+		},
+		"zai-org/glm-5.3": {
+			"id": "zai-org/glm-5.3",
+			"name": "GLM 5.3 Preview",
+			"api": "openai-completions",
+			"provider": "novita",
+			"baseUrl": "https://api.novita.ai/openai/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1048576,
+			"maxTokens": 131072,
+			"supportsTools": true,
+			"tokenizer": "glm5",
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"high",
+					"max"
+				],
+				"defaultLevel": "max",
+				"requiresEffort": true
+			},
+			"supportsComputerUse": false
 		},
 		"zai-org/glm-5v-turbo": {
 			"id": "zai-org/glm-5v-turbo",
@@ -69807,7 +70401,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		}
 	},
 	"nvidia": {
@@ -73494,7 +74089,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-v3.2": {
 			"id": "deepseek-v3.2",
@@ -73523,7 +74119,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-v4-flash": {
 			"id": "deepseek-v4-flash",
@@ -73608,7 +74205,8 @@
 			"contextWindow": 1048576,
 			"maxTokens": 65536,
 			"omitMaxOutputTokens": true,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-v4-pro": {
 			"id": "deepseek-v4-pro",
@@ -73665,7 +74263,8 @@
 			"contextWindow": 1048576,
 			"maxTokens": 65536,
 			"omitMaxOutputTokens": true,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek-v4-pro:preview": {
 			"id": "deepseek-v4-pro:preview",
@@ -73694,7 +74293,8 @@
 			"contextWindow": 524288,
 			"maxTokens": 65536,
 			"omitMaxOutputTokens": true,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"devstral-2:123b": {
 			"id": "devstral-2:123b",
@@ -73964,7 +74564,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"glm-5.1": {
 			"id": "glm-5.1",
@@ -74110,7 +74711,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2:1t": {
 			"id": "kimi-k2:1t",
@@ -74132,7 +74734,8 @@
 			"maxTokens": 262144,
 			"omitMaxOutputTokens": true,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"kimi-k2.5": {
 			"id": "kimi-k2.5",
@@ -76546,7 +77149,14 @@
 				"input": 0.2,
 				"output": 1.2,
 				"cacheRead": 0.02,
-				"cacheWrite": 0.25
+				"cacheWrite": 0.25,
+				"longContext": {
+					"inputThreshold": 272000,
+					"input": 0.4,
+					"output": 1.8,
+					"cacheRead": 0.04,
+					"cacheWrite": 0.5
+				}
 			},
 			"remoteCompaction": {
 				"enabled": true,
@@ -76585,7 +77195,14 @@
 				"input": 5,
 				"output": 30,
 				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"cacheWrite": 6.25,
+				"longContext": {
+					"inputThreshold": 272000,
+					"input": 10,
+					"output": 45,
+					"cacheRead": 1,
+					"cacheWrite": 12.5
+				}
 			},
 			"remoteCompaction": {
 				"enabled": true,
@@ -76624,7 +77241,14 @@
 				"input": 2,
 				"output": 12,
 				"cacheRead": 0.2,
-				"cacheWrite": 2.5
+				"cacheWrite": 2.5,
+				"longContext": {
+					"inputThreshold": 272000,
+					"input": 4,
+					"output": 18,
+					"cacheRead": 0.4,
+					"cacheWrite": 5
+				}
 			},
 			"remoteCompaction": {
 				"enabled": true,
@@ -77022,7 +77646,7 @@
 		},
 		"gpt-5.6-luna": {
 			"id": "gpt-5.6-luna",
-			"name": "GPT-5.6 Luna (2x usage)",
+			"name": "GPT-5.6 Luna",
 			"api": "openai-responses",
 			"provider": "opencode-go",
 			"baseUrl": "https://opencode.ai/zen/go/v1",
@@ -77032,10 +77656,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.1,
-				"output": 0.6,
-				"cacheRead": 0.01,
-				"cacheWrite": 0.125
+				"input": 0.2,
+				"output": 1.2,
+				"cacheRead": 0.02,
+				"cacheWrite": 0.25
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -77082,7 +77706,7 @@
 		},
 		"hy3": {
 			"id": "hy3",
-			"name": "Hy3",
+			"name": "Hy3 (8x usage)",
 			"api": "openai-completions",
 			"provider": "opencode-go",
 			"baseUrl": "https://opencode.ai/zen/go/v1",
@@ -77091,9 +77715,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.14,
-				"output": 0.58,
-				"cacheRead": 0.035,
+				"input": 0.0175,
+				"output": 0.0725,
+				"cacheRead": 0.004375,
 				"cacheWrite": 0
 			},
 			"contextWindow": 256000,
@@ -77436,6 +78060,36 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 1000000,
+			"maxTokens": 131072,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			}
+		},
+		"muse-spark-1.2-contributor": {
+			"id": "muse-spark-1.2-contributor",
+			"name": "Muse Spark 1.2 Contributor",
+			"api": "openai-responses",
+			"provider": "opencode-go",
+			"baseUrl": "https://opencode.ai/zen/go/v1",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.1,
+				"output": 0.2,
+				"cacheRead": 0.002,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1048576,
 			"maxTokens": 131072,
 			"thinking": {
 				"mode": "effort",
@@ -78959,7 +79613,7 @@
 		},
 		"gpt-5.6-sol": {
 			"id": "gpt-5.6-sol",
-			"name": "GPT-5.6 Sol",
+			"name": "GPT-5.6 Sol (50% Off)",
 			"api": "openai-responses",
 			"provider": "opencode-zen",
 			"baseUrl": "https://opencode.ai/zen/v1",
@@ -78969,10 +79623,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -80060,7 +80714,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"~anthropic/claude-haiku-latest": {
 			"id": "~anthropic/claude-haiku-latest",
@@ -80091,7 +80746,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"~anthropic/claude-opus-latest": {
 			"id": "~anthropic/claude-opus-latest",
@@ -80122,7 +80778,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"~anthropic/claude-sonnet-latest": {
 			"id": "~anthropic/claude-sonnet-latest",
@@ -80153,7 +80810,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"~deepseek/deepseek-v4-flash-latest": {
 			"id": "~deepseek/deepseek-v4-flash-latest",
@@ -80166,13 +80824,13 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.060300000000000006,
-				"output": 0.12060000000000001,
-				"cacheRead": 0.01206,
+				"input": 0.07,
+				"output": 0.14,
+				"cacheRead": 0.014,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1310720,
-			"maxTokens": 262144,
+			"maxTokens": 1048576,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -80182,7 +80840,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"~google/gemini-flash-latest": {
 			"id": "~google/gemini-flash-latest",
@@ -80289,10 +80948,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -80369,6 +81028,35 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false
+		},
+		"~z-ai/glm-latest": {
+			"id": "~z-ai/glm-latest",
+			"name": "GLM Latest",
+			"api": "openrouter",
+			"provider": "openrouter",
+			"baseUrl": "https://openrouter.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1048576,
+			"maxTokens": 131072,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				]
+			},
+			"supportsComputerUse": false
 		},
 		"ai21/jamba-large-1.7": {
 			"id": "ai21/jamba-large-1.7",
@@ -80682,7 +81370,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 4096,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.5-haiku": {
 			"id": "anthropic/claude-3.5-haiku",
@@ -80704,7 +81393,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.5-sonnet": {
 			"id": "anthropic/claude-3.5-sonnet",
@@ -80726,7 +81416,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.7-sonnet": {
 			"id": "anthropic/claude-3.7-sonnet",
@@ -80757,7 +81448,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.7-sonnet:thinking": {
 			"id": "anthropic/claude-3.7-sonnet:thinking",
@@ -80788,7 +81480,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-fable-5": {
 			"id": "anthropic/claude-fable-5",
@@ -80820,7 +81513,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"anthropic/claude-fable-5:batch": {
 			"id": "anthropic/claude-fable-5:batch",
@@ -80852,7 +81546,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"anthropic/claude-haiku-4.5": {
 			"id": "anthropic/claude-haiku-4.5",
@@ -80883,7 +81578,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-haiku-4.5:batch": {
 			"id": "anthropic/claude-haiku-4.5:batch",
@@ -80914,7 +81610,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4": {
 			"id": "anthropic/claude-opus-4",
@@ -80945,7 +81642,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.1": {
 			"id": "anthropic/claude-opus-4.1",
@@ -80976,7 +81674,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.1:batch": {
 			"id": "anthropic/claude-opus-4.1:batch",
@@ -81007,7 +81706,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.5": {
 			"id": "anthropic/claude-opus-4.5",
@@ -81038,7 +81738,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.5:batch": {
 			"id": "anthropic/claude-opus-4.5:batch",
@@ -81069,7 +81770,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.6": {
 			"id": "anthropic/claude-opus-4.6",
@@ -81100,7 +81802,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.6-fast": {
 			"id": "anthropic/claude-opus-4.6-fast",
@@ -81131,7 +81834,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.6:batch": {
 			"id": "anthropic/claude-opus-4.6:batch",
@@ -81162,7 +81866,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.7": {
 			"id": "anthropic/claude-opus-4.7",
@@ -81194,7 +81899,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.7-fast": {
 			"id": "anthropic/claude-opus-4.7-fast",
@@ -81226,7 +81932,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.7:batch": {
 			"id": "anthropic/claude-opus-4.7:batch",
@@ -81258,7 +81965,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.8": {
 			"id": "anthropic/claude-opus-4.8",
@@ -81290,7 +81998,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.8-fast": {
 			"id": "anthropic/claude-opus-4.8-fast",
@@ -81322,7 +82031,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.8:batch": {
 			"id": "anthropic/claude-opus-4.8:batch",
@@ -81354,7 +82064,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-5": {
 			"id": "anthropic/claude-opus-5",
@@ -81386,7 +82097,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"anthropic/claude-opus-5-fast": {
 			"id": "anthropic/claude-opus-5-fast",
@@ -81418,7 +82130,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"anthropic/claude-opus-5:batch": {
 			"id": "anthropic/claude-opus-5:batch",
@@ -81450,7 +82163,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5"
 		},
 		"anthropic/claude-sonnet-4": {
 			"id": "anthropic/claude-sonnet-4",
@@ -81481,7 +82195,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-4.5": {
 			"id": "anthropic/claude-sonnet-4.5",
@@ -81512,7 +82227,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-4.5:batch": {
 			"id": "anthropic/claude-sonnet-4.5:batch",
@@ -81543,7 +82259,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-4.6": {
 			"id": "anthropic/claude-sonnet-4.6",
@@ -81574,7 +82291,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-4.6:batch": {
 			"id": "anthropic/claude-sonnet-4.6:batch",
@@ -81605,7 +82323,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-5": {
 			"id": "anthropic/claude-sonnet-5",
@@ -81637,7 +82356,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"anthropic/claude-sonnet-5:batch": {
 			"id": "anthropic/claude-sonnet-5:batch",
@@ -81669,7 +82389,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"arcee-ai/trinity-large-preview": {
 			"id": "arcee-ai/trinity-large-preview",
@@ -82255,7 +82976,8 @@
 			"contextWindow": 163840,
 			"maxTokens": 16000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-chat-v3-0324": {
 			"id": "deepseek/deepseek-chat-v3-0324",
@@ -82268,15 +82990,16 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.27,
-				"output": 1.12,
+				"input": 0.25,
+				"output": 1,
 				"cacheRead": 0.135,
 				"cacheWrite": 0
 			},
 			"contextWindow": 163840,
-			"maxTokens": 65536,
+			"maxTokens": 163840,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-chat-v3.1": {
 			"id": "deepseek/deepseek-chat-v3.1",
@@ -82303,7 +83026,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-r1": {
 			"id": "deepseek/deepseek-r1",
@@ -82330,7 +83054,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-r1-0528": {
 			"id": "deepseek/deepseek-r1-0528",
@@ -82357,7 +83082,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.1-terminus": {
 			"id": "deepseek/deepseek-v3.1-terminus",
@@ -82371,12 +83097,12 @@
 			],
 			"cost": {
 				"input": 0.27,
-				"output": 0.95,
+				"output": 1,
 				"cacheRead": 0.13,
 				"cacheWrite": 0
 			},
 			"contextWindow": 163840,
-			"maxTokens": 32768,
+			"maxTokens": 163840,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -82384,7 +83110,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.1-terminus:exacto": {
 			"id": "deepseek/deepseek-v3.1-terminus:exacto",
@@ -82411,7 +83138,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2": {
 			"id": "deepseek/deepseek-v3.2",
@@ -82438,7 +83166,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2-exp": {
 			"id": "deepseek/deepseek-v3.2-exp",
@@ -82465,7 +83194,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-flash": {
 			"id": "deepseek/deepseek-v4-flash",
@@ -82494,7 +83224,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-flash-0731": {
 			"id": "deepseek/deepseek-v4-flash-0731",
@@ -82523,7 +83254,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-flash:free": {
 			"id": "deepseek/deepseek-v4-flash:free",
@@ -82552,7 +83284,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-pro": {
 			"id": "deepseek/deepseek-v4-pro",
@@ -82565,13 +83298,13 @@
 				"text"
 			],
 			"cost": {
-				"input": 1.32,
-				"output": 3.9600000000000004,
-				"cacheRead": 0.044,
+				"input": 1.44,
+				"output": 2.88,
+				"cacheRead": 0.1215,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1048576,
-			"maxTokens": 384000,
+			"maxTokens": 393216,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -82579,7 +83312,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-pro-0813": {
 			"id": "deepseek/deepseek-v4-pro-0813",
@@ -82592,9 +83326,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 1.32,
-				"output": 3.9600000000000004,
-				"cacheRead": 0.044,
+				"input": 1.0559999999999998,
+				"output": 3.168,
+				"cacheRead": 0.035199999999999995,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1048576,
@@ -82608,7 +83342,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"dots-studio/dots-3-note-preview:free": {
 			"id": "dots-studio/dots-3-note-preview:free",
@@ -83706,7 +84441,7 @@
 		},
 		"google/gemma-4-31b-it": {
 			"id": "google/gemma-4-31b-it",
-			"name": "Gemma 4 31B IT",
+			"name": "Gemma 4 31B",
 			"api": "openrouter",
 			"provider": "openrouter",
 			"baseUrl": "https://openrouter.ai/api/v1",
@@ -83716,13 +84451,13 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.09999999999999999,
+				"input": 0.09,
 				"output": 0.33999999999999997,
-				"cacheRead": 0.09999999999999999,
+				"cacheRead": 0.049999999999999996,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 262144,
+			"maxTokens": 16384,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -84653,9 +85388,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.22,
+				"input": 0.22499999999999998,
 				"output": 0.8999999999999999,
-				"cacheRead": 0.049999999999999996,
+				"cacheRead": 0.06,
 				"cacheWrite": 0
 			},
 			"contextWindow": 204800,
@@ -84778,9 +85513,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.15,
-				"output": 0.6,
-				"cacheRead": 0.03,
+				"input": 0.3,
+				"output": 1.2,
+				"cacheRead": 0.06,
 				"cacheWrite": 0
 			},
 			"contextWindow": 524288,
@@ -85392,7 +86127,8 @@
 			"contextWindow": 131072,
 			"maxTokens": 100352,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-0905": {
 			"id": "moonshotai/kimi-k2-0905",
@@ -85413,7 +86149,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 100352,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-0905:exacto": {
 			"id": "moonshotai/kimi-k2-0905:exacto",
@@ -85434,7 +86171,8 @@
 			"contextWindow": 262144,
 			"maxTokens": 262144,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-thinking": {
 			"id": "moonshotai/kimi-k2-thinking",
@@ -85465,7 +86203,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.5": {
 			"id": "moonshotai/kimi-k2.5",
@@ -85479,9 +86218,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.5700000000000001,
-				"output": 2.8499999999999996,
-				"cacheRead": 0.095,
+				"input": 0.44999999999999996,
+				"output": 2.25,
+				"cacheRead": 0.07,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
@@ -85496,7 +86235,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.6": {
 			"id": "moonshotai/kimi-k2.6",
@@ -85527,7 +86267,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.6:free": {
 			"id": "moonshotai/kimi-k2.6:free",
@@ -85558,7 +86299,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.7-code": {
 			"id": "moonshotai/kimi-k2.7-code",
@@ -85589,7 +86331,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.7-code:batch": {
 			"id": "moonshotai/kimi-k2.7-code:batch",
@@ -85603,9 +86346,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.475,
-				"output": 2,
-				"cacheRead": 0.095,
+				"input": 0.95,
+				"output": 4,
+				"cacheRead": 0.19,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
@@ -85620,7 +86363,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k3": {
 			"id": "moonshotai/kimi-k3",
@@ -85655,7 +86399,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"nex-agi/deepseek-v3.1-nex-n1": {
 			"id": "nex-agi/deepseek-v3.1-nex-n1",
@@ -85676,7 +86421,8 @@
 			"contextWindow": 131072,
 			"maxTokens": 163840,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"nex-agi/nex-n2-mini": {
 			"id": "nex-agi/nex-n2-mini",
@@ -86075,9 +86821,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.3,
-				"output": 1.7999999999999998,
-				"cacheRead": 0.09999999999999999,
+				"input": 0.6,
+				"output": 3.5999999999999996,
+				"cacheRead": 0.19999999999999998,
 				"cacheWrite": 0
 			},
 			"contextWindow": 512288,
@@ -88002,10 +88748,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.09999999999999999,
-				"output": 0.6,
-				"cacheRead": 0.01,
-				"cacheWrite": 0.125
+				"input": 0.19999999999999998,
+				"output": 1.2,
+				"cacheRead": 0.02,
+				"cacheWrite": 0.25
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -88034,10 +88780,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.09999999999999999,
-				"output": 0.6,
-				"cacheRead": 0.01,
-				"cacheWrite": 0.125
+				"input": 0.19999999999999998,
+				"output": 1.2,
+				"cacheRead": 0.02,
+				"cacheWrite": 0.25
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -88130,10 +88876,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -88162,10 +88908,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 5,
-				"output": 30,
-				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -88194,9 +88940,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 2.5,
-				"output": 15,
-				"cacheRead": 0.25,
+				"input": 1.25,
+				"output": 7.5,
+				"cacheRead": 0.125,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1050000,
@@ -88226,9 +88972,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 2.5,
-				"output": 15,
-				"cacheRead": 0.25,
+				"input": 1.25,
+				"output": 7.5,
+				"cacheRead": 0.125,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1050000,
@@ -88258,10 +89004,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 1,
-				"output": 6,
-				"cacheRead": 0.09999999999999999,
-				"cacheWrite": 1.25
+				"input": 2,
+				"output": 12,
+				"cacheRead": 0.19999999999999998,
+				"cacheWrite": 2.5
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -88290,10 +89036,10 @@
 				"image"
 			],
 			"cost": {
-				"input": 1,
-				"output": 6,
-				"cacheRead": 0.09999999999999999,
-				"cacheWrite": 1.25
+				"input": 2,
+				"output": 12,
+				"cacheRead": 0.19999999999999998,
+				"cacheWrite": 2.5
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -90321,7 +91067,7 @@
 		},
 		"qwen/qwen3-next-80b-a3b-instruct": {
 			"id": "qwen/qwen3-next-80b-a3b-instruct",
-			"name": "Qwen3-Next 80B-A3B Instruct",
+			"name": "Qwen3-Next-80B-A3B-Instruct",
 			"api": "openrouter",
 			"baseUrl": "https://openrouter.ai/api/v1",
 			"provider": "openrouter",
@@ -90330,13 +91076,13 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.09999999999999999,
+				"input": 0.09,
 				"output": 1.1,
 				"cacheRead": 0.07,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 262144,
+			"maxTokens": 16384,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false
 		},
@@ -90588,13 +91334,13 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.29,
-				"output": 2.4,
+				"input": 0.26,
+				"output": 2.08,
 				"cacheRead": 0,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 81920,
+			"maxTokens": 262144,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -90605,7 +91351,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-27b": {
 			"id": "qwen/qwen3.5-27b",
@@ -90636,7 +91383,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-35b-a3b": {
 			"id": "qwen/qwen3.5-35b-a3b",
@@ -90650,13 +91398,13 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.22499999999999998,
-				"output": 1.7999999999999998,
-				"cacheRead": 0.22499999999999998,
+				"input": 0.25,
+				"output": 1.25,
+				"cacheRead": 0.25,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 65536,
+			"maxTokens": 262144,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -90667,7 +91415,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-397b-a17b": {
 			"id": "qwen/qwen3.5-397b-a17b",
@@ -90698,7 +91447,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-9b": {
 			"id": "qwen/qwen3.5-9b",
@@ -90729,7 +91479,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-flash-02-23": {
 			"id": "qwen/qwen3.5-flash-02-23",
@@ -90760,7 +91511,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-plus-02-15": {
 			"id": "qwen/qwen3.5-plus-02-15",
@@ -90791,7 +91543,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.5-plus-20260420": {
 			"id": "qwen/qwen3.5-plus-20260420",
@@ -90822,7 +91575,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-27b": {
 			"id": "qwen/qwen3.6-27b",
@@ -90836,13 +91590,13 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.28900000000000003,
-				"output": 2.4,
+				"input": 0.3,
+				"output": 2,
 				"cacheRead": 0.03,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
-			"maxTokens": 131072,
+			"maxTokens": 65536,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -90853,7 +91607,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-35b-a3b": {
 			"id": "qwen/qwen3.6-35b-a3b",
@@ -90884,7 +91639,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-flash": {
 			"id": "qwen/qwen3.6-flash",
@@ -90915,7 +91671,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-max-preview": {
 			"id": "qwen/qwen3.6-max-preview",
@@ -90945,7 +91702,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-plus": {
 			"id": "qwen/qwen3.6-plus",
@@ -90976,7 +91734,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-plus-preview:free": {
 			"id": "qwen/qwen3.6-plus-preview:free",
@@ -91006,7 +91765,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-plus:free": {
 			"id": "qwen/qwen3.6-plus:free",
@@ -91037,7 +91797,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.7-flash": {
 			"id": "qwen/qwen3.7-flash",
@@ -91068,7 +91829,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.7-max": {
 			"id": "qwen/qwen3.7-max",
@@ -91098,7 +91860,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.7-plus": {
 			"id": "qwen/qwen3.7-plus",
@@ -91129,7 +91892,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.8-2.4t-a95b": {
 			"id": "qwen/qwen3.8-2.4t-a95b",
@@ -91159,7 +91923,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.8-27b": {
 			"id": "qwen/qwen3.8-27b",
@@ -91178,7 +91943,7 @@
 				"cacheRead": 0.049999999999999996,
 				"cacheWrite": 0
 			},
-			"contextWindow": 262144,
+			"contextWindow": 1000000,
 			"maxTokens": 131072,
 			"thinking": {
 				"mode": "effort",
@@ -91190,7 +91955,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.8-max": {
 			"id": "qwen/qwen3.8-max",
@@ -91221,7 +91987,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwq-32b": {
 			"id": "qwen/qwq-32b",
@@ -91758,9 +92525,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 0.5,
-				"output": 2.025,
-				"cacheRead": 0.08499999999999999,
+				"input": 1,
+				"output": 4.05,
+				"cacheRead": 0.16999999999999998,
 				"cacheWrite": 0
 			},
 			"contextWindow": 524288,
@@ -92635,9 +93402,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.55,
-				"output": 2.2,
-				"cacheRead": 0.11,
+				"input": 0.5,
+				"output": 2,
+				"cacheRead": 0.09999999999999999,
 				"cacheWrite": 0
 			},
 			"contextWindow": 204800,
@@ -92803,7 +93570,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"z-ai/glm-5-turbo": {
 			"id": "z-ai/glm-5-turbo",
@@ -92824,7 +93592,8 @@
 			"contextWindow": 202752,
 			"maxTokens": 131072,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"z-ai/glm-5.1": {
 			"id": "z-ai/glm-5.1",
@@ -92854,7 +93623,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"z-ai/glm-5.2": {
 			"id": "z-ai/glm-5.2",
@@ -92867,13 +93637,13 @@
 				"text"
 			],
 			"cost": {
-				"input": 1.19,
-				"output": 3.74,
-				"cacheRead": 0.221,
+				"input": 0.966,
+				"output": 3.036,
+				"cacheRead": 0.1932,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1048576,
-			"maxTokens": 262144,
+			"maxTokens": 131072,
 			"thinking": {
 				"mode": "effort",
 				"efforts": [
@@ -92885,7 +93655,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"z-ai/glm-5.2:batch": {
 			"id": "z-ai/glm-5.2:batch",
@@ -92898,9 +93669,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 0.7,
-				"output": 2.2,
-				"cacheRead": 0.13,
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
 				"cacheWrite": 0
 			},
 			"contextWindow": 512000,
@@ -92916,7 +93687,70 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
+		},
+		"z-ai/glm-5.2:free": {
+			"id": "z-ai/glm-5.2:free",
+			"name": "GLM 5.2 (free)",
+			"api": "openrouter",
+			"provider": "openrouter",
+			"baseUrl": "https://openrouter.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 0,
+				"output": 0,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 256000,
+			"maxTokens": 256000,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"tokenizer": "glm5",
+			"supportsComputerUse": false
+		},
+		"z-ai/glm-5.3": {
+			"id": "z-ai/glm-5.3",
+			"name": "GLM-5.3",
+			"api": "openrouter",
+			"provider": "openrouter",
+			"baseUrl": "https://openrouter.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1048576,
+			"maxTokens": 131072,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"high",
+					"max"
+				],
+				"defaultLevel": "max",
+				"requiresEffort": true
+			},
+			"tokenizer": "glm5",
+			"supportsComputerUse": false
 		},
 		"z-ai/glm-5v-turbo": {
 			"id": "z-ai/glm-5v-turbo",
@@ -92938,7 +93772,8 @@
 			"contextWindow": 202752,
 			"maxTokens": 131072,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		}
 	},
 	"qianfan": {
@@ -93136,7 +93971,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"hf:nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4": {
 			"id": "hf:nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
@@ -93227,7 +94063,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3"
 		},
 		"hf:zai-org/GLM-4.7-Flash": {
 			"id": "hf:zai-org/GLM-4.7-Flash",
@@ -93289,7 +94126,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"syn:large:text": {
 			"id": "syn:large:text",
@@ -94403,6 +95241,7 @@
 			"maxTokens": 393215,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"escapeBuiltinToolNames": true
 			}
@@ -94437,6 +95276,7 @@
 			"maxTokens": 393215,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"escapeBuiltinToolNames": true
 			}
@@ -94503,6 +95343,7 @@
 			"maxTokens": 131071,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5",
 			"compat": {
 				"escapeBuiltinToolNames": true
 			}
@@ -94539,6 +95380,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"escapeBuiltinToolNames": true
 			}
@@ -94574,6 +95416,7 @@
 			"maxTokens": 131071,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"escapeBuiltinToolNames": true
 			}
@@ -94609,6 +95452,42 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3",
+			"compat": {
+				"escapeBuiltinToolNames": true
+			}
+		},
+		"umans-qwen3.8-27b-lab": {
+			"id": "umans-qwen3.8-27b-lab",
+			"name": "Umans Qwen3.8 27B (lab)",
+			"api": "anthropic-messages",
+			"provider": "umans",
+			"baseUrl": "https://api.code.umans.ai",
+			"reasoning": true,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0,
+				"output": 0,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 262144,
+			"maxTokens": 131071,
+			"tokenizer": "qwen3",
+			"supportsComputerUse": false,
 			"compat": {
 				"escapeBuiltinToolNames": true
 			}
@@ -94873,7 +95752,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"claude-opus-4-7": {
 			"id": "claude-opus-4-7",
@@ -94935,7 +95815,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"claude-opus-4-8": {
 			"id": "claude-opus-4-8",
@@ -95028,6 +95909,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5",
 			"compat": {
 				"supportsUsageInStreaming": false
 			}
@@ -95183,6 +96065,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet",
 			"compat": {
 				"supportsUsageInStreaming": false
 			}
@@ -95362,9 +96245,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 1.73,
+				"input": 1.65,
 				"output": 4.95,
-				"cacheRead": 0.33,
+				"cacheRead": 0.165,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1000000,
@@ -95398,6 +96281,7 @@
 			"maxTokens": 1048576,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"supportsUsageInStreaming": false
 			}
@@ -95542,6 +96426,7 @@
 			"maxTokens": 131072,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5",
 			"compat": {
 				"supportsUsageInStreaming": false
 			}
@@ -95566,6 +96451,7 @@
 			"maxTokens": 131072,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5",
 			"compat": {
 				"supportsUsageInStreaming": false
 			}
@@ -95590,6 +96476,7 @@
 			"maxTokens": null,
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5",
 			"compat": {
 				"supportsUsageInStreaming": false
 			}
@@ -96661,6 +97548,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"supportsUsageInStreaming": false
 			}
@@ -97763,6 +98651,35 @@
 				]
 			}
 		},
+		"qwen-3-8-27b": {
+			"id": "qwen-3-8-27b",
+			"name": "Qwen 3.8 27B",
+			"api": "openai-completions",
+			"provider": "venice",
+			"baseUrl": "https://api.venice.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.45,
+				"output": 3.2,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 262144,
+			"maxTokens": 65536,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				]
+			}
+		},
 		"qwen-3-8-max": {
 			"id": "qwen-3-8-max",
 			"name": "Qwen 3.8 Max",
@@ -98253,6 +99170,35 @@
 				]
 			}
 		},
+		"z-ai-glm-5-3": {
+			"id": "z-ai-glm-5-3",
+			"name": "GLM 5.3",
+			"api": "openai-completions",
+			"provider": "venice",
+			"baseUrl": "https://api.venice.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.75,
+				"output": 5.5,
+				"cacheRead": 0.325,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 131072,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			}
+		},
 		"z-ai-glm-5-turbo": {
 			"id": "z-ai-glm-5-turbo",
 			"name": "GLM 5 Turbo",
@@ -98637,7 +99583,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3-235b-a22b-thinking": {
 			"id": "alibaba/qwen3-235b-a22b-thinking",
@@ -98996,7 +99943,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.5-plus": {
 			"id": "alibaba/qwen3.5-plus",
@@ -99027,7 +99975,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.6-27b": {
 			"id": "alibaba/qwen3.6-27b",
@@ -99048,7 +99997,8 @@
 			},
 			"contextWindow": 256000,
 			"maxTokens": 256000,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.6-plus": {
 			"id": "alibaba/qwen3.6-plus",
@@ -99079,7 +100029,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.7-flash": {
 			"id": "alibaba/qwen3.7-flash",
@@ -99110,7 +100061,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.7-max": {
 			"id": "alibaba/qwen3.7-max",
@@ -99141,7 +100093,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.7-plus": {
 			"id": "alibaba/qwen3.7-plus",
@@ -99172,7 +100125,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.8-2.4t-a95b": {
 			"id": "alibaba/qwen3.8-2.4t-a95b",
@@ -99202,7 +100156,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.8-27b": {
 			"id": "alibaba/qwen3.8-27b",
@@ -99216,13 +100171,13 @@
 				"image"
 			],
 			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
+				"input": 0.55,
+				"output": 3.3000000000000003,
+				"cacheRead": 0.11,
 				"cacheWrite": 0
 			},
-			"contextWindow": 262144,
-			"maxTokens": 262133,
+			"contextWindow": 1000000,
+			"maxTokens": 131072,
 			"thinking": {
 				"mode": "budget",
 				"efforts": [
@@ -99233,7 +100188,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"alibaba/qwen3.8-max": {
 			"id": "alibaba/qwen3.8-max",
@@ -99264,7 +100220,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"amazon/nova-2-lite": {
 			"id": "amazon/nova-2-lite",
@@ -99378,7 +100335,8 @@
 			},
 			"contextWindow": 200000,
 			"maxTokens": 4096,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.5-haiku": {
 			"id": "anthropic/claude-3.5-haiku",
@@ -99400,7 +100358,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.5-sonnet": {
 			"id": "anthropic/claude-3.5-sonnet",
@@ -99422,7 +100381,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.5-sonnet-20240620": {
 			"id": "anthropic/claude-3.5-sonnet-20240620",
@@ -99444,7 +100404,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.7-sonnet": {
 			"id": "anthropic/claude-3.7-sonnet",
@@ -99476,7 +100437,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-fable-5": {
 			"id": "anthropic/claude-fable-5",
@@ -99508,7 +100470,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"anthropic/claude-haiku-4.5": {
 			"id": "anthropic/claude-haiku-4.5",
@@ -99539,7 +100502,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4": {
 			"id": "anthropic/claude-opus-4",
@@ -99570,7 +100534,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.1": {
 			"id": "anthropic/claude-opus-4.1",
@@ -99602,7 +100567,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.5": {
 			"id": "anthropic/claude-opus-4.5",
@@ -99633,7 +100599,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.6": {
 			"id": "anthropic/claude-opus-4.6",
@@ -99663,7 +100630,8 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-opus-4.7": {
 			"id": "anthropic/claude-opus-4.7",
@@ -99695,7 +100663,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.7-fast": {
 			"id": "anthropic/claude-opus-4.7-fast",
@@ -99728,7 +100697,8 @@
 				"supportsDisplay": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.8": {
 			"id": "anthropic/claude-opus-4.8",
@@ -99760,7 +100730,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-4.8-fast": {
 			"id": "anthropic/claude-opus-4.8-fast",
@@ -99792,7 +100763,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v47"
 		},
 		"anthropic/claude-opus-5": {
 			"id": "anthropic/claude-opus-5",
@@ -99824,7 +100796,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v5"
 		},
 		"anthropic/claude-opus-5-fast": {
 			"id": "anthropic/claude-opus-5-fast",
@@ -99856,7 +100829,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v5"
 		},
 		"anthropic/claude-sonnet-4": {
 			"id": "anthropic/claude-sonnet-4",
@@ -99887,7 +100861,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-4.5": {
 			"id": "anthropic/claude-sonnet-4.5",
@@ -99918,7 +100893,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-4.6": {
 			"id": "anthropic/claude-sonnet-4.6",
@@ -99947,7 +100923,8 @@
 					"high"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-sonnet-5": {
 			"id": "anthropic/claude-sonnet-5",
@@ -99979,7 +100956,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"arcee-ai/trinity-large-preview": {
 			"id": "arcee-ai/trinity-large-preview",
@@ -100173,7 +101151,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3": {
 			"id": "deepseek/deepseek-v3",
@@ -100193,7 +101172,8 @@
 			},
 			"contextWindow": 163840,
 			"maxTokens": 163840,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.1": {
 			"id": "deepseek/deepseek-v3.1",
@@ -100223,7 +101203,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.1-terminus": {
 			"id": "deepseek/deepseek-v3.1-terminus",
@@ -100253,7 +101234,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2": {
 			"id": "deepseek/deepseek-v3.2",
@@ -100283,7 +101265,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2-thinking": {
 			"id": "deepseek/deepseek-v3.2-thinking",
@@ -100315,7 +101298,8 @@
 				],
 				"requiresEffort": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-flash": {
 			"id": "deepseek/deepseek-v4-flash",
@@ -100345,7 +101329,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-flash-0731": {
 			"id": "deepseek/deepseek-v4-flash-0731",
@@ -100375,7 +101360,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-pro": {
 			"id": "deepseek/deepseek-v4-pro",
@@ -100405,7 +101391,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v4-pro-0813": {
 			"id": "deepseek/deepseek-v4-pro-0813",
@@ -100435,7 +101422,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"google/gemini-2.0-flash": {
 			"id": "google/gemini-2.0-flash",
@@ -100851,9 +101839,9 @@
 				"image"
 			],
 			"cost": {
-				"input": 1.5,
-				"output": 7.5,
-				"cacheRead": 0.15,
+				"input": 0.75,
+				"output": 3.75,
+				"cacheRead": 0.075,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1000000,
@@ -100934,7 +101922,7 @@
 		},
 		"google/gemma-4-31b-it": {
 			"id": "google/gemma-4-31b-it",
-			"name": "Gemma 4 31B IT",
+			"name": "Gemma 4 31B",
 			"api": "anthropic-messages",
 			"provider": "vercel-ai-gateway",
 			"baseUrl": "https://ai-gateway.vercel.sh",
@@ -102227,7 +103215,8 @@
 			},
 			"contextWindow": 131072,
 			"maxTokens": 131072,
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-0905": {
 			"id": "moonshotai/kimi-k2-0905",
@@ -102248,7 +103237,8 @@
 			"contextWindow": 256000,
 			"maxTokens": 128000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-thinking": {
 			"id": "moonshotai/kimi-k2-thinking",
@@ -102279,7 +103269,8 @@
 				],
 				"requiresEffort": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-turbo": {
 			"id": "moonshotai/kimi-k2-turbo",
@@ -102319,6 +103310,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"replayUnsignedThinking": false
 			}
@@ -102352,7 +103344,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.6": {
 			"id": "moonshotai/kimi-k2.6",
@@ -102383,7 +103376,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.7-code": {
 			"id": "moonshotai/kimi-k2.7-code",
@@ -102414,7 +103408,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.7-code-highspeed": {
 			"id": "moonshotai/kimi-k2.7-code-highspeed",
@@ -102445,7 +103440,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k3": {
 			"id": "moonshotai/kimi-k3",
@@ -102476,7 +103472,8 @@
 				"defaultLevel": "max",
 				"requiresEffort": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k3-fast": {
 			"id": "moonshotai/kimi-k3-fast",
@@ -102507,7 +103504,8 @@
 				"defaultLevel": "max",
 				"requiresEffort": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"nvidia/nemotron-3-nano-30b-a3b": {
 			"id": "nvidia/nemotron-3-nano-30b-a3b",
@@ -102610,9 +103608,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 0,
-				"output": 0,
-				"cacheRead": 0,
+				"input": 0.049999999999999996,
+				"output": 0.19999999999999998,
+				"cacheRead": 0.01,
 				"cacheWrite": 0
 			},
 			"contextWindow": 262144,
@@ -102784,6 +103782,27 @@
 			"maxTokens": 32768,
 			"supportsComputerUse": false
 		},
+		"openai/gpt-4.1-fast": {
+			"id": "openai/gpt-4.1-fast",
+			"name": "GPT-4.1 (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": false,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 3.5,
+				"output": 14,
+				"cacheRead": 0.875,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1047576,
+			"maxTokens": 32768,
+			"supportsComputerUse": false
+		},
 		"openai/gpt-4.1-mini": {
 			"id": "openai/gpt-4.1-mini",
 			"name": "GPT-4.1 mini",
@@ -102799,6 +103818,27 @@
 				"input": 0.39999999999999997,
 				"output": 1.5999999999999999,
 				"cacheRead": 0.09999999999999999,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1047576,
+			"maxTokens": 32768,
+			"supportsComputerUse": false
+		},
+		"openai/gpt-4.1-mini-fast": {
+			"id": "openai/gpt-4.1-mini-fast",
+			"name": "GPT-4.1 mini (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": false,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.7,
+				"output": 2.8,
+				"cacheRead": 0.175,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1047576,
@@ -102826,6 +103866,27 @@
 			"maxTokens": 32768,
 			"supportsComputerUse": false
 		},
+		"openai/gpt-4.1-nano-fast": {
+			"id": "openai/gpt-4.1-nano-fast",
+			"name": "GPT-4.1 nano (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": false,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.19999999999999998,
+				"output": 0.7999999999999999,
+				"cacheRead": 0.049999999999999996,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1047576,
+			"maxTokens": 32768,
+			"supportsComputerUse": false
+		},
 		"openai/gpt-4o": {
 			"id": "openai/gpt-4o",
 			"name": "GPT-4o",
@@ -102847,6 +103908,27 @@
 			"maxTokens": 16384,
 			"supportsComputerUse": false
 		},
+		"openai/gpt-4o-fast": {
+			"id": "openai/gpt-4o-fast",
+			"name": "GPT-4o (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": false,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 4.25,
+				"output": 17,
+				"cacheRead": 2.125,
+				"cacheWrite": 0
+			},
+			"contextWindow": 128000,
+			"maxTokens": 16384,
+			"supportsComputerUse": false
+		},
 		"openai/gpt-4o-mini": {
 			"id": "openai/gpt-4o-mini",
 			"name": "GPT-4o mini",
@@ -102862,6 +103944,27 @@
 				"input": 0.15,
 				"output": 0.6,
 				"cacheRead": 0.075,
+				"cacheWrite": 0
+			},
+			"contextWindow": 128000,
+			"maxTokens": 16384,
+			"supportsComputerUse": false
+		},
+		"openai/gpt-4o-mini-fast": {
+			"id": "openai/gpt-4o-mini-fast",
+			"name": "GPT-4o mini (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": false,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.25,
+				"output": 1,
+				"cacheRead": 0.125,
 				"cacheWrite": 0
 			},
 			"contextWindow": 128000,
@@ -102959,6 +104062,36 @@
 			},
 			"supportsComputerUse": false
 		},
+		"openai/gpt-5-fast": {
+			"id": "openai/gpt-5-fast",
+			"name": "GPT-5 (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 2.5,
+				"output": 20,
+				"cacheRead": 0.25,
+				"cacheWrite": 0
+			},
+			"contextWindow": 400000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				]
+			},
+			"supportsComputerUse": false
+		},
 		"openai/gpt-5-mini": {
 			"id": "openai/gpt-5-mini",
 			"name": "GPT-5 Mini",
@@ -102974,6 +104107,36 @@
 				"input": 0.25,
 				"output": 2,
 				"cacheRead": 0.024999999999999998,
+				"cacheWrite": 0
+			},
+			"contextWindow": 400000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				]
+			},
+			"supportsComputerUse": false
+		},
+		"openai/gpt-5-mini-fast": {
+			"id": "openai/gpt-5-mini-fast",
+			"name": "GPT-5 mini (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.44999999999999996,
+				"output": 3.5999999999999996,
+				"cacheRead": 0.045,
 				"cacheWrite": 0
 			},
 			"contextWindow": 400000,
@@ -103199,6 +104362,37 @@
 			},
 			"supportsComputerUse": false
 		},
+		"openai/gpt-5.1-thinking-fast": {
+			"id": "openai/gpt-5.1-thinking-fast",
+			"name": "GPT 5.1 Thinking (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 2.5,
+				"output": 20,
+				"cacheRead": 0.25,
+				"cacheWrite": 0
+			},
+			"contextWindow": 400000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high"
+				],
+				"requiresEffort": true
+			},
+			"supportsComputerUse": false
+		},
 		"openai/gpt-5.2": {
 			"id": "openai/gpt-5.2",
 			"name": "GPT-5.2",
@@ -103269,6 +104463,36 @@
 				"cacheWrite": 0
 			},
 			"contextWindow": 272000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
+		},
+		"openai/gpt-5.2-fast": {
+			"id": "openai/gpt-5.2-fast",
+			"name": "GPT 5.2 (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 3.5,
+				"output": 28,
+				"cacheRead": 0.35,
+				"cacheWrite": 0
+			},
+			"contextWindow": 400000,
 			"maxTokens": 128000,
 			"thinking": {
 				"mode": "budget",
@@ -103362,6 +104586,36 @@
 			},
 			"supportsComputerUse": false
 		},
+		"openai/gpt-5.3-codex-fast": {
+			"id": "openai/gpt-5.3-codex-fast",
+			"name": "GPT 5.3 Codex (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 3.5,
+				"output": 28,
+				"cacheRead": 0.35,
+				"cacheWrite": 0
+			},
+			"contextWindow": 272000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
+		},
 		"openai/gpt-5.4": {
 			"id": "openai/gpt-5.4",
 			"name": "GPT-5.4",
@@ -103392,6 +104646,36 @@
 			},
 			"supportsComputerUse": false
 		},
+		"openai/gpt-5.4-fast": {
+			"id": "openai/gpt-5.4-fast",
+			"name": "GPT 5.4 (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 5,
+				"output": 30,
+				"cacheRead": 0.5,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1050000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
+		},
 		"openai/gpt-5.4-mini": {
 			"id": "openai/gpt-5.4-mini",
 			"name": "GPT-5.4 mini",
@@ -103407,6 +104691,36 @@
 				"input": 0.75,
 				"output": 4.5,
 				"cacheRead": 0.075,
+				"cacheWrite": 0
+			},
+			"contextWindow": 400000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
+		},
+		"openai/gpt-5.4-mini-fast": {
+			"id": "openai/gpt-5.4-mini-fast",
+			"name": "GPT 5.4 Mini (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 1.5,
+				"output": 9,
+				"cacheRead": 0.15,
 				"cacheWrite": 0
 			},
 			"contextWindow": 400000,
@@ -103513,6 +104827,37 @@
 			"contextPromotionTarget": "vercel-ai-gateway/openai/gpt-5.4",
 			"supportsComputerUse": false
 		},
+		"openai/gpt-5.5-fast": {
+			"id": "openai/gpt-5.5-fast",
+			"name": "GPT 5.5 (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 12.5,
+				"output": 75,
+				"cacheRead": 1.25,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false,
+			"contextPromotionTarget": "vercel-ai-gateway/openai/gpt-5.4"
+		},
 		"openai/gpt-5.5-pro": {
 			"id": "openai/gpt-5.5-pro",
 			"name": "GPT-5.5 Pro",
@@ -103575,6 +104920,37 @@
 			},
 			"supportsComputerUse": false
 		},
+		"openai/gpt-5.6-luna-fast": {
+			"id": "openai/gpt-5.6-luna-fast",
+			"name": "GPT 5.6 Luna (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0.39999999999999997,
+				"output": 2.4,
+				"cacheRead": 0.04,
+				"cacheWrite": 0.25
+			},
+			"contextWindow": 1050000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh",
+					"max"
+				]
+			},
+			"supportsComputerUse": false
+		},
 		"openai/gpt-5.6-sol": {
 			"id": "openai/gpt-5.6-sol",
 			"name": "GPT-5.6 Sol",
@@ -103587,10 +104963,41 @@
 				"image"
 			],
 			"cost": {
+				"input": 2.5,
+				"output": 15,
+				"cacheRead": 0.25,
+				"cacheWrite": 3.125
+			},
+			"contextWindow": 1050000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh",
+					"max"
+				]
+			},
+			"supportsComputerUse": false
+		},
+		"openai/gpt-5.6-sol-fast": {
+			"id": "openai/gpt-5.6-sol-fast",
+			"name": "GPT 5.6 Sol (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
 				"input": 5,
 				"output": 30,
 				"cacheRead": 0.5,
-				"cacheWrite": 6.25
+				"cacheWrite": 3.125
 			},
 			"contextWindow": 1050000,
 			"maxTokens": 128000,
@@ -103621,6 +105028,37 @@
 				"input": 2,
 				"output": 12,
 				"cacheRead": 0.19999999999999998,
+				"cacheWrite": 2.5
+			},
+			"contextWindow": 1050000,
+			"maxTokens": 128000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"medium",
+					"high",
+					"xhigh",
+					"max"
+				]
+			},
+			"supportsComputerUse": false
+		},
+		"openai/gpt-5.6-terra-fast": {
+			"id": "openai/gpt-5.6-terra-fast",
+			"name": "GPT 5.6 Terra (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 4,
+				"output": 24,
+				"cacheRead": 0.39999999999999997,
 				"cacheWrite": 2.5
 			},
 			"contextWindow": 1050000,
@@ -103823,6 +105261,38 @@
 			},
 			"supportsComputerUse": false
 		},
+		"openai/o3-fast": {
+			"id": "openai/o3-fast",
+			"name": "o3 (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 3.5,
+				"output": 14,
+				"cacheRead": 0.875,
+				"cacheWrite": 0
+			},
+			"contextWindow": 200000,
+			"maxTokens": 100000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				],
+				"requiresEffort": true
+			},
+			"supportsComputerUse": false
+		},
 		"openai/o3-mini": {
 			"id": "openai/o3-mini",
 			"name": "o3-mini",
@@ -103901,6 +105371,38 @@
 				"input": 1.1,
 				"output": 4.4,
 				"cacheRead": 0.275,
+				"cacheWrite": 0
+			},
+			"contextWindow": 200000,
+			"maxTokens": 100000,
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				],
+				"requiresEffort": true
+			},
+			"supportsComputerUse": false
+		},
+		"openai/o4-mini-fast": {
+			"id": "openai/o4-mini-fast",
+			"name": "o4-mini (Fast)",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 2,
+				"output": 8,
+				"cacheRead": 0.5,
 				"cacheWrite": 0
 			},
 			"contextWindow": 200000,
@@ -105154,7 +106656,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false
 		},
 		"zai/glm-4.6v-flash": {
 			"id": "zai/glm-4.6v-flash",
@@ -105185,7 +106688,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false
 		},
 		"zai/glm-4.7": {
 			"id": "zai/glm-4.7",
@@ -105305,7 +106809,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
 		},
 		"zai/glm-5-turbo": {
 			"id": "zai/glm-5-turbo",
@@ -105335,7 +106840,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
 		},
 		"zai/glm-5.1": {
 			"id": "zai/glm-5.1",
@@ -105366,7 +106872,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
 		},
 		"zai/glm-5.2": {
 			"id": "zai/glm-5.2",
@@ -105379,9 +106886,9 @@
 				"text"
 			],
 			"cost": {
-				"input": 1.1,
-				"output": 3.851,
-				"cacheRead": 0.275,
+				"input": 0.7999999999999999,
+				"output": 2.5500000000000003,
+				"cacheRead": 0.16,
 				"cacheWrite": 0
 			},
 			"contextWindow": 1000000,
@@ -105396,7 +106903,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
 		},
 		"zai/glm-5.2-fast": {
 			"id": "zai/glm-5.2-fast",
@@ -105425,6 +106933,38 @@
 					"high",
 					"xhigh"
 				]
+			},
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
+		},
+		"zai/glm-5.3": {
+			"id": "zai/glm-5.3",
+			"name": "GLM 5.3",
+			"api": "anthropic-messages",
+			"provider": "vercel-ai-gateway",
+			"baseUrl": "https://ai-gateway.vercel.sh",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 12800,
+			"tokenizer": "glm5",
+			"thinking": {
+				"mode": "budget",
+				"efforts": [
+					"low",
+					"high",
+					"max"
+				],
+				"defaultLevel": "max",
+				"requiresEffort": true
 			},
 			"supportsComputerUse": false
 		},
@@ -105457,7 +106997,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "glm5"
 		}
 	},
 	"wafer-serverless": {
@@ -105488,7 +107029,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"DeepSeek-V4-Flash-0731-Fast": {
 			"id": "DeepSeek-V4-Flash-0731-Fast",
@@ -105517,6 +107059,7 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"reasoningContentField": "reasoning_content",
 				"supportsDeveloperRole": false
@@ -105549,7 +107092,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"DeepSeek-V4-Pro": {
 			"id": "DeepSeek-V4-Pro",
@@ -105579,6 +107123,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3",
 			"compat": {
 				"reasoningContentField": "reasoning_content",
 				"supportsDeveloperRole": false
@@ -105612,6 +107157,8 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "glm5",
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -105644,6 +107191,7 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "glm5",
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -105679,6 +107227,7 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"reasoningContentField": "reasoning_content",
 				"supportsDeveloperRole": false
@@ -105748,6 +107297,7 @@
 				]
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -105784,6 +107334,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -105823,6 +107374,7 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2",
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -105862,6 +107414,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2",
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"thinkingFormat": "zai",
 				"reasoningContentField": "reasoning_content",
@@ -105924,6 +107478,7 @@
 			"contextWindow": 262144,
 			"maxTokens": 65536,
 			"supportsComputerUse": false,
+			"tokenizer": "qwen3",
 			"compat": {
 				"supportsDeveloperRole": false
 			}
@@ -105958,6 +107513,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3",
 			"compat": {
 				"reasoningContentField": "reasoning_content",
 				"supportsDeveloperRole": false
@@ -105992,6 +107548,7 @@
 			},
 			"supportsComputerUse": false,
 			"supportsComputerUseConfig": false,
+			"tokenizer": "qwen3",
 			"compat": {
 				"reasoningContentField": "reasoning_content",
 				"supportsDeveloperRole": false
@@ -106885,6 +108442,7 @@
 			"contextWindow": 2000000,
 			"maxTokens": 2000000,
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"includeEncryptedReasoning": true,
 				"filterReasoningHistory": false,
@@ -106913,6 +108471,7 @@
 			"contextWindow": 2000000,
 			"maxTokens": 2000000,
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"includeEncryptedReasoning": true,
 				"filterReasoningHistory": false,
@@ -106953,6 +108512,7 @@
 				}
 			},
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"reasoningEffortMap": {
 					"minimal": "low"
@@ -106996,6 +108556,7 @@
 				}
 			},
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"reasoningEffortMap": {
 					"minimal": "low",
@@ -107041,6 +108602,7 @@
 				}
 			},
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"reasoningEffortMap": {
 					"minimal": "low",
@@ -107087,6 +108649,7 @@
 				}
 			},
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"reasoningEffortMap": {
 					"minimal": "low"
@@ -107118,6 +108681,7 @@
 			"contextWindow": 512000,
 			"maxTokens": 512000,
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"includeEncryptedReasoning": true,
 				"filterReasoningHistory": false,
@@ -107146,6 +108710,7 @@
 			"contextWindow": 256000,
 			"maxTokens": 256000,
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"includeEncryptedReasoning": true,
 				"filterReasoningHistory": false,
@@ -107173,6 +108738,7 @@
 			"contextWindow": 200000,
 			"maxTokens": 200000,
 			"supportsComputerUse": false,
+			"supportsComputerUseConfig": false,
 			"compat": {
 				"includeEncryptedReasoning": true,
 				"filterReasoningHistory": false,
@@ -108150,7 +109716,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "glm5"
 		},
 		"glm-5v-turbo": {
 			"id": "glm-5v-turbo",
@@ -108204,7 +109771,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 64000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.5-sonnet": {
 			"id": "anthropic/claude-3.5-sonnet",
@@ -108226,7 +109794,8 @@
 			"contextWindow": 200000,
 			"maxTokens": 8192,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-3.7-sonnet": {
 			"id": "anthropic/claude-3.7-sonnet",
@@ -108258,7 +109827,8 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v3"
 		},
 		"anthropic/claude-fable-5": {
 			"id": "anthropic/claude-fable-5",
@@ -108322,7 +109892,8 @@
 				"supportsDisplay": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "claude-v5-sonnet"
 		},
 		"anthropic/claude-haiku-4.5": {
 			"id": "anthropic/claude-haiku-4.5",
@@ -108555,7 +110126,8 @@
 				],
 				"supportsDisplay": true
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "claude-v5"
 		},
 		"anthropic/claude-sonnet-4": {
 			"id": "anthropic/claude-sonnet-4",
@@ -109127,7 +110699,8 @@
 			"contextWindow": 128000,
 			"maxTokens": 64000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-chat-v3.1": {
 			"id": "deepseek/deepseek-chat-v3.1",
@@ -109154,7 +110727,8 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-r1-0528": {
 			"id": "deepseek/deepseek-r1-0528",
@@ -109181,7 +110755,8 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-reasoner": {
 			"id": "deepseek/deepseek-reasoner",
@@ -109210,7 +110785,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
 		},
 		"deepseek/deepseek-v3.2": {
 			"id": "deepseek/deepseek-v3.2",
@@ -109317,7 +110893,9 @@
 					"max"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "deepseek-v3",
+			"supportsComputerUseConfig": false
 		},
 		"deepseek/deepseek-v4-pro": {
 			"id": "deepseek/deepseek-v4-pro",
@@ -109373,7 +110951,39 @@
 				]
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "deepseek-v3"
+		},
+		"dots-studio/dots3-note-prev": {
+			"id": "dots-studio/dots3-note-prev",
+			"name": "Dots3-Note Preview (Free)",
+			"api": "openai-completions",
+			"provider": "zenmux",
+			"baseUrl": "https://zenmux.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text",
+				"image"
+			],
+			"cost": {
+				"input": 0,
+				"output": 0,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 393100,
+			"maxTokens": null,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
 		},
 		"google/gemini-2.0-flash": {
 			"id": "google/gemini-2.0-flash",
@@ -110476,6 +112086,66 @@
 			},
 			"supportsComputerUse": false
 		},
+		"mindai/macaron-v1-tall": {
+			"id": "mindai/macaron-v1-tall",
+			"name": "Macaron V1 Tall",
+			"api": "openai-completions",
+			"provider": "zenmux",
+			"baseUrl": "https://zenmux.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 0.45,
+				"output": 2.6,
+				"cacheRead": 0.08,
+				"cacheWrite": 0
+			},
+			"contextWindow": 256000,
+			"maxTokens": 32768,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
+		},
+		"mindai/macaron-v1-venti": {
+			"id": "mindai/macaron-v1-venti",
+			"name": "Macaron V1 Venti",
+			"api": "openai-completions",
+			"provider": "zenmux",
+			"baseUrl": "https://zenmux.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.5,
+				"output": 4.5,
+				"cacheRead": 0.3,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 131072,
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"minimal",
+					"low",
+					"medium",
+					"high",
+					"xhigh"
+				]
+			},
+			"supportsComputerUse": false
+		},
 		"minimax/minimax-m2": {
 			"id": "minimax/minimax-m2",
 			"name": "MiniMax M2",
@@ -110734,7 +112404,8 @@
 			"contextWindow": 32768,
 			"maxTokens": null,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-0905": {
 			"id": "moonshotai/kimi-k2-0905",
@@ -110755,7 +112426,8 @@
 			"contextWindow": 262000,
 			"maxTokens": 64000,
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-thinking": {
 			"id": "moonshotai/kimi-k2-thinking",
@@ -110787,7 +112459,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2-thinking-turbo": {
 			"id": "moonshotai/kimi-k2-thinking-turbo",
@@ -110819,7 +112492,8 @@
 				"requiresEffort": true
 			},
 			"supportsComputerUse": false,
-			"supportsComputerUseConfig": false
+			"supportsComputerUseConfig": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k2.5": {
 			"id": "moonshotai/kimi-k2.5",
@@ -110970,7 +112644,8 @@
 					"xhigh"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "kimi-k2"
 		},
 		"moonshotai/kimi-k3": {
 			"id": "moonshotai/kimi-k3",
@@ -112315,7 +113990,8 @@
 					"high"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-max-preview": {
 			"id": "qwen/qwen3.6-max-preview",
@@ -112344,7 +114020,8 @@
 					"high"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.6-plus": {
 			"id": "qwen/qwen3.6-plus",
@@ -112402,7 +114079,8 @@
 					"high"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"qwen/qwen3.7-max": {
 			"id": "qwen/qwen3.7-max",
@@ -112489,7 +114167,8 @@
 					"high"
 				]
 			},
-			"supportsComputerUse": false
+			"supportsComputerUse": false,
+			"tokenizer": "qwen3"
 		},
 		"sapiens-ai/agnes-1.5-flash": {
 			"id": "sapiens-ai/agnes-1.5-flash",
@@ -114049,6 +115728,68 @@
 					"max"
 				]
 			}
+		},
+		"z-ai/glm-5.3": {
+			"id": "z-ai/glm-5.3",
+			"name": "GLM-5.3",
+			"api": "openai-completions",
+			"provider": "zenmux",
+			"baseUrl": "https://zenmux.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 1.4,
+				"output": 4.4,
+				"cacheRead": 0.26,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 131072,
+			"tokenizer": "glm5",
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"high",
+					"max"
+				],
+				"defaultLevel": "max",
+				"requiresEffort": true
+			},
+			"supportsComputerUse": false
+		},
+		"z-ai/glm-5.3-free": {
+			"id": "z-ai/glm-5.3-free",
+			"name": "GLM 5.3 (Free)",
+			"api": "openai-completions",
+			"provider": "zenmux",
+			"baseUrl": "https://zenmux.ai/api/v1",
+			"reasoning": true,
+			"input": [
+				"text"
+			],
+			"cost": {
+				"input": 0,
+				"output": 0,
+				"cacheRead": 0,
+				"cacheWrite": 0
+			},
+			"contextWindow": 1000000,
+			"maxTokens": 131072,
+			"tokenizer": "glm5",
+			"thinking": {
+				"mode": "effort",
+				"efforts": [
+					"low",
+					"high",
+					"max"
+				],
+				"defaultLevel": "max",
+				"requiresEffort": true
+			},
+			"supportsComputerUse": false
 		},
 		"z-ai/glm-5v-turbo": {
 			"id": "z-ai/glm-5v-turbo",
