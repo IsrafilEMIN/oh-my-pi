@@ -2117,6 +2117,7 @@ export class AuthStorage {
 				const usage = await this.#getUsageReport(args.provider, selection.credential, {
 					...args.options,
 					timeoutMs: this.#usageRequestTimeoutMs,
+					credentialId: this.#getStoredCredentials(args.provider)[selection.index]?.id,
 				});
 				return { selection, usage, usageChecked: true, blockedUntil: undefined };
 			}),
@@ -2906,31 +2907,6 @@ export class AuthStorage {
 	}
 
 	/**
-	 * Usage-cache identity of the credential currently sticky for this session:
-	 * a stable account identifier when the credential carries one, otherwise a
-	 * one-way hash of the secret (never the secret itself). Lets status surfaces
-	 * match cached usage reports to the active account even when the report's
-	 * `credentialId` annotation is absent — reports rewritten by the
-	 * credential-ranking path share the cache slot without the row id.
-	 * Returns `undefined` when no credential is sticky for the session yet.
-	 */
-	async getSessionUsageCacheIdentity(provider: string, sessionId?: string): Promise<string | undefined> {
-		const selected = this.#getSessionCredential(provider, sessionId);
-		if (!selected) return undefined;
-		const row = this.#getStoredCredentials(provider)[selected.index];
-		if (!row) return undefined;
-		const credential = row.credential;
-		const usageCredential = this.#buildUsageCredential(credential);
-		if (credential.type === "api_key") {
-			// Stored keys may be references (env var name, "!command") — resolve to
-			// the same secret bytes the usage fetch fingerprints.
-			const apiKey = await this.#configValueResolver(credential.key);
-			if (!apiKey) return undefined;
-			usageCredential.apiKey = apiKey;
-		}
-		return this.#buildUsageCacheIdentity(usageCredential);
-	}
-	/**
 	 * Get all credentials.
 	 */
 	getAll(): AuthStorageData {
@@ -3352,28 +3328,19 @@ export class AuthStorage {
 				fetch: this.#usageFetch,
 				logger: this.#usageLogger,
 			});
-			// Attribute each report to its stored credential so status surfaces can
-			// distinguish the session's active account from pool backups. The cache
-			// identity (a one-way secret fingerprint when the account carries no
-			// stable id) is stamped unconditionally: `credentialId` is only known
-			// to paths that resolve the stored row, and reports written by the
-			// credential-ranking path would otherwise lose it when they overwrite
-			// the shared per-key cache entry.
 			if (report) {
 				const metadata = report.metadata ?? {};
-				const usageCacheIdentity = this.#buildUsageCacheIdentity(request.credential);
 				const sameOrg =
-					request.credential.orgId === undefined ||
+					params.credential.orgId === undefined ||
 					metadata.orgId === undefined ||
-					metadata.orgId === request.credential.orgId;
-				const needsOrgId = request.credential.orgId !== undefined && metadata.orgId === undefined;
-				const needsOrgName = sameOrg && request.credential.orgName !== undefined && metadata.orgName === undefined;
+					metadata.orgId === params.credential.orgId;
+				const needsOrgId = params.credential.orgId !== undefined && metadata.orgId === undefined;
+				const needsOrgName = sameOrg && params.credential.orgName !== undefined && metadata.orgName === undefined;
 				report.metadata = {
 					...metadata,
-					usageCacheIdentity,
 					...(request.credentialId !== undefined ? { credentialId: request.credentialId } : {}),
-					...(needsOrgId ? { orgId: request.credential.orgId } : {}),
-					...(needsOrgName ? { orgName: request.credential.orgName } : {}),
+					...(needsOrgId ? { orgId: params.credential.orgId } : {}),
+					...(needsOrgName ? { orgName: params.credential.orgName } : {}),
 				};
 			}
 			return report;
@@ -3657,7 +3624,7 @@ export class AuthStorage {
 				let hasUsableStoredOAuthCredential = false;
 				for (const entry of entries) {
 					if (entry.credential.type !== "oauth") continue;
-					const request = this.#buildUsageRequestForOauth(provider, entry.credential, baseUrl);
+					const request = this.#buildUsageRequestForOauth(provider, entry.credential, baseUrl, entry.id);
 					if (providerImpl.supports && !providerImpl.supports(request)) continue;
 					requests.push(request);
 					hasUsableStoredOAuthCredential = true;
@@ -3890,21 +3857,18 @@ export class AuthStorage {
 	async #getUsageReport(
 		provider: Provider,
 		credential: AuthCredential,
-		options?: { baseUrl?: string; timeoutMs?: number; signal?: AbortSignal },
+		options?: { baseUrl?: string; timeoutMs?: number; signal?: AbortSignal; credentialId?: number },
 	): Promise<UsageReport | null> {
-		// Store-level hook (e.g. `RemoteAuthCredentialStore`) is authoritative
-		// when present for OAuth: the broker already aggregates usage from a
-		// less-throttled IP, and falling back to the local per-credential fetch
-		// would defeat the point of routing through it. API-key credentials do
-		// not have a broker per-credential hook, so they use the normal cached
-		// provider fetch path.
 		if (credential.type === "oauth") {
 			const storeHook = this.#store.getUsageReport?.bind(this.#store);
 			if (storeHook) {
 				const report = await storeHook(provider, credential, options?.signal);
 				if (report) {
+					if (options?.credentialId !== undefined) {
+						report.metadata = { ...report.metadata, credentialId: options.credentialId };
+					}
 					this.#reconcileCodexUsageBlock(
-						this.#buildUsageRequestForOauth(provider, credential, options?.baseUrl),
+						this.#buildUsageRequestForOauth(provider, credential, options?.baseUrl, options?.credentialId),
 						report,
 					);
 				}
@@ -3917,9 +3881,12 @@ export class AuthStorage {
 			if (!resolvedApiKey) return null;
 			usageCredential.apiKey = resolvedApiKey;
 		}
-		return this.#fetchUsageCached(this.#buildUsageRequest(provider, usageCredential, options?.baseUrl), {
-			timeoutMs: options?.timeoutMs ?? this.#usageRequestTimeoutMs,
-		});
+		return this.#fetchUsageCached(
+			this.#buildUsageRequest(provider, usageCredential, options?.baseUrl, options?.credentialId),
+			{
+				timeoutMs: options?.timeoutMs ?? this.#usageRequestTimeoutMs,
+			},
+		);
 	}
 
 	/**
@@ -4025,6 +3992,7 @@ export class AuthStorage {
 							baseUrl: options.baseUrl,
 							timeoutMs: this.#usageRequestTimeoutMs,
 							signal: options.signal,
+							credentialId: entry.id,
 						}),
 						options.signal,
 					);
@@ -4574,7 +4542,10 @@ export class AuthStorage {
 
 		if (credentialType === "oauth" && target.credential.type === "oauth" && routing.strategy) {
 			const report = await raceUsageWithSignal(
-				this.#getUsageReport(provider, target.credential, options),
+				this.#getUsageReport(provider, target.credential, {
+					...options,
+					credentialId: targetCredentialId,
+				}),
 				options?.signal,
 			);
 			if (report) {
@@ -4738,6 +4709,7 @@ export class AuthStorage {
 					usage = await this.#getUsageReport(args.provider, selection.credential, {
 						...args.options,
 						timeoutMs: this.#usageRequestTimeoutMs,
+						credentialId: this.#getStoredCredentials(args.provider)[selection.index]?.id,
 					});
 					usageChecked = true;
 					blockedUntil = this.#getCredentialBlockedUntil(
@@ -4752,6 +4724,7 @@ export class AuthStorage {
 					usage = await this.#getUsageReport(args.provider, selection.credential, {
 						...args.options,
 						timeoutMs: this.#usageRequestTimeoutMs,
+						credentialId: this.#getStoredCredentials(args.provider)[selection.index]?.id,
 					});
 					usageChecked = true;
 				}
@@ -5420,6 +5393,7 @@ export class AuthStorage {
 				usage = await this.#getUsageReport(provider, selection.credential, {
 					...options,
 					timeoutMs: this.#usageRequestTimeoutMs,
+					credentialId,
 				});
 				usageChecked = true;
 			}
@@ -5500,6 +5474,7 @@ export class AuthStorage {
 					usage = await this.#getUsageReport(provider, updated, {
 						...options,
 						timeoutMs: this.#usageRequestTimeoutMs,
+						credentialId,
 					});
 					usageChecked = true;
 				}

@@ -23,7 +23,7 @@ afterEach(async () => {
 	tempAgentDir = undefined;
 });
 
-it("uses the Nerd Fonts v3 Material Design session icon", async () => {
+it("uses the expected Nerd preset symbols", async () => {
 	originalAgentDir = getAgentDir();
 	originalAgentDirEnv = process.env.PI_CODING_AGENT_DIR;
 	tempAgentDir = await fs.mkdtemp(path.join(os.tmpdir(), "omp-nerd-symbols-"));
