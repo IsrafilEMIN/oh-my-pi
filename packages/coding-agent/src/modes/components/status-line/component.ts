@@ -1555,6 +1555,7 @@ export class StatusLineComponent implements Component {
 			let fiveHour: number | undefined;
 			let sevenDay: number | undefined;
 			let monthly: number | undefined;
+			let monthlyOther: number | undefined;
 			let monthlyPriority = Number.POSITIVE_INFINITY;
 			for (const candidate of selectedGroup.candidates) {
 				if (candidate.windowClass === "5h" && fiveHour === undefined) {
@@ -1564,6 +1565,10 @@ export class StatusLineComponent implements Component {
 					sevenDay = candidate.fraction * 100;
 				}
 				if (candidate.windowClass === "monthly") {
+					if (candidate.id === "cursor:usd:individual-api") {
+						monthlyOther = candidate.fraction * 100;
+						continue;
+					}
 					const priority = cursorMonthlyPriority(candidate.id);
 					if (priority < monthlyPriority) {
 						monthly = candidate.fraction * 100;
@@ -1572,7 +1577,7 @@ export class StatusLineComponent implements Component {
 				}
 			}
 
-			if (fiveHour === undefined && sevenDay === undefined && monthly === undefined) continue;
+			if (fiveHour === undefined && sevenDay === undefined && monthly === undefined && monthlyOther === undefined) continue;
 			const metadataCredentialId = usageReport.metadata?.credentialId;
 			const reportCredentialId = typeof metadataCredentialId === "number" ? metadataCredentialId : undefined;
 			const metadataFingerprint = usageReport.metadata?.usageCacheIdentity;
@@ -1593,6 +1598,7 @@ export class StatusLineComponent implements Component {
 				fiveHour,
 				sevenDay,
 				monthly,
+				monthlyOther,
 			});
 		}
 
