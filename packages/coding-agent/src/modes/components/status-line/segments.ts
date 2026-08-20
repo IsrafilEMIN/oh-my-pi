@@ -678,7 +678,9 @@ function accountQuota(account: UsageStatusAccount): string {
 		account.provider === "opencode-go"
 			? [account.fiveHour, account.sevenDay, account.monthly]
 			: account.provider === "cursor"
-				? [account.monthly]
+				? account.monthlyOther === undefined
+					? [account.monthly]
+					: [account.monthly, account.monthlyOther]
 				: [account.fiveHour, account.sevenDay];
 	return `${account.active ? "●" : "○"} ${windows.map(remainingQuota).join("/")}`;
 }

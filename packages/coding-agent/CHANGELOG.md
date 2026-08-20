@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Cursor status-bar usage shows remaining auto and other-model quota (`94/95`) instead of auto only.
+
 ## [17.4.0] - 2026-08-20
 
 ### Added
