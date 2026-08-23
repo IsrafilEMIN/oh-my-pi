@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import type { AgentMessage } from "@oh-my-pi/pi-agent-core";
-import type { AssistantMessage, UsageLimit, UsageReport } from "@oh-my-pi/pi-ai";
+import type { AssistantMessage, UsageReport } from "@oh-my-pi/pi-ai";
 import {
 	type Component,
 	type ComposerStyle,
@@ -50,9 +50,24 @@ const WATCHER_FAILURE_POLL_TTL_MS = 5000;
 interface StatusAuthStorage {
 	getOAuthAccountIdentity?(provider: string, sessionId?: string): OAuthAccountIdentity | undefined;
 	getSessionCredentialId?(provider: string, sessionId?: string): number | undefined;
+	getSessionUsageCacheIdentity?(provider: string, sessionId?: string): Promise<string | undefined>;
 }
 
-function normalizeCodexIdentityValue(value: unknown): string | undefined {
+/** A displayable limit after provider, account, model, and window filtering. */
+interface UsageWindowCandidate {
+	id?: string;
+	windowClass: "5h" | "7d" | "monthly";
+	fraction: number;
+}
+
+/** Limits sharing one model/tier scope, ranked as an indivisible display unit. */
+interface UsageScopeGroup {
+	priority: number;
+	tier?: string;
+	candidates: UsageWindowCandidate[];
+}
+
+function normalizeUsageScopeValue(value: unknown): string | undefined {
 	return typeof value === "string" && value.trim() ? value.trim().toLowerCase() : undefined;
 }
 
@@ -64,21 +79,21 @@ function normalizeCodexIdentityValue(value: unknown): string | undefined {
  */
 function codexReportMatchesExactIdentity(report: UsageReport, identity: OAuthAccountIdentity | undefined): boolean {
 	if (!identity) return false;
-	const accountId = normalizeCodexIdentityValue(identity.accountId);
-	const email = normalizeCodexIdentityValue(identity.email);
-	const projectId = normalizeCodexIdentityValue(identity.projectId);
-	const orgId = normalizeCodexIdentityValue(identity.orgId);
+	const accountId = normalizeUsageScopeValue(identity.accountId);
+	const email = normalizeUsageScopeValue(identity.email);
+	const projectId = normalizeUsageScopeValue(identity.projectId);
+	const orgId = normalizeUsageScopeValue(identity.orgId);
 	if (!accountId && !email && !projectId && !orgId) return false;
 
 	const metadata = report.metadata ?? {};
 	const reportAccountId =
-		normalizeCodexIdentityValue(metadata.accountId) ?? normalizeCodexIdentityValue(metadata.account_id);
+		normalizeUsageScopeValue(metadata.accountId) ?? normalizeUsageScopeValue(metadata.account_id);
 	const reportProjectId =
-		normalizeCodexIdentityValue(metadata.projectId) ?? normalizeCodexIdentityValue(metadata.project_id);
+		normalizeUsageScopeValue(metadata.projectId) ?? normalizeUsageScopeValue(metadata.project_id);
 	if (accountId && reportAccountId !== accountId) return false;
-	if (email && normalizeCodexIdentityValue(metadata.email) !== email) return false;
+	if (email && normalizeUsageScopeValue(metadata.email) !== email) return false;
 	if (projectId && reportProjectId !== projectId) return false;
-	if (orgId && normalizeCodexIdentityValue(metadata.orgId) !== orgId) return false;
+	if (orgId && normalizeUsageScopeValue(metadata.orgId) !== orgId) return false;
 	return true;
 }
 
@@ -340,7 +355,7 @@ export class StatusLineComponent implements Component {
 	#standalone: false | "full" | "left-only" = false;
 	#standaloneGap = false;
 	#autocompleteActiveProbe: (() => boolean) | undefined;
-	#widthEpochRevision = 0;
+	#renderRevision = 0;
 	#settings: StatusLineSettings = {};
 	#effectiveSettings: EffectiveStatusLineSettings | undefined;
 	#cachedBranch: string | null | undefined = undefined;
@@ -475,6 +490,7 @@ export class StatusLineComponent implements Component {
 			contextLine: settings.get("statusLine.contextLine"),
 		};
 	}
+
 	#gitEnabled(): boolean {
 		return settings.get("git.enabled");
 	}
@@ -780,7 +796,7 @@ export class StatusLineComponent implements Component {
 	}
 
 	invalidate(): void {
-		this.#widthEpochRevision++;
+		this.#renderRevision++;
 		// Generic repaint invalidation (theme change, message event, model
 		// switch, …). Must NOT abort or restart a live reftable HEAD/PR resolve:
 		// the render path self-invalidates via cwd/context cache-miss checks, so
@@ -1260,10 +1276,15 @@ export class StatusLineComponent implements Component {
 		const identity = activeProvider
 			? authStorage?.getOAuthAccountIdentity?.(activeProvider, session.sessionId)
 			: undefined;
+		// Model id is part of the invalidation key (but not the account-scoped
+		// fireworks key): normalized usage now selects a model-scoped window group,
+		// so switching models must drop the previous model's cached scope instead
+		// of showing it for the rest of the TTL.
+		const activeModelId = session.state.model?.id ?? session.model?.id ?? "";
 		const credentialId = activeProvider
 			? authStorage?.getSessionCredentialId?.(activeProvider, session.sessionId)
 			: undefined;
-		return this.#formatUsageContextKey(activeProvider, identity, credentialId);
+		return `${this.#formatUsageContextKey(activeProvider, identity, credentialId)}\0${activeModelId}`;
 	}
 
 	/**
@@ -1300,7 +1321,7 @@ export class StatusLineComponent implements Component {
 		let reportsPromise: Promise<unknown> | undefined;
 		try {
 			reportsPromise = fetcher.call(session, signal);
-			this.#applyUsageRefreshReports(
+			await this.#applyUsageRefreshReports(
 				session,
 				await this.#raceUsageRefreshWithSignal(reportsPromise, signal),
 				sequence,
@@ -1316,12 +1337,12 @@ export class StatusLineComponent implements Component {
 		}
 	}
 
-	#applyUsageRefreshReports(session: AgentSession, reports: unknown, sequence: number): void {
+	async #applyUsageRefreshReports(session: AgentSession, reports: unknown, sequence: number): Promise<void> {
 		if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
 			return;
 		}
-		this.#latestAppliedUsageRefreshSequence = sequence;
 		const activeProvider = session.state.model?.provider ?? session.model?.provider;
+		const activeModelId = session.state.model?.id ?? session.model?.id;
 		const authStorage = session.modelRegistry?.authStorage as StatusAuthStorage | undefined;
 		const activeIdentity = activeProvider
 			? authStorage?.getOAuthAccountIdentity?.(activeProvider, session.sessionId)
@@ -1329,7 +1350,21 @@ export class StatusLineComponent implements Component {
 		const activeCredentialId = activeProvider
 			? authStorage?.getSessionCredentialId?.(activeProvider, session.sessionId)
 			: undefined;
-		const normalized = this.#normalizeUsageReports(reports, activeProvider, activeIdentity, activeCredentialId);
+		const fingerprintPromise = activeProvider
+			? authStorage?.getSessionUsageCacheIdentity?.(activeProvider, session.sessionId)
+			: undefined;
+		const activeFingerprint = fingerprintPromise ? await fingerprintPromise : undefined;
+		if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
+			return;
+		}
+		this.#latestAppliedUsageRefreshSequence = sequence;
+		const normalized = this.#normalizeUsageReports(reports, {
+			provider: activeProvider,
+			modelId: activeModelId,
+			identity: activeIdentity,
+			credentialId: activeCredentialId,
+			fingerprint: activeFingerprint,
+		});
 		const resetSnapshot =
 			activeProvider === "openai-codex" ? this.#normalizeCodexResetSnapshot(reports, activeIdentity) : null;
 		const usageChanged = this.#cachedUsage !== normalized;
@@ -1349,8 +1384,8 @@ export class StatusLineComponent implements Component {
 
 	#observeLateUsageRefresh(session: AgentSession, reportsPromise: Promise<unknown>, sequence: number): void {
 		void reportsPromise
-			.then(reports => {
-				this.#applyUsageRefreshReports(session, reports, sequence);
+			.then(async reports => {
+				await this.#applyUsageRefreshReports(session, reports, sequence);
 			})
 			.catch(() => {
 				if (this.#disposed || this.session !== session || sequence < this.#latestAppliedUsageRefreshSequence) {
@@ -1440,19 +1475,24 @@ export class StatusLineComponent implements Component {
 
 	#normalizeUsageReports(
 		reports: unknown,
-		activeProvider?: string,
-		activeIdentity?: OAuthAccountIdentity,
-		activeCredentialId?: number,
+		context: {
+			provider?: string;
+			modelId?: string;
+			identity?: OAuthAccountIdentity;
+			credentialId?: number;
+			fingerprint?: string;
+		},
 	): readonly UsageStatusAccount[] | null {
 		if (!Array.isArray(reports)) return null;
 		const providerReports = reports.filter((report): report is UsageReport => {
 			if (!report || typeof report !== "object") return false;
 			if (!("limits" in report) || !Array.isArray(report.limits)) return false;
-			if (!activeProvider) return true;
-			return "provider" in report && report.provider === activeProvider;
+			if (!context.provider) return true;
+			return "provider" in report && report.provider === context.provider;
 		});
 		if (providerReports.length === 0) return null;
 
+		const activeModelId = normalizeUsageScopeValue(context.modelId);
 		const cursorMonthlyPriority = (limitId: unknown): number => {
 			if (limitId === "cursor:usd:individual-auto") return 0;
 			if (limitId === "cursor:usd:individual-plan" || limitId === "cursor:usd:individual-overall") return 1;
@@ -1462,55 +1502,76 @@ export class StatusLineComponent implements Component {
 
 		const accounts: UsageStatusAccount[] = [];
 		for (const usageReport of providerReports) {
-			let fiveHour: number | undefined;
-			let sevenDay: number | undefined;
-			let monthly: number | undefined;
-			let monthlyOther: number | undefined;
-			let fiveHourTier: string | undefined;
-			let sevenDayTier: string | undefined;
-			let monthlyTier: string | undefined;
-			let monthlyPriority = Number.POSITIVE_INFINITY;
-
+			const scopeGroups = new Map<string, UsageScopeGroup>();
 			for (const limit of usageReport.limits) {
 				if (!limit || typeof limit !== "object") continue;
 				const fraction = limit.amount?.usedFraction;
 				if (typeof fraction !== "number" || !Number.isFinite(fraction)) continue;
+
 				const windowId = limit.scope?.windowId;
-				const tier = limit.scope?.tier;
 				const durationMs = limit.window?.durationMs;
-				const windowClass =
-					windowId === "5h" || windowId === "7d" || windowId === "monthly"
+				const subscriptionWindow =
+					windowId === "5h" || windowId === "7d"
 						? windowId
 						: durationMs !== undefined && Math.abs(durationMs - 5 * 3_600_000) <= 60_000
 							? "5h"
 							: durationMs !== undefined && Math.abs(durationMs - 7 * 86_400_000) <= 60_000
 								? "7d"
 								: undefined;
+				const windowClass =
+					subscriptionWindow ??
+					((usageReport.provider === "cursor" || usageReport.provider === "opencode-go") &&
+					(windowId === "monthly" || windowId === "30d")
+						? "monthly"
+						: undefined);
+				if (!windowClass) continue;
 
-				if (windowClass === "5h" && (fiveHour === undefined || (fiveHourTier !== undefined && !tier))) {
-					fiveHour = fraction * 100;
-					fiveHourTier = tier || undefined;
+				const modelId = normalizeUsageScopeValue(limit.scope?.modelId);
+				if (modelId && modelId !== activeModelId) continue;
+				const rawTier = limit.scope?.tier;
+				const tier = typeof rawTier === "string" && rawTier.trim() ? rawTier.trim() : undefined;
+				const normalizedTier = normalizeUsageScopeValue(tier);
+				const scopeKey = `${modelId ?? ""}\0${normalizedTier ?? ""}`;
+				const priority = modelId ? (normalizedTier ? 1 : 0) : normalizedTier ? 3 : 2;
+				const candidate: UsageWindowCandidate = {
+					id: typeof limit.id === "string" ? limit.id : undefined,
+					windowClass,
+					fraction,
+				};
+				const group = scopeGroups.get(scopeKey);
+				if (group) {
+					group.candidates.push(candidate);
+				} else {
+					scopeGroups.set(scopeKey, { priority, tier, candidates: [candidate] });
 				}
-				if (windowClass === "7d" && (sevenDay === undefined || (sevenDayTier !== undefined && !tier))) {
-					sevenDay = fraction * 100;
-					sevenDayTier = tier || undefined;
+			}
+
+			let selectedGroup: UsageScopeGroup | undefined;
+			for (const group of scopeGroups.values()) {
+				if (!selectedGroup || group.priority < selectedGroup.priority) selectedGroup = group;
+			}
+			if (!selectedGroup) continue;
+
+			let fiveHour: number | undefined;
+			let sevenDay: number | undefined;
+			let monthly: number | undefined;
+			let monthlyOther: number | undefined;
+			let monthlyPriority = Number.POSITIVE_INFINITY;
+			for (const candidate of selectedGroup.candidates) {
+				if (candidate.windowClass === "5h" && fiveHour === undefined) {
+					fiveHour = candidate.fraction * 100;
 				}
-				if (
-					(activeProvider === "cursor" || activeProvider === "opencode-go") &&
-					(windowClass === "monthly" || windowId === "30d")
-				) {
-					if (limit.id === "cursor:usd:individual-api") {
-						monthlyOther = fraction * 100;
+				if (candidate.windowClass === "7d" && sevenDay === undefined) {
+					sevenDay = candidate.fraction * 100;
+				}
+				if (candidate.windowClass === "monthly") {
+					if (candidate.id === "cursor:usd:individual-api") {
+						monthlyOther = candidate.fraction * 100;
 						continue;
 					}
-					const priority = cursorMonthlyPriority(limit.id);
-					const shouldReplace =
-						monthly === undefined ||
-						priority < monthlyPriority ||
-						(priority === monthlyPriority && monthlyTier !== undefined && !tier);
-					if (shouldReplace) {
-						monthly = fraction * 100;
-						monthlyTier = tier || undefined;
+					const priority = cursorMonthlyPriority(candidate.id);
+					if (priority < monthlyPriority) {
+						monthly = candidate.fraction * 100;
 						monthlyPriority = priority;
 					}
 				}
@@ -1519,12 +1580,18 @@ export class StatusLineComponent implements Component {
 			if (fiveHour === undefined && sevenDay === undefined && monthly === undefined && monthlyOther === undefined) continue;
 			const metadataCredentialId = usageReport.metadata?.credentialId;
 			const reportCredentialId = typeof metadataCredentialId === "number" ? metadataCredentialId : undefined;
+			const metadataFingerprint = usageReport.metadata?.usageCacheIdentity;
+			const reportFingerprint = typeof metadataFingerprint === "string" ? metadataFingerprint : undefined;
 			const matchesActiveIdentity =
-				activeCredentialId === undefined &&
-				activeIdentity !== undefined &&
-				usageReport.limits.some(limit => limitMatchesActiveAccount(usageReport, limit, activeIdentity));
-			const active =
-				activeCredentialId !== undefined ? reportCredentialId === activeCredentialId : matchesActiveIdentity;
+				context.identity !== undefined &&
+				usageReport.limits.some(limit => limitMatchesActiveAccount(usageReport, limit, context.identity));
+			const hasCredentialSelector = context.credentialId !== undefined || context.fingerprint !== undefined;
+			const active = hasCredentialSelector
+				? reportCredentialId === context.credentialId ||
+					(context.fingerprint !== undefined && reportFingerprint === context.fingerprint)
+				: context.identity !== undefined
+					? matchesActiveIdentity
+					: providerReports.length === 1 || accounts.length === 0;
 			accounts.push({
 				provider: String(usageReport.provider),
 				active,
@@ -1840,8 +1907,7 @@ export class StatusLineComponent implements Component {
 			ctx.contextPercent !== undefined &&
 			ctx.contextWindow > 0 &&
 			(hasContextSegment(leftSegIds) || hasContextSegment(rightSegIds)) &&
-			hasNonContextSegment(leftSegIds) &&
-			hasNonContextSegment(rightSegIds);
+			(hasNonContextSegment(leftSegIds) || hasNonContextSegment(rightSegIds));
 		if (embedContext) {
 			removeContextSegments(leftParts, leftSegIds);
 			removeContextSegments(rightParts, rightSegIds);
@@ -1977,7 +2043,7 @@ export class StatusLineComponent implements Component {
 		const rightGroup = renderGroup(right, "right");
 		if (!leftGroup && !rightGroup) return "";
 
-		if (topFillWidth === 0 || left.length === 0 || right.length === 0) {
+		if (topFillWidth === 0 || (plain && (left.length === 0 || right.length === 0))) {
 			return leftGroup + (leftGroup && rightGroup ? " " : "") + rightGroup;
 		}
 
@@ -1986,6 +2052,10 @@ export class StatusLineComponent implements Component {
 			// Standalone composers: no gauge line between the groups, just air.
 			return leftGroup + padding(gapWidth) + rightGroup;
 		}
+		// Box layout: with one group absent (an unnamed session hides
+		// `session_name`, emptying the default preset's right group) the gauge
+		// runs to the border edge instead of disappearing, so embedded context
+		// labels don't fall back to a context chip until the session is titled.
 		return leftGroup + this.#buildContextGaugeFill(gapWidth, ctx, effectiveSettings, embedContext) + rightGroup;
 	}
 
@@ -2148,7 +2218,7 @@ export class StatusLineComponent implements Component {
 		return {
 			content,
 			width: visibleWidth(content),
-			revision: this.#widthEpochRevision,
+			revision: this.#renderRevision,
 		};
 	}
 	/**
@@ -2179,7 +2249,7 @@ export class StatusLineComponent implements Component {
 		return {
 			content,
 			width: visibleWidth(content),
-			revision: this.#widthEpochRevision,
+			revision: this.#renderRevision,
 		};
 	}
 
@@ -2196,7 +2266,6 @@ export class StatusLineComponent implements Component {
 		}
 		return content;
 	}
-
 	/**
 	 * Status bar lines for a composer layout, rendered through the real
 	 * pipeline — the single source for the /settings appearance preview.

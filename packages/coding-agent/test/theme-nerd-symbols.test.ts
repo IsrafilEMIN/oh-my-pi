@@ -38,6 +38,7 @@ it("uses the expected Nerd preset symbols", async () => {
 
 	const theme = await getThemeByName(customThemeName);
 	expect(theme?.symbol("icon.session")).toBe("\u{f0051}");
+	expect(theme?.getLangIcon("csharp")).toBe("\u{e7b2}");
 	expect(theme?.sep.pipe).toBe(" │ ");
 });
 

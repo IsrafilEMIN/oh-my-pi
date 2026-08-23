@@ -20,13 +20,17 @@ function makeComponent(
 	reports: unknown,
 	options: {
 		provider?: string;
+		modelId?: string;
+		model?: { id?: string; contextWindow: number; provider?: string };
 		activeIdentity?: { accountId?: string; email?: string; projectId?: string };
 		activeCredentialId?: number;
+		activeFingerprint?: string;
 	} = {},
 ): StatusLineComponent {
+	const model = options.model ?? { id: options.modelId, contextWindow: 1000, provider: options.provider };
 	const component = new StatusLineComponent({
-		state: { messages: [], model: { contextWindow: 1000, provider: options.provider } },
-		model: { contextWindow: 1000, provider: options.provider },
+		state: { messages: [], model },
+		model,
 		sessionManager: {
 			getUsageStatistics: () => ({
 				input: 0,
@@ -45,8 +49,9 @@ function makeComponent(
 		modelRegistry: {
 			authStorage: {
 				getOAuthAccountIdentity: (provider: string) =>
-					provider === options.provider ? options.activeIdentity : undefined,
+					provider === model.provider ? options.activeIdentity : undefined,
 				getSessionCredentialId: () => options.activeCredentialId,
+				getSessionUsageCacheIdentity: async () => options.activeFingerprint,
 			},
 		},
 		getAsyncJobSnapshot: () => ({ running: [] }),
@@ -87,7 +92,7 @@ describe("usage status-line segment", () => {
 		expect(renderSegment("usage", { usage: [] } as unknown as SegmentContext).visible).toBe(false);
 	});
 
-	it("prefers untiered subscription windows", async () => {
+	it("keeps windows within the preferred untiered scope", async () => {
 		const component = makeComponent([
 			{
 				provider: "anthropic",
@@ -102,7 +107,36 @@ describe("usage status-line segment", () => {
 		component.refreshUsageInBackground();
 		await flushUsageRefresh();
 
-		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("anthropic ● 76/92");
+		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("anthropic ● 76/?");
+	});
+
+	it("selects one coherent scope and invalidates usage when the active model changes", async () => {
+		const reports = [
+			{
+				provider: "openai-codex",
+				limits: [
+					{ scope: { windowId: "7d" }, amount: { usedFraction: 0.08 } },
+					{
+						scope: { windowId: "5h", tier: "spark", modelId: "GPT-5.3-Codex-Spark" },
+						amount: { usedFraction: 0.42 },
+					},
+					{
+						scope: { windowId: "7d", tier: "spark", modelId: "GPT-5.3-Codex-Spark" },
+						amount: { usedFraction: 0.11 },
+					},
+				],
+			},
+		];
+		const model = { id: "gpt-5.6-sol", contextWindow: 1000, provider: "openai-codex" };
+		const component = makeComponent(reports, { model });
+		component.refreshUsageInBackground();
+		await flushUsageRefresh();
+		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("GPT ● ?/92");
+
+		model.id = "gpt-5.3-codex-spark";
+		expect(stripVTControlCharacters(component.getTopBorder(200).content)).not.toContain("GPT ● ?/92");
+		await flushUsageRefresh();
+		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("GPT ● 58/89");
 	});
 
 	it("scopes reports to the active provider and marks only the identity match active", async () => {
@@ -161,6 +195,41 @@ describe("usage status-line segment", () => {
 				},
 			],
 			{ provider: "opencode-go", activeCredentialId: 2 },
+		);
+
+		component.refreshUsageInBackground();
+		await flushUsageRefresh();
+
+		expect(stripVTControlCharacters(component.getTopBorder(200).content)).toContain("Go ● 75/40/65 ○ 50/10/0");
+	});
+
+	it("uses the usage-cache fingerprint when the credential annotation is missing", async () => {
+		const component = makeComponent(
+			[
+				{
+					provider: "opencode-go",
+					metadata: { credentialId: 1, usageCacheIdentity: "api_key|secret:aaaa" },
+					limits: [
+						{ scope: { windowId: "5h" }, amount: { usedFraction: 0.5 } },
+						{ scope: { windowId: "7d" }, amount: { usedFraction: 0.9 } },
+						{ scope: { windowId: "monthly" }, amount: { usedFraction: 1 } },
+					],
+				},
+				{
+					provider: "opencode-go",
+					metadata: { usageCacheIdentity: "api_key|secret:bbbb" },
+					limits: [
+						{ scope: { windowId: "5h" }, amount: { usedFraction: 0.25 } },
+						{ scope: { windowId: "7d" }, amount: { usedFraction: 0.6 } },
+						{ scope: { windowId: "monthly" }, amount: { usedFraction: 0.35 } },
+					],
+				},
+			],
+			{
+				provider: "opencode-go",
+				activeCredentialId: 4,
+				activeFingerprint: "api_key|secret:bbbb",
+			},
 		);
 
 		component.refreshUsageInBackground();
