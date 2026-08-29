@@ -4,12 +4,18 @@ import { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
 import { SPINNER_ADVANCE_MS, TERMINAL } from "@oh-my-pi/pi-tui";
 import { formatDuration, formatNumber, getProjectDir, pathIsWithin, relativePathWithinRoot } from "@oh-my-pi/pi-utils";
 import { type Theme, type ThemeColor, theme } from "../../../modes/theme/theme";
-import { shortenPath, TRUNCATE_LENGTHS, truncateToWidth } from "../../../tools/render-utils";
+import { shortenPath } from "../../../tools/render-utils";
 import { fileHyperlink } from "../../../tui/hyperlink";
 import { getSessionAccentAnsi, getSessionAccentHex } from "../../../utils/session-color";
 import { sanitizeStatusText } from "../../shared";
 import { formatContextUsage, getContextUsageLevel, getContextUsageThemeColor } from "./context-thresholds";
-import type { RenderedSegment, SegmentContext, StatusLineSegment, StatusLineSegmentId } from "./types";
+import type {
+	RenderedSegment,
+	SegmentContext,
+	StatusLineSegment,
+	StatusLineSegmentId,
+	UsageStatusAccount,
+} from "./types";
 
 export type { SegmentContext } from "./types";
 
@@ -771,93 +777,44 @@ const collabSegment: StatusLineSegment = {
 	},
 };
 
-function pickUsageColor(percent: number): "muted" | "warning" | "error" {
-	if (percent >= 80) return "error";
-	if (percent >= 50) return "warning";
-	return "muted";
+function remainingQuota(percent: number | undefined): string {
+	if (percent === undefined || !Number.isFinite(percent)) return "?";
+	return String(Math.max(0, Math.min(100, Math.round(100 - percent))));
 }
 
-function formatUsageReset(value: number, unit: "m" | "h"): string {
-	if (unit === "m") {
-		// Short-window reset timers retain minute precision.
-		if (value < 60) return `${value}m`;
-		const hours = Math.floor(value / 60);
-		const mins = value % 60;
-		return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
-	}
-	// total hours (7d window: max 168)
-	if (value < 24) return `${value}h`;
-	const days = Math.floor(value / 24);
-	const hours = value % 24;
-	return hours > 0 ? `${days}d ${hours}h` : `${days}d`;
+function usageProviderLabel(provider: string): string {
+	if (provider === "openai-codex" || provider === "openai") return "GPT";
+	if (provider === "opencode-go") return "GO";
+	if (provider === "cursor") return "CURSOR";
+	if (provider === "xai" || provider === "xai-oauth") return "GROK";
+	return provider;
+}
+
+function accountQuota(ctx: SegmentContext, account: UsageStatusAccount): string {
+	const windows =
+		account.provider === "opencode-go"
+			? [account.fiveHour, account.sevenDay, account.monthly]
+			: account.provider === "cursor"
+				? account.monthlyOther === undefined
+					? [account.monthly]
+					: [account.monthly, account.monthlyOther]
+				: account.daily !== undefined && account.fiveHour === undefined && account.sevenDay === undefined
+					? [account.daily]
+					: [account.fiveHour, account.sevenDay];
+	const quotas = windows.map(percent => statusValue(ctx, remainingQuota(percent))).join("/");
+	return `${account.active ? "●" : "○"} ${quotas}`;
 }
 
 const usageSegment: StatusLineSegment = {
 	id: "usage",
 	render(ctx) {
-		const u = ctx.usage;
-		if (!u || (!u.fiveHour && !u.daily && !u.sevenDay && !u.monthly)) {
+		const accounts = ctx.usage;
+		if (!accounts || accounts.length === 0) {
 			return { content: "", visible: false };
 		}
-		const parts: string[] = [];
-		if (u.tier) {
-			const tier = ctx.startupPlaceholder
-				? STARTUP_PLACEHOLDER
-				: truncateToWidth(sanitizeStatusText(u.tier), TRUNCATE_LENGTHS.SHORT);
-			if (tier) parts.push(accentFg(ctx, "accent", tier));
-		}
-		if (u.fiveHour) {
-			const pct = u.fiveHour.percent;
-			const pctText = theme.fg(pickUsageColor(pct), `${statusValue(ctx, `${Math.round(pct)}`)}%`);
-			const reset =
-				u.fiveHour.resetMinutes !== undefined
-					? theme.fg(
-							"muted",
-							ctx.startupPlaceholder ? " (…)" : ` (${formatUsageReset(u.fiveHour.resetMinutes, "m")})`,
-						)
-					: "";
-			parts.push(`5h ${pctText}${reset}`);
-		}
-		if (u.daily) {
-			const pct = u.daily.percent;
-			const pctText = theme.fg(pickUsageColor(pct), `${statusValue(ctx, `${Math.round(pct)}`)}%`);
-			const reset =
-				u.daily.resetMinutes !== undefined
-					? theme.fg(
-							"muted",
-							ctx.startupPlaceholder ? " (…)" : ` (${formatUsageReset(u.daily.resetMinutes, "m")})`,
-						)
-					: "";
-			parts.push(`1d ${pctText}${reset}`);
-		}
-		if (u.sevenDay) {
-			const pct = u.sevenDay.percent;
-			const pctText = theme.fg(pickUsageColor(pct), `${statusValue(ctx, `${Math.round(pct)}`)}%`);
-			const reset =
-				u.sevenDay.resetHours !== undefined
-					? theme.fg(
-							"muted",
-							ctx.startupPlaceholder ? " (…)" : ` (${formatUsageReset(u.sevenDay.resetHours, "h")})`,
-						)
-					: "";
-			parts.push(`7d ${pctText}${reset}`);
-		}
-		if (u.monthly) {
-			const pct = u.monthly.percent;
-			// Cursor and OpenCode Go (normalize gates monthly to those providers).
-			// Both floor used percents upstream (Cursor's dashboard shows 1.88 →
-			// "1% used"; OpenCode's endpoint already emits floored integers).
-			const pctText = theme.fg(pickUsageColor(pct), `${statusValue(ctx, `${Math.floor(pct)}`)}%`);
-			const reset =
-				u.monthly.resetHours !== undefined
-					? theme.fg(
-							"muted",
-							ctx.startupPlaceholder ? " (…)" : ` (${formatUsageReset(u.monthly.resetHours, "h")})`,
-						)
-					: "";
-			parts.push(`mo ${pctText}${reset}`);
-		}
-		const content = withIcon(theme.icon.time, parts.join(theme.sep.dot));
+		const provider = accounts[0]?.provider ?? "";
+		const label = statusValue(ctx, usageProviderLabel(provider));
+		const content = `${label} ${accounts.map(account => accountQuota(ctx, account)).join(" ")}`;
 		return { content, visible: true };
 	},
 };

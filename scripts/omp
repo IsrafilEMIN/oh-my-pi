@@ -1,0 +1,35 @@
+#!/bin/sh
+set -e
+
+self=$0
+while [ -L "$self" ]; do
+	link=$(readlink "$self")
+	case $link in
+	/*) self=$link ;;
+	*) self=$(dirname "$self")/$link ;;
+	esac
+done
+
+root=$(CDPATH= cd -- "$(dirname -- "$self")/.." && pwd -P)
+cli_wrapper=$root/packages/coding-agent/scripts/omp
+updater=$root/scripts/omp-update
+
+case "${1:-}" in
+update)
+	shift
+	exec "$updater" "$@"
+	;;
+esac
+
+if [ ! -x "$cli_wrapper" ]; then
+	printf '%s\n' "omp: checkout launcher missing: $cli_wrapper" >&2
+	exit 127
+fi
+
+command -v bun >/dev/null 2>&1 || {
+	printf '%s\n' "omp: bun runtime not found on PATH (needed to launch the harness checkout)" >&2
+	exit 127
+}
+
+export OMP_SOURCE_ROOT="${OMP_SOURCE_ROOT:-$root}"
+exec "$cli_wrapper" "$@"

@@ -134,6 +134,9 @@
 - Fixed Perplexity email sign-in for accounts protected by authenticator-based two-factor authentication.
 - Fixed Qianfan API-key login validation for keys that cannot access the validation model.
 - Fixed Z.AI browser sign-in to report an occupied callback port before opening the browser.
+### Added
+
+- Usage reports now stamp `metadata.credentialId` and a one-way `usageCacheIdentity` so status surfaces can tell the session's active account from pool backups without exposing secrets.
 
 ## [18.0.9] - 2026-08-28
 

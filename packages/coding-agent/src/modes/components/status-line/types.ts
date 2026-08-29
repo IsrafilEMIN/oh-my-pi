@@ -57,6 +57,16 @@ export type EffectiveStatusLineSettings = Required<
 
 export type RGB = readonly [number, number, number];
 
+export interface UsageStatusAccount {
+	provider: string;
+	active: boolean;
+	fiveHour?: number;
+	daily?: number;
+	sevenDay?: number;
+	monthly?: number;
+	monthlyOther?: number;
+}
+
 export interface SegmentContext {
 	session: AgentSession;
 	/** Deterministic wall clock for previews/tests; production omits it. */
@@ -154,13 +164,7 @@ export interface SegmentContext {
 	 * the worktree/branch is already shown by the git segment.
 	 */
 	worktree: { projectName: string; worktreeName: string } | null;
-	usage: {
-		tier?: string;
-		fiveHour?: { percent: number; resetMinutes?: number };
-		daily?: { percent: number; resetMinutes?: number };
-		sevenDay?: { percent: number; resetHours?: number };
-		monthly?: { percent: number; resetHours?: number };
-	} | null;
+	usage: readonly UsageStatusAccount[] | null;
 }
 
 export interface RenderedSegment {

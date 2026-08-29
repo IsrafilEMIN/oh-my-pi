@@ -33,7 +33,16 @@ timing_preload=$scripts_dir/../../utils/src/module-timer.ts
 launch_dir=${OMP_DEV_LAUNCH_DIR:-${HOME}/.omp/.dev-cwd}
 mkdir -p "$launch_dir"
 
-OMP_LAUNCH_CWD=$PWD
+case "$PWD" in
+	"$HOME/Developer/"*) OMP_LAUNCH_CWD=$PWD ;;
+	*)
+		if [ -d "$HOME/Developer/hermes-workspace" ]; then
+			OMP_LAUNCH_CWD=$HOME/Developer/hermes-workspace
+		else
+			OMP_LAUNCH_CWD=$PWD
+		fi
+		;;
+esac
 export OMP_LAUNCH_CWD
 cd "$launch_dir"
 # Herdr 0.7.5 validates the foreground process name. The macOS shell can

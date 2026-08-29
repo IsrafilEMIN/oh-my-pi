@@ -93,3 +93,9 @@ packages/coding-agent/bench/boot-baseline.json
 /.bazelrc.user
 
 .parity/
+
+# Runtime SQLite artifacts (defense-in-depth; omp data lives in ~/.omp, never
+# inside the repo).
+**/*.db
+*.db-wal
+*.db-shm

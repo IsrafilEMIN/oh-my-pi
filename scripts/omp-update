@@ -1,0 +1,345 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)"
+ROOT="${OMP_SOURCE_ROOT:-$ROOT}"
+ORIGIN_URL="https://github.com/IsrafilEMIN/oh-my-pi.git"
+UPSTREAM_URL="https://github.com/can1357/oh-my-pi.git"
+ORIGIN_HINT="IsrafilEMIN/oh-my-pi"
+UPSTREAM_HINT="can1357/oh-my-pi"
+RECOVERY_REF="refs/omp-update/recovery"
+STATE_DIR="$ROOT/.git/omp-update"
+STATE_FILE="$STATE_DIR/state"
+CONFLICT_LOG="$STATE_DIR/conflict.log"
+CHECK=0
+DO_BUILD=1
+DO_PUSH=1
+CONFLICT_FILES=()
+
+fail() {
+  printf '%s\n' "omp-update: $*" >&2
+  exit 1
+}
+
+usage() {
+  printf '%s\n' "Usage: omp-update [--check] [--no-build] [--no-push]" \
+    "  --check      Fetch remotes and report fork/upstream range without changing HEAD" \
+    "  --no-build   Rebase without refreshing dependencies, natives, or dist/omp" \
+    "  --no-push    Skip the force-with-lease origin push (on by default)"
+}
+
+while (($#)); do
+  case "$1" in
+    --check|-c) CHECK=1 ;;
+    --no-build) DO_BUILD=0 ;;
+    --no-push) DO_PUSH=0 ;;
+    --push) DO_PUSH=1 ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *) fail "unknown option: $1" ;;
+  esac
+  shift
+done
+
+command -v git >/dev/null || fail "git is required"
+[[ -d "$ROOT/.git" ]] || fail "source checkout not found: $ROOT"
+[[ -f "$ROOT/packages/coding-agent/package.json" ]] || fail "invalid OMP source checkout: $ROOT"
+[[ -f "$ROOT/packages/coding-agent/src/cli.ts" ]] || fail "invalid OMP source checkout: $ROOT"
+
+g() {
+  git -C "$ROOT" "$@"
+}
+
+ensure_remote() {
+  local name="$1" url="$2" hint="$3" current=""
+  if current="$(g remote get-url "$name" 2>/dev/null)"; then
+    case "$current" in
+      *"$hint"*) ;;
+      *) fail "remote $name is $current (expected $hint)" ;;
+    esac
+  else
+    g remote add "$name" "$url"
+    printf '%s\n' "omp-update: added remote $name $url"
+  fi
+}
+
+write_state() {
+  mkdir -p "$STATE_DIR"
+  cat >"$STATE_FILE" <<EOF
+status=$1
+timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+root=$ROOT
+branch=$2
+head=$3
+recovery_ref=$RECOVERY_REF
+recovery=$4
+origin_main=$5
+upstream_main=$6
+behind=$7
+ahead=$8
+EOF
+}
+
+restore_recovery() {
+  local recovery_sha="$1"
+  if [[ -d "$ROOT/.git/rebase-merge" || -d "$ROOT/.git/rebase-apply" ]]; then
+    g rebase --abort >/dev/null 2>&1 || true
+  fi
+  g reset --hard "$recovery_sha" >/dev/null
+  local now
+  now="$(g rev-parse HEAD)"
+  [[ "$now" == "$recovery_sha" ]] || fail "restore failed: HEAD $now != recovery $recovery_sha"
+}
+
+state_value() {
+  local key="$1"
+  [[ -f "$STATE_FILE" ]] || return 0
+  awk -F= -v key="$key" '$1 == key { print substr($0, index($0, "=") + 1); exit }' "$STATE_FILE"
+}
+
+
+
+origin_is_known_unrebased_tip() {
+  local recorded_status recorded_origin recorded_head recorded_upstream
+  recorded_status="$(state_value status)"
+  recorded_origin="$(state_value origin_main)"
+  recorded_head="$(state_value head)"
+  recorded_upstream="$(state_value upstream_main)"
+  if [[ -n "$recorded_origin" && "$recorded_origin" == "$origin_main" && -n "$recorded_head" ]] &&
+    g merge-base --is-ancestor "$recorded_head" HEAD; then
+    return 0
+  fi
+  if [[ "$recorded_status" == "rebase-conflict" && "$recorded_origin" == "$origin_main" &&
+    -n "$recorded_upstream" ]] &&
+    g merge-base --is-ancestor "$recorded_upstream" HEAD; then
+    return 0
+  fi
+  return 1
+}
+
+ensure_origin_safe() {
+  if ((ahead == 0)); then
+    return 0
+  fi
+  if ((origin_in_head)); then
+    return 0
+  fi
+  if origin_is_known_unrebased_tip; then
+    printf '%s\n' \
+      "omp-update: origin/main still points at the unrebased fork tip" \
+      "omp-update: local main was rewritten; pass --push to update origin (force-with-lease)" >&2
+    return 0
+  fi
+  fail "origin/main has commits not in local main; inspect: git log --oneline HEAD..origin/main"
+}
+
+report_conflict() {
+  local recovery_sha="$1" branch="$2" onto="$3" retry_kind="${4:-rebase}"
+  mkdir -p "$STATE_DIR"
+  {
+    if [[ "$retry_kind" == "stash" ]]; then
+      printf '%s\n' "omp-update: worktree delta conflicted after the upstream update"
+    else
+      printf '%s\n' "omp-update: rebase conflict; rebase paused with Git autostash active"
+    fi
+    printf '%s\n' "branch=$branch"
+    printf '%s\n' "onto=$onto"
+    printf '%s\n' "recovery=$recovery_sha"
+    printf '%s\n' "conflicted_files:"
+    if ((${#CONFLICT_FILES[@]})); then
+      printf '  %s\n' "${CONFLICT_FILES[@]}"
+    else
+      printf '%s\n' "  (none listed; inspect $CONFLICT_LOG)"
+    fi
+    printf '%s\n' ""
+    if [[ "$retry_kind" == "stash" ]]; then
+      printf '%s\n' "Resolve the worktree delta:"
+      printf '%s\n' "  cd $ROOT"
+      printf '%s\n' "  git status"
+      printf '%s\n' "  git add <resolved-files>"
+      printf '%s\n' "  git stash drop"
+      printf '%s\n' "  $ROOT/scripts/omp-update"
+    else
+      printf '%s\n' "Resolve and continue:"
+      printf '%s\n' "  cd $ROOT"
+      printf '%s\n' "  git status"
+      printf '%s\n' "  git add <resolved-files>"
+      printf '%s\n' "  git rebase --continue"
+      printf '%s\n' "  $ROOT/scripts/omp-update"
+      printf '%s\n' ""
+      printf '%s\n' "Abort and restore the original HEAD and dirty worktree:"
+      printf '%s\n' "  git rebase --abort"
+    fi
+  } | tee "$CONFLICT_LOG" >&2
+}
+
+ensure_remote origin "$ORIGIN_URL" "$ORIGIN_HINT"
+ensure_remote upstream "$UPSTREAM_URL" "$UPSTREAM_HINT"
+
+g fetch origin main
+g fetch upstream main
+
+branch="$(g branch --show-current || true)"
+[[ -n "$branch" ]] || fail "detached HEAD; checkout a branch before updating"
+[[ "$branch" == "main" ]] || fail "source checkout must be on main (currently $branch)"
+
+head_sha="$(g rev-parse HEAD)"
+origin_main="$(g rev-parse origin/main)"
+upstream_main="$(g rev-parse upstream/main)"
+behind="$(g rev-list --count HEAD..upstream/main)"
+ahead="$(g rev-list --count upstream/main..HEAD)"
+fork_range="$(g log --oneline --reverse upstream/main..HEAD || true)"
+binary="$ROOT/packages/coding-agent/dist/omp"
+launcher="$ROOT/scripts/omp"
+origin_in_head=0
+if g merge-base --is-ancestor "$origin_main" HEAD; then
+  origin_in_head=1
+fi
+
+if ((CHECK)); then
+  printf '%s\n' "root=$ROOT" \
+    "branch=$branch" \
+    "head=$head_sha" \
+    "origin_main=$origin_main" \
+    "upstream_main=$upstream_main" \
+    "behind=$behind" \
+    "ahead=$ahead" \
+    "origin_in_head=$origin_in_head" \
+    "launcher=$launcher" \
+    "binary=$binary"
+  if [[ -n "$fork_range" ]]; then
+    printf '%s\n' "fork_commits:"
+    printf '%s\n' "$fork_range" | sed 's/^/  /'
+  else
+    printf '%s\n' "fork_commits:"
+  fi
+  if [[ -x "$binary" ]]; then
+    printf '%s\n' "binary_version=$("$binary" --version 2>/dev/null || true)"
+  fi
+  if ((behind == 0)); then
+    printf '%s\n' "status=current"
+  else
+    printf '%s\n' "status=behind"
+  fi
+  exit 0
+fi
+
+if [[ -d "$ROOT/.git/rebase-merge" || -d "$ROOT/.git/rebase-apply" ]]; then
+  if [[ "$(state_value status)" == "rebase-conflict" ]]; then
+    fail "updater rebase is paused; resolve and stage conflicts, run git rebase --continue, then rerun omp-update"
+  fi
+  if [[ "$(state_value status)" == "started" ]] && g rev-parse --verify --quiet "$RECOVERY_REF" >/dev/null; then
+    fail "rebase already in progress (left by omp-update); abort with git rebase --abort"
+  fi
+  fail "rebase already in progress; finish or run: git rebase --abort"
+fi
+
+dirty="$(g status --porcelain)"
+
+ensure_origin_safe
+
+mkdir -p "$STATE_DIR"
+
+if ((behind == 0)); then
+  if ! recovery_sha="$(g rev-parse --verify --quiet "$RECOVERY_REF")"; then
+    recovery_sha="$head_sha"
+    g update-ref "$RECOVERY_REF" "$recovery_sha"
+  fi
+  write_state current "$branch" "$head_sha" "$recovery_sha" "$origin_main" "$upstream_main" "$behind" "$ahead"
+  printf '%s\n' "omp-update: current" \
+    "head=$head_sha" \
+    "upstream=$upstream_main" \
+    "ahead=$ahead" \
+    "behind=0"
+else
+  STASH_REF=""
+  g update-ref "$RECOVERY_REF" "$head_sha"
+  write_state started "$branch" "$head_sha" "$head_sha" "$origin_main" "$upstream_main" "$behind" "$ahead"
+  if ((ahead > 0)); then
+    set +e
+    g rebase --autostash "$upstream_main"
+    rebase_rc=$?
+    set -e
+    if ((rebase_rc != 0)); then
+      CONFLICT_FILES=()
+      while IFS= read -r conflict_file; do
+        [[ -n "$conflict_file" ]] && CONFLICT_FILES+=("$conflict_file")
+      done < <(g diff --name-only --diff-filter=U 2>/dev/null || true)
+      g diff --name-only --diff-filter=U >"$STATE_DIR/unmerged.txt" 2>/dev/null || true
+      g status --porcelain >"$STATE_DIR/status-on-conflict.txt" 2>/dev/null || true
+      write_state rebase-conflict "$branch" "$head_sha" "$head_sha" "$origin_main" "$upstream_main" "$behind" "$ahead"
+      printf 'conflict_files=%s\n' "$(IFS=,; echo "${CONFLICT_FILES[*]-}")" >>"$STATE_FILE"
+      report_conflict "$head_sha" "$branch" "$upstream_main"
+      printf '%s\n' "omp-update: committed fork changes conflicted; Git is preserving the dirty worktree in its autostash" >&2
+      exit 2
+    fi
+  else
+    if [[ -n "$dirty" ]]; then
+      if ! g stash push -u -m "omp-update: worktree delta" >/dev/null; then
+        fail "failed to stash working tree"
+      fi
+      STASH_REF="$(g rev-parse -q --verify refs/stash 2>/dev/null || true)"
+    fi
+    g reset --hard "$upstream_main"
+    pop_rc=0
+    if [[ -n "$STASH_REF" ]]; then
+      set +e
+      g stash pop
+      pop_rc=$?
+      set -e
+    fi
+    if ((pop_rc != 0)); then
+      CONFLICT_FILES=()
+      while IFS= read -r conflict_file; do
+        [[ -n "$conflict_file" ]] && CONFLICT_FILES+=("$conflict_file")
+      done < <(g diff --name-only --diff-filter=U 2>/dev/null || true)
+      g diff --name-only --diff-filter=U >"$STATE_DIR/unmerged.txt" 2>/dev/null || true
+      g status --porcelain >"$STATE_DIR/status-on-conflict.txt" 2>/dev/null || true
+      write_state aborted-conflict "$branch" "$(g rev-parse HEAD)" "$head_sha" "$origin_main" "$upstream_main" "$behind" "$ahead"
+      printf 'conflict_files=%s\n' "$(IFS=,; echo "${CONFLICT_FILES[*]-}")" >>"$STATE_FILE"
+      printf 'stash_ref=%s\n' "$STASH_REF" >>"$STATE_FILE"
+      report_conflict "$head_sha" "$branch" "$upstream_main" stash
+      printf '%s\n' "omp-update: the worktree delta conflicted on re-apply; resolve the markers, then: git stash drop" >&2
+      exit 2
+    fi
+  fi
+  new_head="$(g rev-parse HEAD)"
+  write_state success "$branch" "$new_head" "$head_sha" "$origin_main" "$(g rev-parse upstream/main)" 0 "$(g rev-list --count upstream/main..HEAD)"
+  printf '%s\n' "omp-update: updated (worktree delta re-applied)" \
+    "recovery=$head_sha" \
+    "head=$new_head" \
+    "upstream=$(g rev-parse upstream/main)" \
+    "ahead=$(g rev-list --count upstream/main..HEAD)"
+  head_sha="$new_head"
+fi
+
+if ((DO_PUSH)); then
+  new_main="$(g rev-parse HEAD)"
+  if [[ "$new_main" != "$origin_main" ]]; then
+    g push --force-with-lease="refs/heads/main:$origin_main" origin main
+    printf '%s\n' "omp-update: pushed origin/main $new_main"
+  fi
+fi
+
+if ((DO_BUILD)); then
+  command -v bun >/dev/null || fail "bun is required for --build"
+  command -v cargo >/dev/null || fail "cargo is required for --build"
+  command -v ninja >/dev/null || fail "ninja is required for --build"
+  bun --cwd="$ROOT" install
+  bun --cwd="$ROOT/packages/natives" run build
+  bun --cwd="$ROOT/packages/coding-agent" run build
+  [[ -x "$binary" ]] || fail "build did not produce $binary"
+  source_version="$(bun -e "console.log(JSON.parse(await Bun.file('$ROOT/packages/coding-agent/package.json').text()).version)")"
+  reported="$("$binary" --version 2>/dev/null || true)"
+  [[ "$reported" == *"$source_version"* ]] || fail "binary reported '${reported:-empty}', expected $source_version"
+  rm -rf "$HOME/.omp/natives/$source_version"
+  if [[ -n "${XDG_DATA_HOME:-}" && -d "$XDG_DATA_HOME/omp" ]]; then
+    rm -rf "$XDG_DATA_HOME/omp/natives/$source_version"
+  fi
+  printf '%s\n' "omp-update: built $binary ($reported)"
+fi
+
+printf '%s\n' "launcher=$launcher"
+exit 0

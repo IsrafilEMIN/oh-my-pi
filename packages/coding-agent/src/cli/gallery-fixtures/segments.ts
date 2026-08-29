@@ -75,11 +75,7 @@ export function createGallerySegmentContext(sessionOptions?: GallerySessionOptio
 			pr: { number: 1842, url: "https://github.com/can1357/oh-my-pi/pull/1842" },
 		},
 		worktree: null,
-		usage: {
-			tier: "Pro",
-			fiveHour: { percent: 32, resetMinutes: 71 },
-			sevenDay: { percent: 68, resetHours: 52 },
-		},
+		usage: [{ provider: "openai-codex", active: true, fiveHour: 32, sevenDay: 68 }],
 	};
 }
 
@@ -209,28 +205,31 @@ function variantsFor(id: StatusLineSegmentId): readonly SegmentVariantSpec[] {
 		case "usage":
 			return [
 				{
-					label: "all windows",
+					label: "multiple accounts",
 					context: {
-						usage: {
-							tier: "Pro",
-							fiveHour: { percent: 32, resetMinutes: 71 },
-							daily: { percent: 44, resetMinutes: 310 },
-							sevenDay: { percent: 68, resetHours: 52 },
-							monthly: { percent: 77, resetHours: 216 },
-						},
+						usage: [
+							{ provider: "opencode-go", active: true, fiveHour: 32, sevenDay: 68, monthly: 77 },
+							{ provider: "opencode-go", active: false, fiveHour: 65, sevenDay: 92, monthly: 44 },
+						],
 					},
 				},
 				{
-					label: "normal",
-					context: { usage: { tier: "Pro", fiveHour: { percent: 24, resetMinutes: 75 } } },
+					label: "gpt",
+					context: {
+						usage: [{ provider: "openai-codex", active: true, fiveHour: 24, sevenDay: 8 }],
+					},
 				},
 				{
-					label: "warning",
-					context: { usage: { tier: "Pro", fiveHour: { percent: 65, resetMinutes: 75 } } },
+					label: "cursor",
+					context: {
+						usage: [{ provider: "cursor", active: true, monthly: 6, monthlyOther: 5 }],
+					},
 				},
 				{
-					label: "error",
-					context: { usage: { tier: "Pro", fiveHour: { percent: 92, resetMinutes: 75 } } },
+					label: "daily",
+					context: {
+						usage: [{ provider: "google-antigravity", active: true, daily: 44 }],
+					},
 				},
 			];
 		case "collab":

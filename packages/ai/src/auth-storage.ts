@@ -803,6 +803,8 @@ type UsageRequestDescriptor = {
 	provider: Provider;
 	credential: UsageCredential;
 	baseUrl?: string;
+	/** Internal stored-row id used to identify the active pool account in UI. */
+	credentialId?: number;
 };
 
 type ForcedUsageRefresh = {
@@ -2992,6 +2994,37 @@ export class AuthStorage {
 		return identity;
 	}
 
+	/** Return the stored credential row currently sticky for this session. */
+	getSessionCredentialId(provider: string, sessionId?: string): number | undefined {
+		const selected = this.#getSessionCredential(provider, sessionId);
+		if (!selected) return undefined;
+		return this.#getStoredCredentials(provider)[selected.index]?.id;
+	}
+
+	/**
+	 * Usage-cache identity of the credential currently sticky for this session:
+	 * a stable account identifier when the credential carries one, otherwise a
+	 * one-way hash of the secret (never the secret itself). Lets status surfaces
+	 * match cached usage reports to the active account even when the report's
+	 * `credentialId` annotation is absent — reports rewritten by the
+	 * credential-ranking path share the cache slot without the row id.
+	 * Returns `undefined` when no credential is sticky for the session yet.
+	 */
+	async getSessionUsageCacheIdentity(provider: string, sessionId?: string): Promise<string | undefined> {
+		const selected = this.#getSessionCredential(provider, sessionId);
+		if (!selected) return undefined;
+		const row = this.#getStoredCredentials(provider)[selected.index];
+		if (!row) return undefined;
+		const credential = row.credential;
+		const usageCredential = this.#buildUsageCredential(credential);
+		if (credential.type === "api_key") {
+			const apiKey = await this.#configValueResolver(credential.key);
+			if (!apiKey) return undefined;
+			usageCredential.apiKey = apiKey;
+		}
+		return this.#buildUsageCacheIdentity(usageCredential);
+	}
+
 	/**
 	 * Get all credentials.
 	 */
@@ -3231,16 +3264,22 @@ export class AuthStorage {
 		return `reports:${Bun.hash(snapshot).toString(16)}`;
 	}
 
-	#buildUsageRequest(provider: Provider, credential: UsageCredential, baseUrl?: string): UsageRequestDescriptor {
-		return { provider, credential, baseUrl };
+	#buildUsageRequest(
+		provider: Provider,
+		credential: UsageCredential,
+		baseUrl?: string,
+		credentialId?: number,
+	): UsageRequestDescriptor {
+		return { provider, credential, baseUrl, credentialId };
 	}
 
 	#buildUsageRequestForOauth(
 		provider: Provider,
 		credential: OAuthCredential,
 		baseUrl?: string,
+		credentialId?: number,
 	): UsageRequestDescriptor {
-		return this.#buildUsageRequest(provider, this.#buildUsageCredential(credential), baseUrl);
+		return this.#buildUsageRequest(provider, this.#buildUsageCredential(credential), baseUrl, credentialId);
 	}
 
 	#buildRefreshableOauthCredential(credential: UsageCredential): OAuthCredential | null {
@@ -3430,21 +3469,29 @@ export class AuthStorage {
 				fetch: this.#usageFetch,
 				logger: this.#usageLogger,
 			});
-			// Attribute the report to the credential's organization. The orgId and
-			// orgName fallbacks apply independently: Claude's usage endpoint stamps
-			// orgId from the `anthropic-organization-id` response header but never
-			// carries a display name, so the stored name must still be attached.
-			// Never attach the stored name over a DIFFERENT org's report.
-			if (report && params.credential.orgId !== undefined) {
+			// Attribute each report to its stored credential so status surfaces can
+			// distinguish the session's active account from pool backups. The cache
+			// identity (a one-way secret fingerprint when the account carries no
+			// stable id) is stamped unconditionally: `credentialId` is only known
+			// to paths that resolve the stored row, and reports written by the
+			// credential-ranking path would otherwise lose it when they overwrite
+			// the shared per-key cache entry.
+			if (report) {
 				const metadata = report.metadata ?? {};
-				const sameOrg = metadata.orgId === undefined || metadata.orgId === params.credential.orgId;
-				const needsOrgId = metadata.orgId === undefined;
-				const needsOrgName = sameOrg && params.credential.orgName !== undefined && metadata.orgName === undefined;
-				if (needsOrgId || needsOrgName) {
+				const usageCacheIdentity = this.#buildUsageCacheIdentity(request.credential);
+				const sameOrg =
+					request.credential.orgId === undefined ||
+					metadata.orgId === undefined ||
+					metadata.orgId === request.credential.orgId;
+				const needsOrgId = request.credential.orgId !== undefined && metadata.orgId === undefined;
+				const needsOrgName = sameOrg && request.credential.orgName !== undefined && metadata.orgName === undefined;
+				if (request.credentialId !== undefined || needsOrgId || needsOrgName || usageCacheIdentity) {
 					report.metadata = {
 						...metadata,
-						...(needsOrgId ? { orgId: params.credential.orgId } : {}),
-						...(needsOrgName ? { orgName: params.credential.orgName } : {}),
+						usageCacheIdentity,
+						...(request.credentialId !== undefined ? { credentialId: request.credentialId } : {}),
+						...(needsOrgId ? { orgId: request.credential.orgId } : {}),
+						...(needsOrgName ? { orgName: request.credential.orgName } : {}),
 					};
 				}
 			}
@@ -3746,7 +3793,7 @@ export class AuthStorage {
 				let hasUsableStoredOAuthCredential = false;
 				for (const entry of entries) {
 					if (entry.credential.type !== "oauth") continue;
-					const request = this.#buildUsageRequestForOauth(provider, entry.credential, baseUrl);
+					const request = this.#buildUsageRequestForOauth(provider, entry.credential, baseUrl, entry.id);
 					if (providerImpl.supports && !providerImpl.supports(request)) continue;
 					requests.push(request);
 					hasUsableStoredOAuthCredential = true;
@@ -3785,9 +3832,9 @@ export class AuthStorage {
 					// 401 and flag a working credential as bad.
 					const apiKey = await this.#configValueResolver(credential.key);
 					if (!apiKey) continue;
-					request = this.#buildUsageRequest(provider, { type: "api_key", apiKey }, baseUrl);
+					request = this.#buildUsageRequest(provider, { type: "api_key", apiKey }, baseUrl, entry.id);
 				} else {
-					request = this.#buildUsageRequestForOauth(provider, credential, baseUrl);
+					request = this.#buildUsageRequestForOauth(provider, credential, baseUrl, entry.id);
 				}
 				if (providerImpl.supports && !providerImpl.supports(request)) continue;
 				requests.push(request);
@@ -4413,9 +4460,14 @@ export class AuthStorage {
 					results.push(base);
 					continue;
 				}
-				initialRequest = this.#buildUsageRequest(row.provider as Provider, { type: "api_key", apiKey }, baseUrl);
+				initialRequest = this.#buildUsageRequest(
+					row.provider as Provider,
+					{ type: "api_key", apiKey },
+					baseUrl,
+					row.id,
+				);
 			} else {
-				initialRequest = this.#buildUsageRequestForOauth(row.provider as Provider, cred, baseUrl);
+				initialRequest = this.#buildUsageRequestForOauth(row.provider as Provider, cred, baseUrl, row.id);
 			}
 
 			const timeoutSignal = AbortSignal.timeout(timeoutMs);
@@ -6232,7 +6284,7 @@ export class AuthStorage {
 		for (const entry of this.#getStoredCredentials(provider)) {
 			if (entry.credential.type !== "oauth") continue;
 			const cacheKey = this.#buildUsageReportCacheKey(
-				this.#buildUsageRequestForOauth(provider, entry.credential, baseUrl),
+				this.#buildUsageRequestForOauth(provider, entry.credential, baseUrl, entry.id),
 			);
 			const existing = this.#usageCache.getStale<UsageReport | null>(cacheKey);
 			this.#usageCache.set(cacheKey, {
